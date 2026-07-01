@@ -1,4 +1,6 @@
 import { usePainPointRotator } from '../lib/usePainPointRotator';
+import { HeroNameBackdrop } from './HeroNameBackdrop';
+import { HeroNavPills } from './HeroNavPills';
 
 const PAIN_POINTS = [
   "Your funnel isn't converting.",
@@ -16,6 +18,8 @@ export function Hero() {
       id="hero"
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-bg px-6 text-center"
     >
+      <HeroNameBackdrop />
+
       <p className="font-mono text-sm uppercase tracking-[0.3em] text-accent">
         GoHighLevel Systems Builder
       </p>
@@ -24,17 +28,18 @@ export function Hero() {
           {PAIN_POINTS[index]}
         </span>
       </h1>
-      <p className="mt-8 max-w-2xl font-sans text-lg text-muted">
-        I build complete customer-acquisition systems — funnels, CRM,
-        automation, and design — so the problem above stops being yours to
-        worry about.
+
+      <img
+        src="/avatar.png"
+        alt="Alvin Wee"
+        className="mt-8 h-36 w-36 object-contain [filter:drop-shadow(0_0_24px_rgba(57,255,138,0.35))] sm:h-44 sm:w-44"
+      />
+
+      <p className="mt-8 max-w-xl font-sans text-lg text-muted">
+        I build complete customer-acquisition systems, not websites.
       </p>
-      <a
-        href="#case-studies"
-        className="mt-10 rounded-full border border-accent px-8 py-3 font-sans text-sm uppercase tracking-widest text-accent transition hover:bg-accent hover:text-bg"
-      >
-        See the systems I've built
-      </a>
+
+      <HeroNavPills />
     </section>
   );
 }
