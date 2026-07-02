@@ -8,7 +8,7 @@ export function ServicesGrid() {
         <h2 className="font-display text-3xl text-text sm:text-4xl">
           Everything a growth system needs, under one roof.
         </h2>
-        <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
           {services.map(({ label, icon: Icon }) => (
             <div
               key={label}

@@ -1,6 +1,5 @@
 import { usePainPointRotator } from '../lib/usePainPointRotator';
 import { HeroNameBackdrop } from './HeroNameBackdrop';
-import { HeroNavPills } from './HeroNavPills';
 
 const PAIN_POINTS = [
   "Your funnel isn't converting.",
@@ -16,7 +15,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative isolate flex min-h-screen flex-col items-center justify-center overflow-hidden bg-bg px-6 text-center"
+      className="relative isolate flex min-h-screen flex-col items-center justify-center overflow-hidden bg-bg px-6 pt-20 text-center"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div
@@ -54,12 +53,6 @@ export function Hero() {
         alt="Alvin Wee"
         className="mt-8 h-36 w-36 object-contain [filter:drop-shadow(0_0_24px_rgba(57,255,138,0.35))] sm:h-44 sm:w-44"
       />
-
-      <p className="mt-8 max-w-xl font-sans text-lg text-muted">
-        I build complete customer-acquisition systems, not websites.
-      </p>
-
-      <HeroNavPills />
     </section>
   );
 }

@@ -1,5 +1,6 @@
 import { useSmoothScroll } from './lib/scroll';
 import { CinematicBackdrop } from './components/CinematicBackdrop';
+import { SiteHeader } from './components/SiteHeader';
 import { Hero } from './components/Hero';
 import { ProblemSection } from './components/ProblemSection';
 import { SolutionSection } from './components/SolutionSection';
@@ -15,6 +16,7 @@ export default function App() {
   return (
     <main>
       <CinematicBackdrop />
+      <SiteHeader />
       <Hero />
       <ProblemSection />
       <SolutionSection />

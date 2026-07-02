@@ -77,7 +77,8 @@ describe('Reveal', () => {
     });
     expect(toVars.scrollTrigger).toMatchObject({
       start: 'top 80%',
-      toggleActions: 'play none none none',
+      end: 'bottom 20%',
+      toggleActions: 'play reverse play reverse',
     });
   });
 

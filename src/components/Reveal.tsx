@@ -42,7 +42,8 @@ export function Reveal({ children, className, stagger = 0.08 }: RevealProps) {
           scrollTrigger: {
             trigger: el,
             start: 'top 80%',
-            toggleActions: 'play none none none',
+            end: 'bottom 20%',
+            toggleActions: 'play reverse play reverse',
           },
         }
       );
