@@ -34,12 +34,12 @@ export function MatisseFlow({ study }: { study: CaseStudy }) {
       </div>
 
       {activeStep && (
-        <div className="mt-6 overflow-hidden rounded-xl border border-white/10">
+        <div className="mt-6 flex max-h-[360px] items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black/40 sm:max-h-[520px]">
           <img
             src={activeStep.image}
             alt={activeStep.label}
             loading="lazy"
-            className="w-full object-contain"
+            className="max-h-[360px] w-full object-contain sm:max-h-[520px]"
           />
         </div>
       )}
