@@ -1,9 +1,10 @@
 import { services } from '../data/services';
+import { Reveal } from './Reveal';
 
 export function ServicesGrid() {
   return (
     <section id="services" className="bg-bg px-6 py-32">
-      <div className="mx-auto max-w-6xl">
+      <Reveal className="mx-auto max-w-6xl">
         <h2 className="font-display text-3xl text-text sm:text-4xl">
           Everything a growth system needs, under one roof.
         </h2>
@@ -18,7 +19,7 @@ export function ServicesGrid() {
             </div>
           ))}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

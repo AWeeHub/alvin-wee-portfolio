@@ -1,7 +1,9 @@
+import { Reveal } from './Reveal';
+
 export function SolutionSection() {
   return (
     <section id="solution" className="bg-bg-elev px-6 py-32">
-      <div className="mx-auto max-w-4xl text-center">
+      <Reveal className="mx-auto max-w-4xl text-center">
         <p className="font-mono text-sm uppercase tracking-[0.3em] text-accent">
           The Solution
         </p>
@@ -14,7 +16,7 @@ export function SolutionSection() {
           get more leads, more booked calls, and less manual work, instead of
           another disconnected tool.
         </p>
-      </div>
+      </Reveal>
     </section>
   );
 }

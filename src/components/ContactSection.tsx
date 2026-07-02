@@ -1,9 +1,10 @@
 import { whatsappUrl, mailtoUrl } from '../lib/contact';
+import { Reveal } from './Reveal';
 
 export function ContactSection() {
   return (
     <section id="contact" className="bg-bg-elev px-6 py-32 text-center">
-      <div className="mx-auto max-w-3xl">
+      <Reveal className="mx-auto max-w-3xl">
         <h2 className="font-display text-3xl text-text sm:text-4xl">
           Let's build your growth system.
         </h2>
@@ -27,7 +28,7 @@ export function ContactSection() {
             Email me
           </a>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

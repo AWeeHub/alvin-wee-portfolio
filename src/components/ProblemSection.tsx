@@ -1,3 +1,5 @@
+import { Reveal } from './Reveal';
+
 const COSTS = [
   {
     title: 'Leads go cold',
@@ -16,7 +18,7 @@ const COSTS = [
 export function ProblemSection() {
   return (
     <section id="problem" className="bg-bg px-6 py-32">
-      <div className="mx-auto max-w-5xl">
+      <Reveal className="mx-auto max-w-5xl">
         <h2 className="font-display text-3xl text-text sm:text-4xl">
           Every day without a system has a cost.
         </h2>
@@ -31,7 +33,7 @@ export function ProblemSection() {
             </div>
           ))}
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }
