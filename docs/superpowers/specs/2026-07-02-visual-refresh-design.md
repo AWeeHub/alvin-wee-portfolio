@@ -3,8 +3,8 @@
 Addresses five design requests against the live site
 (`https://ghl-specialist-portfolio.vercel.app/`): generic-feeling typography,
 no scroll-triggered motion, a flat/static background, an oversized Matisse
-Academy flow screenshot, and promoting the AVNM Caffè case study into the
-hero.
+Academy flow screenshot, and a wrong thumbnail image for the AVNM Caffè case
+study.
 
 ## Context
 
@@ -35,9 +35,11 @@ labels), declared in `tailwind.config.js` and loaded via Google Fonts in
    fog) visible behind every section, `prefers-reduced-motion`-safe.
 4. Fix `MatisseFlow.tsx`'s unconstrained screenshot sizing so tall GHL
    screenshots no longer blow out the container.
-5. Restructure `Hero.tsx` into a two-column layout: pain-point
-   headline/subhead/avatar on the left (unchanged), AVNM Caffè's screenshot
-   as a glowing visual anchor on the right.
+5. Replace the AVNM Caffè case-study thumbnail (`public/work/avnm-caffe.jpg`)
+   — currently a product close-up (iced coffee + cake on a tray) — with a
+   screenshot of the actual AVNM Caffè landing page's hero section, matching
+   how every other case study (VOLTLINE, IronHaul, Tricia) already uses a
+   site screenshot, not a product photo, as its thumbnail.
 
 ## Non-goals
 
@@ -46,6 +48,11 @@ labels), declared in `tailwind.config.js` and loaded via Google Fonts in
 - No changes to `CaseStudyCard.tsx` grid layout or the four non-Matisse case
   studies' data.
 - No new avatar art, no changes to `usePainPointRotator` rotation logic.
+- **No changes to `Hero.tsx` or this site's own hero layout** — item 5 above
+  was originally scoped as a `Hero.tsx` restructure in an earlier draft of
+  this spec; the user clarified they meant the AVNM *case-study thumbnail
+  image itself* was wrong (product photo instead of a site screenshot), not
+  this site's hero section. `Hero.tsx` is unchanged by this spec.
 - No test-framework changes (this repo has Vitest already; new visual/motion
   code follows the same `npm run build` + manual browser check convention as
   the sibling project, since canvas/GSAP entrance timing isn't meaningfully
@@ -92,7 +99,9 @@ mechanism).
   wraps its heading + the `MatisseFlow`/grid blocks as separate reveal
   groups (already two visually distinct blocks).
 - `src/components/CaseStudies/MatisseFlow.tsx` — image sizing fix (below).
-- `src/components/Hero.tsx` — two-column restructure (below).
+- `public/work/avnm-caffe.jpg` — asset replaced (below), no component code
+  changes needed since `CaseStudyCard.tsx` already just renders
+  `study.images[0]`.
 
 ## Reveal detail
 
@@ -135,26 +144,19 @@ height. No cropping, since these are read-for-content GHL workflow
 screenshots where losing part of the image would defeat the purpose of the
 flow-step viewer.
 
-## Hero detail
+## AVNM thumbnail fix detail
 
-Restructures the current single-column centered `Hero` into a `md:grid
-md:grid-cols-12` two-column layout:
-
-- **Left (`md:col-span-7`):** existing eyebrow (`GoHighLevel Systems
-  Builder`), the rotating pain-point `<h1>`, existing avatar, subhead, and
-  `HeroNavPills` — all unchanged content, just re-flowed into the left
-  column instead of centered full-width. `HeroNameBackdrop` (the giant
-  faint "ALVIN WEE" watermark) stays full-bleed behind both columns.
-- **Right (`md:col-span-5`):** new visual block — `/work/avnm-caffe.jpg`
-  in a rounded, bordered frame (reusing the same browser-chrome-dot header
-  treatment `CaseStudyCard` already uses, for visual consistency) with a
-  soft green glow (`blur-3xl` radial gradient behind it, same technique as
-  the sibling project's hero avatar glow) and a small caption chip ("Live
-  client project — AVNM Caffè") linking to `study.liveUrl`.
-- Below `md:` breakpoint, right column stacks under the left column (image
-  still shown, not hidden) — mobile users still see the proof visual, just
-  after the headline instead of beside it.
-- No changes to `usePainPointRotator` timing/logic or to `HeroNameBackdrop`.
+`public/work/avnm-caffe.jpg` is replaced in place (same filename, same
+`images: ['/work/avnm-caffe.jpg']` reference in `caseStudies.ts` — zero
+component code changes) with a screenshot of `https://avnm-caffe.vercel.app`'s
+hero section: the "EXTRAORDINARY HOT AND BRIGHT" headline over the dark
+cinematic backdrop with the iced-coffee product shot, captured via headless
+Chrome (`--window-size=1400,900 --virtual-time-budget=3000`, same method
+documented for this repo's sibling project) so the site's own GSAP/entrance
+animation has settled before capture. `CaseStudyCard.tsx` needs no changes —
+it already renders `study.images[0]` at `aspect-video object-cover
+object-top`, so the new 1400×900 screenshot crops the same way the other
+three site-screenshot thumbnails already do.
 
 ## Performance & accessibility
 
@@ -168,9 +170,6 @@ md:grid-cols-12` two-column layout:
   reduced-motion-aware; if not, gate it the same way in this pass since it's
   adjacent to this work).
 - All new listeners (resize, visibilitychange) cleaned up on unmount.
-- Hero's new right-column image uses `loading="eager"` (above the fold,
-  unlike the lazy-loaded case-study grid images) with explicit `width`/
-  `height` or `aspect-video` to avoid layout shift.
 
 ## Verification plan
 
@@ -190,15 +189,15 @@ Run the dev server and drive it in-browser (not just type-check):
    (especially tall ones) — confirm no step's screenshot expands the card
    beyond the capped height, and nothing is cropped (full screenshot visible,
    letterboxed if needed).
-5. Confirm the Hero now shows the AVNM Caffè screenshot in a right-hand
-   panel (desktop) or stacked below the headline (mobile), with a visible
-   green glow and a working link to `https://avnm-caffe.vercel.app`.
+5. Confirm the AVNM Caffè card in the CaseStudies grid now shows its actual
+   landing-page hero (headline + product shot on dark backdrop), not the
+   old tray/product close-up photo.
 6. Emulate `prefers-reduced-motion: reduce` — confirm backdrop particles
    stop, section reveals show content instantly (no stagger), and the hero
    pain-point transition either stops or degrades gracefully.
 7. Resize to mobile (~375px), tablet (~768px), desktop (~1440px) — confirm
-   no layout breakage from the backdrop, `Reveal` wrapper, Hero's new grid,
-   or Matisse's capped image height.
+   no layout breakage from the backdrop, `Reveal` wrapper, or Matisse's
+   capped image height.
 8. `npm run build` succeeds (TypeScript + Vite, no new type errors).
 9. `npm run test` (Vitest) still passes — this task touches no files under
    test today (`caseStudies.ts` data itself is unchanged, only rendering
