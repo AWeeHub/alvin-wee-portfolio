@@ -1,3 +1,5 @@
+import { AWeeLogo } from './AWeeLogo';
+
 interface NavLink {
   label: string;
   href: string;
@@ -14,7 +16,7 @@ export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/80 backdrop-blur-sm">
       <nav className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-6 py-4 sm:justify-between">
-        <span className="hidden font-display text-lg text-text sm:block">Alvin Wee</span>
+        <AWeeLogo size="sm" className="hidden sm:inline-flex" />
         <ul className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
           {LINKS.map(({ label, href }) => (
             <li key={label}>
