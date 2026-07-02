@@ -5,7 +5,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Bricolage Grotesque', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Instrument Serif', 'Georgia', 'serif'],
+        display: ['Fraunces', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       colors: {
