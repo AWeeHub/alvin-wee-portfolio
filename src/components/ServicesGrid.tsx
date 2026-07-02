@@ -6,7 +6,7 @@ export function ServicesGrid() {
     <section id="services" className="bg-bg px-6 py-32">
       <Reveal className="mx-auto max-w-6xl">
         <h2 className="font-display text-3xl text-text sm:text-4xl">
-          Everything a growth system needs, under one roof.
+          The core stack behind every system I build.
         </h2>
         <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
           {services.map(({ label, icon: Icon }) => (

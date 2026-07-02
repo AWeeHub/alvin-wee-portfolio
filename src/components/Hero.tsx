@@ -1,12 +1,13 @@
 import { usePainPointRotator } from '../lib/usePainPointRotator';
 import { HeroNameBackdrop } from './HeroNameBackdrop';
+import { Reveal } from './Reveal';
 
 const PAIN_POINTS = [
   "Your funnel isn't converting.",
   'Your CRM is disorganized.',
   'Your leads are slipping away.',
   'Your follow-ups are inconsistent.',
-  'Your business is doing repetitive manual work every day.',
+  'Your manual work never stops.',
 ];
 
 export function Hero() {
@@ -39,20 +40,16 @@ export function Hero() {
 
       <HeroNameBackdrop />
 
-      <p className="font-mono text-sm uppercase tracking-[0.3em] text-accent">
-        GoHighLevel Systems Builder
-      </p>
-      <h1 className="mt-6 max-w-4xl font-display text-4xl leading-tight text-text sm:text-6xl md:text-7xl">
-        <span key={index} className="block animate-fade-up">
-          {PAIN_POINTS[index]}
-        </span>
-      </h1>
-
-      <img
-        src="/avatar.png"
-        alt="Alvin Wee"
-        className="mt-8 h-36 w-36 object-contain [filter:drop-shadow(0_0_24px_rgba(57,255,138,0.35))] sm:h-44 sm:w-44"
-      />
+      <Reveal className="flex flex-col items-center">
+        <p className="font-mono text-sm uppercase tracking-[0.3em] text-accent">
+          GoHighLevel Systems Builder
+        </p>
+        <h1 className="mt-6 max-w-4xl font-display text-4xl leading-tight text-text sm:text-6xl md:text-7xl">
+          <span key={index} className="block animate-fade-up">
+            {PAIN_POINTS[index]}
+          </span>
+        </h1>
+      </Reveal>
     </section>
   );
 }
