@@ -209,8 +209,8 @@ describe('Reveal', () => {
         <p>Second</p>
       </Reveal>
     );
-    expect(screen.getByText('First')).toBeInTheDocument();
-    expect(screen.getByText('Second')).toBeInTheDocument();
+    expect(screen.getByText('First')).toBeTruthy();
+    expect(screen.getByText('Second')).toBeTruthy();
   });
 
   it('animates direct children via gsap.fromTo with a ScrollTrigger', async () => {
