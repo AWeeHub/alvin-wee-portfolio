@@ -1,3 +1,4 @@
+import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
 
 const STEPS = [
@@ -11,13 +12,25 @@ export function ProcessSection() {
   return (
     <section id="process" className="bg-bg px-6 py-32">
       <Reveal className="mx-auto max-w-5xl">
-        <h2 className="font-display text-3xl text-text sm:text-4xl">How I work.</h2>
-        <div className="mt-16 grid gap-8 sm:grid-cols-4">
+        <SectionHeading
+          index="05"
+          node="Sequence"
+          title={
+            <>
+              How I <span className="italic text-accent">work</span>.
+            </>
+          }
+        />
+        <div className="mt-16 grid gap-10 sm:grid-cols-4 sm:gap-8">
           {STEPS.map(({ step, title, detail }) => (
-            <div key={step}>
+            <div key={step} className="relative border-t border-white/10 pt-6">
+              <span
+                aria-hidden
+                className="absolute -top-[3px] left-0 h-[5px] w-[5px] rounded-full bg-accent"
+              />
               <p className="font-mono text-sm text-accent">{step}</p>
-              <h3 className="mt-2 font-sans text-lg text-text">{title}</h3>
-              <p className="mt-2 font-sans text-sm text-muted">{detail}</p>
+              <h3 className="mt-3 font-display text-xl text-text sm:text-2xl">{title}</h3>
+              <p className="mt-2 font-sans text-sm leading-relaxed text-muted">{detail}</p>
             </div>
           ))}
         </div>

@@ -5,12 +5,12 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <article className="rounded-2xl border border-white/10 bg-bg-elev p-6">
+    <article className="rounded-2xl border border-white/10 bg-bg-elev p-6 transition-colors duration-300 hover:border-accent/30">
       <button
         type="button"
         onClick={() => setExpanded((current) => !current)}
         aria-expanded={expanded}
-        className="w-full text-left"
+        className="group w-full text-left"
       >
         <div className="overflow-hidden rounded-xl border border-white/10 bg-black/40">
           <div className="flex items-center gap-1.5 border-b border-white/10 bg-bg px-3 py-2">
@@ -25,7 +25,15 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
             className="aspect-video w-full object-cover object-top transition duration-500 group-hover:scale-105"
           />
         </div>
-        <h3 className="mt-5 font-sans text-xl text-text">{study.title}</h3>
+        <div className="mt-5 flex items-baseline justify-between gap-4">
+          <h3 className="font-display text-xl text-text sm:text-2xl">{study.title}</h3>
+          <span
+            aria-hidden
+            className="font-mono text-xs text-muted transition-colors duration-300 group-hover:text-accent"
+          >
+            {expanded ? '−' : '+'}
+          </span>
+        </div>
         <p className="mt-1 font-mono text-xs uppercase tracking-widest text-accent">
           {study.category}
         </p>

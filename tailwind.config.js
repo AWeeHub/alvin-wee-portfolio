@@ -21,9 +21,16 @@ export default {
           '0%': { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        scrollCue: {
+          '0%': { transform: 'scaleY(0)', transformOrigin: 'top' },
+          '45%': { transform: 'scaleY(1)', transformOrigin: 'top' },
+          '55%': { transform: 'scaleY(1)', transformOrigin: 'bottom' },
+          '100%': { transform: 'scaleY(0)', transformOrigin: 'bottom' },
+        },
       },
       animation: {
         'fade-up': 'fadeUp 0.6s ease-out forwards',
+        'scroll-cue': 'scrollCue 2.2s ease-in-out infinite',
       },
     },
   },

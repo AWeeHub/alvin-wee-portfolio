@@ -1,21 +1,40 @@
 import { services } from '../data/services';
+import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
 
 export function ServicesGrid() {
   return (
     <section id="services" className="bg-bg px-6 py-32">
-      <Reveal className="mx-auto max-w-6xl">
-        <h2 className="font-display text-3xl text-text sm:text-4xl">
-          The core stack behind every system I build.
-        </h2>
-        <div className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-4">
+      <Reveal className="mx-auto max-w-5xl">
+        <SectionHeading
+          index="03"
+          node="Stack"
+          title={
+            <>
+              The core stack behind every{' '}
+              <span className="italic text-accent">system</span> I build.
+            </>
+          }
+        />
+        <div className="mt-16 border-t border-white/10">
           {services.map(({ label, icon: Icon }) => (
             <div
               key={label}
-              className="flex flex-col items-start gap-3 rounded-xl border border-white/10 bg-bg-elev p-5 transition hover:-translate-y-1 hover:border-accent/50"
+              className="group flex items-center gap-5 border-b border-white/10 py-7 sm:gap-8 sm:py-9"
             >
-              <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
-              <span className="font-sans text-sm text-text">{label}</span>
+              <Icon
+                className="h-5 w-5 shrink-0 text-muted transition-colors duration-300 group-hover:text-accent"
+                aria-hidden="true"
+              />
+              <h3 className="flex-1 font-display text-2xl text-text transition-transform duration-300 group-hover:translate-x-2 sm:text-4xl">
+                {label}
+              </h3>
+              <span
+                aria-hidden
+                className="-translate-x-2 font-mono text-lg text-accent opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+              >
+                →
+              </span>
             </div>
           ))}
         </div>

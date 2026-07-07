@@ -5,6 +5,9 @@ export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-bg px-6 py-10 text-center">
       <Reveal className="flex flex-col items-center">
+        <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-accent/70">
+          // workflow complete — every lead accounted for
+        </p>
         <AWeeLogo size="sm" />
         <p className="mt-3 font-mono text-xs text-muted">
           GoHighLevel Systems Builder — funnels, CRM, automation, and design.

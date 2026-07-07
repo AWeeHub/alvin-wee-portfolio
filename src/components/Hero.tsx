@@ -1,5 +1,6 @@
 import { usePainPointRotator } from '../lib/usePainPointRotator';
 import { HeroNameBackdrop } from './HeroNameBackdrop';
+import { NodeChip } from './SectionHeading';
 import { Reveal } from './Reveal';
 
 const PAIN_POINTS = [
@@ -40,16 +41,33 @@ export function Hero() {
 
       <HeroNameBackdrop />
 
-      <Reveal className="flex flex-col items-center">
-        <p className="font-mono text-sm uppercase tracking-[0.3em] text-accent">
-          GoHighLevel Systems Builder
-        </p>
-        <h1 className="mt-6 max-w-4xl font-display text-4xl leading-tight text-text sm:text-6xl md:text-7xl">
+      <Reveal className="flex flex-col items-center" stagger={0.14}>
+        <NodeChip index="00" node="GoHighLevel Systems Builder" />
+        <h1 className="mt-10 max-w-5xl font-display text-4xl leading-[1.06] tracking-tight text-text sm:text-6xl md:text-7xl">
           <span key={index} className="block animate-fade-up">
             {PAIN_POINTS[index]}
           </span>
+          <span className="mt-3 block italic text-accent">
+            I build the system that fixes it.
+          </span>
         </h1>
+        <p className="mt-8 max-w-xl font-sans text-base text-muted sm:text-lg">
+          Funnels, CRM, and automation working as one machine — every lead
+          captured, followed up, and booked without manual chasing.
+        </p>
       </Reveal>
+
+      <div
+        aria-hidden
+        className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3"
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+          The system starts here
+        </span>
+        <span className="relative block h-10 w-px overflow-hidden bg-white/10">
+          <span className="absolute inset-0 bg-accent motion-safe:animate-scroll-cue" />
+        </span>
+      </div>
     </section>
   );
 }
