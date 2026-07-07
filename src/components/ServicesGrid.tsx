@@ -11,13 +11,13 @@ export function ServicesGrid() {
           node="Stack"
           title={
             <>
-              The core stack behind every{' '}
-              <span className="italic text-accent">system</span> I build.
+              Four things I build. One{' '}
+              <span className="italic text-accent">machine</span> when combined.
             </>
           }
         />
         <div className="mt-16 border-t border-white/10">
-          {services.map(({ label, icon: Icon }) => (
+          {services.map(({ label, desc, icon: Icon }) => (
             <div
               key={label}
               className="group flex items-center gap-5 border-b border-white/10 py-7 sm:gap-8 sm:py-9"
@@ -26,9 +26,14 @@ export function ServicesGrid() {
                 className="h-5 w-5 shrink-0 text-muted transition-colors duration-300 group-hover:text-accent"
                 aria-hidden="true"
               />
-              <h3 className="flex-1 font-display text-2xl text-text transition-transform duration-300 group-hover:translate-x-2 sm:text-4xl">
-                {label}
-              </h3>
+              <div className="flex-1">
+                <h3 className="font-display text-2xl text-text transition-transform duration-300 group-hover:translate-x-2 sm:text-4xl">
+                  {label}
+                </h3>
+                <p className="mt-1.5 font-sans text-sm text-muted transition-transform duration-300 group-hover:translate-x-2">
+                  {desc}
+                </p>
+              </div>
               <span
                 aria-hidden
                 className="-translate-x-2 font-mono text-lg text-accent opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100"

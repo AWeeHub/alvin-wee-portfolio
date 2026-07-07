@@ -8,9 +8,9 @@ import { Reveal } from './Reveal';
 
 const PAIN_POINTS = [
   "Your funnel isn't converting.",
-  'Your CRM is disorganized.',
+  'Your CRM is a mess.',
   'Your leads are slipping away.',
-  'Your follow-ups are inconsistent.',
+  'Your follow-up depends on memory.',
   'Your manual work never stops.',
 ];
 

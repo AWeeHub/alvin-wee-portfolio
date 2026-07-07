@@ -25,8 +25,8 @@ export const caseStudies: CaseStudy[] = [
       'A legal-education client needed a 3-day challenge funnel that could sell a high-ticket trust bundle without a live sales team chasing every lead by hand.',
     solution:
       'Built the full GoHighLevel automation behind the challenge: optin capture, general/VIP admission upsells, application intake, a bridge-sale bundle offer, payment confirmation, and automatic appointment reminders — all running without manual follow-up.',
-    techStack: ['GoHighLevel CRM', 'Workflow Automation', 'Payment Automation', 'Appointment Reminders'],
-    results: 'Concept/demo build — full funnel automation, not a public-facing site.',
+    techStack: ['GoHighLevel CRM', 'Workflows', 'Funnels', 'Calendars & Payments'],
+    results: 'Full 12-stage challenge funnel — opt-in to product delivery, zero manual follow-up.',
     images: [],
     flow: [
       { label: 'Challenge Optin', image: '/work/matisse/optin-page.png' },
@@ -52,7 +52,7 @@ export const caseStudies: CaseStudy[] = [
     solution:
       'Built a cinematic single-page marketing site with a working residential/commercial toggle and a multi-step lead-capture flow, structured to plug straight into a CRM pipeline.',
     techStack: ['HTML/CSS/JS', 'Vercel', 'CRM-ready lead capture'],
-    results: 'Concept demo, CRM-ready.',
+    results: 'Portfolio build — CRM-ready lead capture, deployable as-is.',
     liveUrl: 'https://voltline-ev-installer.vercel.app',
     images: ['/work/ev-installer.jpg'],
   },
@@ -65,7 +65,7 @@ export const caseStudies: CaseStudy[] = [
     solution:
       'Built a GSAP-animated freight carrier landing page with a booking modal, positioning the client for direct quote requests instead of generic contact-us forms.',
     techStack: ['HTML/CSS/JS', 'GSAP', 'Vercel'],
-    results: 'Concept demo.',
+    results: 'Portfolio build — booking-first landing pattern.',
     liveUrl: 'https://ironhaul-logistics-five.vercel.app',
     images: ['/work/ironhaul-logistics.jpg'],
   },

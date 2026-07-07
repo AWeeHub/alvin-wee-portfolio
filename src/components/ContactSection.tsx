@@ -13,8 +13,8 @@ export function ContactSection() {
           node="Goal"
           title={
             <>
-              Let's build your{' '}
-              <span className="italic text-accent">growth system</span>.
+              Stop chasing. Start{' '}
+              <span className="italic text-accent">booking</span>.
             </>
           }
         />

@@ -8,7 +8,7 @@ const COSTS = [
   },
   {
     title: 'Manual work compounds',
-    detail: 'Every repetitive task by hand is time that never goes back into growth.',
+    detail: 'Every repetitive task done by hand is hours you never get back to spend on growth.',
   },
   {
     title: 'Booked calls slip away',

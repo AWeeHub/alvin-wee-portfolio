@@ -3,7 +3,7 @@ import { Reveal } from './Reveal';
 
 const STEPS = [
   { step: '01', title: 'Discovery', detail: 'Map your current funnel, CRM, and gaps.' },
-  { step: '02', title: 'Build', detail: 'Design and build the site, funnel, or system.' },
+  { step: '02', title: 'Build', detail: 'Design and build every page and pipeline the plan calls for.' },
   { step: '03', title: 'Automate', detail: 'Wire up CRM, workflows, and follow-ups.' },
   { step: '04', title: 'Launch', detail: 'Go live, monitor, and refine what converts.' },
 ];

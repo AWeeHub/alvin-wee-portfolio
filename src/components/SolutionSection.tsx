@@ -18,9 +18,8 @@ export function SolutionSection() {
           }
         />
         <p className="mt-8 max-w-2xl font-sans text-lg text-muted">
-          Funnels, CRM, automation, and design working as one system — so you
-          get more leads, more booked calls, and less manual work, instead of
-          another disconnected tool.
+          A website alone doesn't follow up at 2am. The system underneath it
+          does — and this is what it looks like.
         </p>
       </Reveal>
 
