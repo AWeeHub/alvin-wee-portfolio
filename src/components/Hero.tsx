@@ -5,7 +5,6 @@ import { HeroShader } from './HeroShader';
 import { MaskedText } from './MaskedText';
 import { NodeChip } from './SectionHeading';
 import { Reveal } from './Reveal';
-import { SystemLog } from './SystemLog';
 
 const PAIN_POINTS = [
   "Your funnel isn't converting.",
@@ -84,8 +83,6 @@ export function Hero({ introReady = true }: HeroProps) {
           captured, followed up, and booked without manual chasing.
         </p>
       </Reveal>
-
-      <SystemLog />
 
       <div
         aria-hidden
