@@ -1,4 +1,5 @@
 import { whatsappUrl, mailtoUrl } from '../lib/contact';
+import { Magnetic } from './Magnetic';
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
 
@@ -22,20 +23,24 @@ export function ContactSection() {
           automate first.
         </p>
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href={whatsappUrl("Hi Alvin, I'd like to talk about a GoHighLevel system.")}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full bg-accent px-10 py-4 font-sans text-sm uppercase tracking-widest text-bg transition duration-300 hover:-translate-y-0.5 hover:bg-accent-dim"
-          >
-            Message on WhatsApp
-          </a>
-          <a
-            href={mailtoUrl()}
-            className="rounded-full border border-accent px-10 py-4 font-sans text-sm uppercase tracking-widest text-accent transition duration-300 hover:-translate-y-0.5 hover:bg-accent hover:text-bg"
-          >
-            Email me
-          </a>
+          <Magnetic>
+            <a
+              href={whatsappUrl("Hi Alvin, I'd like to talk about a GoHighLevel system.")}
+              target="_blank"
+              rel="noreferrer"
+              className="block rounded-full bg-accent px-10 py-4 font-sans text-sm uppercase tracking-widest text-bg transition duration-300 hover:bg-accent-dim"
+            >
+              Message on WhatsApp
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a
+              href={mailtoUrl()}
+              className="block rounded-full border border-accent px-10 py-4 font-sans text-sm uppercase tracking-widest text-accent transition duration-300 hover:bg-accent hover:text-bg"
+            >
+              Email me
+            </a>
+          </Magnetic>
         </div>
       </Reveal>
     </section>

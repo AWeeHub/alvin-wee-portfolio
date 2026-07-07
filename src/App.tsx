@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSmoothScroll } from './lib/scroll';
 import { Preloader } from './components/Preloader';
+import { CustomCursor } from './components/CustomCursor';
 import { CinematicBackdrop } from './components/CinematicBackdrop';
 import { SiteHeader } from './components/SiteHeader';
 import { WorkflowSpine } from './components/WorkflowSpine';
@@ -20,6 +21,7 @@ export default function App() {
   return (
     <main>
       <Preloader onComplete={() => setReady(true)} />
+      <CustomCursor />
       <CinematicBackdrop />
       <SiteHeader />
       <WorkflowSpine />

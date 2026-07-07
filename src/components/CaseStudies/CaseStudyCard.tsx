@@ -10,9 +10,10 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
         type="button"
         onClick={() => setExpanded((current) => !current)}
         aria-expanded={expanded}
+        data-cursor="view"
         className="group w-full text-left"
       >
-        <div className="overflow-hidden rounded-xl border border-white/10 bg-black/40">
+        <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/40">
           <div className="flex items-center gap-1.5 border-b border-white/10 bg-bg px-3 py-2">
             <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
             <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
@@ -23,6 +24,10 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
             alt={`${study.title} preview`}
             loading="lazy"
             className="aspect-video w-full object-cover object-top transition duration-500 group-hover:scale-105"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-accent/0 transition duration-500 group-hover:bg-accent/10"
           />
         </div>
         <div className="mt-5 flex items-baseline justify-between gap-4">

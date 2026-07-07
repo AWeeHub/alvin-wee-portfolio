@@ -27,6 +27,12 @@ button:focus-visible {
   color: theme('colors.bg');
 }
 
+/* Custom cursor active: hide the native cursor everywhere. */
+.has-custom-cursor,
+.has-custom-cursor * {
+  cursor: none !important;
+}
+
 /* MaskedText word reveal: hidden below the mask until the wrapper
    gains .masked-revealed, then each word slides up on its own delay. */
 [data-masked-word] {
