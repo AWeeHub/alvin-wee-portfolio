@@ -26,3 +26,22 @@ button:focus-visible {
   background: theme('colors.accent');
   color: theme('colors.bg');
 }
+
+/* MaskedText word reveal: hidden below the mask until the wrapper
+   gains .masked-revealed, then each word slides up on its own delay. */
+[data-masked-word] {
+  transform: translateY(115%);
+  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: var(--mask-delay, 0ms);
+}
+
+.masked-revealed [data-masked-word] {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-masked-word] {
+    transition: none;
+    transform: none;
+  }
+}

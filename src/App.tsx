@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useSmoothScroll } from './lib/scroll';
+import { Preloader } from './components/Preloader';
 import { CinematicBackdrop } from './components/CinematicBackdrop';
 import { SiteHeader } from './components/SiteHeader';
 import { WorkflowSpine } from './components/WorkflowSpine';
@@ -13,13 +15,15 @@ import { Footer } from './components/Footer';
 
 export default function App() {
   useSmoothScroll();
+  const [ready, setReady] = useState(false);
 
   return (
     <main>
+      <Preloader onComplete={() => setReady(true)} />
       <CinematicBackdrop />
       <SiteHeader />
       <WorkflowSpine />
-      <Hero />
+      <Hero introReady={ready} />
       <ProblemSection />
       <SolutionSection />
       <ServicesGrid />

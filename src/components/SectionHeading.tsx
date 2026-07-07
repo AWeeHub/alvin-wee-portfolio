@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { MaskedText } from './MaskedText';
 
 type NodeChipProps = {
   index: string;
@@ -33,7 +34,7 @@ export function SectionHeading({ index, node, title, align = 'left' }: SectionHe
     <div className={align === 'center' ? 'flex flex-col items-center text-center' : ''}>
       <NodeChip index={index} node={node} />
       <h2 className="mt-8 max-w-3xl font-display text-4xl leading-[1.05] tracking-tight text-text sm:text-5xl md:text-6xl">
-        {title}
+        <MaskedText>{title}</MaskedText>
       </h2>
     </div>
   );

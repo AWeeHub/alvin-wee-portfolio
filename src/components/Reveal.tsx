@@ -8,9 +8,11 @@ type RevealProps = {
   children: ReactNode;
   className?: string;
   stagger?: number;
+  /** While true, children stay hidden; flipping to false plays the reveal. */
+  paused?: boolean;
 };
 
-export function Reveal({ children, className, stagger = 0.08 }: RevealProps) {
+export function Reveal({ children, className, stagger = 0.08, paused = false }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -26,6 +28,11 @@ export function Reveal({ children, className, stagger = 0.08 }: RevealProps) {
 
     if (prefersReducedMotion) {
       gsap.set(targets, { opacity: 1, y: 0 });
+      return;
+    }
+
+    if (paused) {
+      gsap.set(targets, { opacity: 0, y: 24 });
       return;
     }
 
@@ -50,7 +57,7 @@ export function Reveal({ children, className, stagger = 0.08 }: RevealProps) {
     }, el);
 
     return () => ctx.revert();
-  }, [stagger]);
+  }, [stagger, paused]);
 
   return (
     <div ref={ref} className={className}>

@@ -1,5 +1,6 @@
 import { usePainPointRotator } from '../lib/usePainPointRotator';
 import { HeroNameBackdrop } from './HeroNameBackdrop';
+import { MaskedText } from './MaskedText';
 import { NodeChip } from './SectionHeading';
 import { Reveal } from './Reveal';
 
@@ -11,7 +12,11 @@ const PAIN_POINTS = [
   'Your manual work never stops.',
 ];
 
-export function Hero() {
+type HeroProps = {
+  introReady?: boolean;
+};
+
+export function Hero({ introReady = true }: HeroProps) {
   const index = usePainPointRotator(PAIN_POINTS);
 
   return (
@@ -41,15 +46,19 @@ export function Hero() {
 
       <HeroNameBackdrop />
 
-      <Reveal className="flex flex-col items-center" stagger={0.14}>
+      <Reveal className="flex flex-col items-center" stagger={0.14} paused={!introReady}>
         <NodeChip index="00" node="GoHighLevel Systems Builder" />
         <h1 className="mt-10 max-w-5xl font-display text-4xl leading-[1.06] tracking-tight text-text sm:text-6xl md:text-7xl">
           <span key={index} className="block animate-fade-up">
             {PAIN_POINTS[index]}
           </span>
-          <span className="mt-3 block italic text-accent">
+          <MaskedText
+            className="mt-3 block italic text-accent"
+            paused={!introReady}
+            scroll={false}
+          >
             I build the system that fixes it.
-          </span>
+          </MaskedText>
         </h1>
         <p className="mt-8 max-w-xl font-sans text-base text-muted sm:text-lg">
           Funnels, CRM, and automation working as one machine — every lead
