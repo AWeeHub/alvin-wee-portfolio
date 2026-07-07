@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import { usePainPointRotator } from '../lib/usePainPointRotator';
 import { HeroNameBackdrop } from './HeroNameBackdrop';
+import { HeroShader } from './HeroShader';
 import { MaskedText } from './MaskedText';
 import { NodeChip } from './SectionHeading';
 import { Reveal } from './Reveal';
@@ -18,6 +20,16 @@ type HeroProps = {
 
 export function Hero({ introReady = true }: HeroProps) {
   const index = usePainPointRotator(PAIN_POINTS);
+  const [shaderOk, setShaderOk] = useState(false);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+    if (prefersReducedMotion) return;
+    const probe = document.createElement('canvas');
+    if (probe.getContext('webgl2')) setShaderOk(true);
+  }, []);
 
   return (
     <section
@@ -25,23 +37,29 @@ export function Hero({ introReady = true }: HeroProps) {
       className="relative isolate flex min-h-screen flex-col items-center justify-center overflow-hidden bg-bg px-6 pt-20 text-center"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(57,255,138,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,138,0.16) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-            maskImage: 'radial-gradient(65% 65% at 50% 35%, black 0%, transparent 80%)',
-            WebkitMaskImage: 'radial-gradient(65% 65% at 50% 35%, black 0%, transparent 80%)',
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(60% 50% at 50% 30%, rgba(57,255,138,0.32) 0%, transparent 70%)',
-          }}
-        />
+        {shaderOk ? (
+          <HeroShader />
+        ) : (
+          <>
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage:
+                  'linear-gradient(rgba(57,255,138,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,138,0.16) 1px, transparent 1px)',
+                backgroundSize: '48px 48px',
+                maskImage: 'radial-gradient(65% 65% at 50% 35%, black 0%, transparent 80%)',
+                WebkitMaskImage: 'radial-gradient(65% 65% at 50% 35%, black 0%, transparent 80%)',
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(60% 50% at 50% 30%, rgba(57,255,138,0.32) 0%, transparent 70%)',
+              }}
+            />
+          </>
+        )}
       </div>
 
       <HeroNameBackdrop />
