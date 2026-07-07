@@ -1,25 +1,6 @@
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
-
-const PIPELINE = ['Lead in', 'Funnel', 'CRM', 'Automation', 'Booked call'];
-
-function PipeChip({ label, final }: { label: string; final: boolean }) {
-  return (
-    <span
-      className={`rounded-full border px-5 py-2 font-mono text-xs uppercase tracking-[0.2em] ${
-        final
-          ? 'border-accent bg-accent/10 text-accent'
-          : 'border-white/15 text-text'
-      }`}
-    >
-      {label}
-    </span>
-  );
-}
-
-function PipeConnector() {
-  return <span aria-hidden className="h-6 w-px bg-accent/40 sm:h-px sm:w-10" />;
-}
+import { WorkflowCanvas } from './WorkflowCanvas';
 
 export function SolutionSection() {
   return (
@@ -43,18 +24,11 @@ export function SolutionSection() {
         </p>
       </Reveal>
 
-      <Reveal
-        className="mx-auto mt-16 flex max-w-5xl flex-col items-center justify-center gap-3 sm:flex-row"
-        stagger={0.12}
-      >
-        {PIPELINE.flatMap((label, i) => {
-          const chip = (
-            <PipeChip key={label} label={label} final={i === PIPELINE.length - 1} />
-          );
-          return i < PIPELINE.length - 1
-            ? [chip, <PipeConnector key={`${label}-connector`} />]
-            : [chip];
-        })}
+      <Reveal className="mx-auto mt-20 max-w-5xl">
+        <p className="mb-10 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+          The system, running — tap any node
+        </p>
+        <WorkflowCanvas />
       </Reveal>
     </section>
   );
