@@ -1,6 +1,7 @@
 import { caseStudies } from '../../data/caseStudies';
 import { Reveal } from '../Reveal';
 import { SectionHeading } from '../SectionHeading';
+import { Tilt } from '../Tilt';
 import { CaseStudyCard } from './CaseStudyCard';
 import { MatisseFlow } from './MatisseFlow';
 
@@ -26,7 +27,9 @@ export function CaseStudiesSection() {
 
         <div className="mt-16 grid gap-8 sm:grid-cols-2">
           {webBuilds.map((study) => (
-            <CaseStudyCard key={study.id} study={study} />
+            <Tilt key={study.id}>
+              <CaseStudyCard study={study} />
+            </Tilt>
           ))}
         </div>
       </Reveal>

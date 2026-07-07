@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { scrollState } from '../lib/scroll';
 
 const VERT = `#version 300 es
 void main() {
@@ -15,6 +16,8 @@ uniform vec2 uMouse;
 uniform float uTime;
 uniform float uIntro;
 uniform float uDpr;
+uniform float uVel;
+uniform float uScroll;
 out vec4 outColor;
 
 float hash(float n) {
@@ -29,8 +32,10 @@ void main() {
   // Cursor lens: push grid space away from the pointer.
   vec2 d = p - m;
   float dist = length(d);
-  float warp = 30.0 * exp(-dist / 200.0);
+  float warp = (30.0 + 24.0 * uVel) * exp(-dist / 200.0);
   vec2 pw = p + (d / max(dist, 0.001)) * warp;
+  // Grid rides at 0.15x scroll speed: reads as a far depth layer.
+  pw.y += uScroll * 0.15;
 
   float spacing = 48.0;
   vec2 cell = abs(fract(pw / spacing) - 0.5) * spacing;
@@ -58,7 +63,7 @@ void main() {
   float mouseGlow = exp(-dist / 230.0);
 
   vec3 accent = vec3(0.224, 1.0, 0.541);
-  float intensity = line * mask * (0.10 + 0.28 * mouseGlow)
+  float intensity = line * mask * (0.10 + 0.06 * uVel + 0.28 * mouseGlow)
                   + pulses * mask * 0.55
                   + fog * 0.10
                   + mouseGlow * 0.05;
@@ -120,6 +125,9 @@ export function HeroShader() {
     const uTime = gl.getUniformLocation(program, 'uTime');
     const uIntro = gl.getUniformLocation(program, 'uIntro');
     const uDpr = gl.getUniformLocation(program, 'uDpr');
+    const uVel = gl.getUniformLocation(program, 'uVel');
+    const uScroll = gl.getUniformLocation(program, 'uScroll');
+    let smoothVel = 0;
 
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let width = 0;
@@ -162,11 +170,14 @@ export function HeroShader() {
 
     const render = (t: number) => {
       const intro = Math.min(1, t / 1.4);
+      smoothVel += (Math.min(Math.abs(scrollState.velocity) / 30, 1) - smoothVel) * 0.08;
       gl.uniform2f(uRes, width, height);
       gl.uniform2f(uMouse, mouse.x, mouse.y);
       gl.uniform1f(uTime, t);
       gl.uniform1f(uIntro, intro * (2 - intro));
       gl.uniform1f(uDpr, dpr);
+      gl.uniform1f(uVel, smoothVel);
+      gl.uniform1f(uScroll, window.scrollY);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
     // One synchronous frame so the buffer is never garbage, even if

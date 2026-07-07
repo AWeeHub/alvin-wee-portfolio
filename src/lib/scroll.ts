@@ -5,6 +5,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+/** Live scroll physics shared with visual layers (read-only elsewhere). */
+export const scrollState = { velocity: 0 };
+
 export function useSmoothScroll(): void {
   useEffect(() => {
     const lenis = new Lenis({
@@ -12,7 +15,10 @@ export function useSmoothScroll(): void {
       smoothWheel: true,
     });
 
-    lenis.on('scroll', ScrollTrigger.update);
+    lenis.on('scroll', (e: { velocity: number }) => {
+      scrollState.velocity = e.velocity;
+      ScrollTrigger.update();
+    });
 
     const update = (time: number) => {
       lenis.raf(time * 1000);
