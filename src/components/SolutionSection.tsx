@@ -25,7 +25,7 @@ export function SolutionSection() {
 
       <Reveal className="mx-auto mt-20 max-w-5xl">
         <p className="mb-10 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-          The system, running — tap any node
+          Scroll to assemble the system — tap any node
         </p>
         <WorkflowCanvas />
       </Reveal>

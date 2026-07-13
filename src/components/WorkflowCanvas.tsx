@@ -83,10 +83,34 @@ const MOBILE_EDGES: [string, string][] = MOBILE_ORDER.slice(0, -1).map((id, i) =
   MOBILE_ORDER[i + 1],
 ]);
 
+/** Stable pseudo-random in 0..1 — the scatter must not reshuffle on re-render. */
+function seeded(i: number): number {
+  const s = Math.sin(i * 12.9898) * 43758.5453;
+  return s - Math.floor(s);
+}
+
+/** Where node i sits before the machine assembles, in CSS px from its slot. */
+function scatterOf(i: number) {
+  const angle = seeded(i) * Math.PI * 2;
+  const dist = 140 + seeded(i + 7) * 160;
+  return {
+    x: Math.cos(angle) * dist,
+    y: Math.sin(angle) * dist * 0.7,
+    rot: (seeded(i + 13) - 0.5) * 70,
+  };
+}
+
+const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+const easeOut = (v: number) => 1 - Math.pow(1 - v, 3);
+
+const NODE_STAGGER = 0.06;
+const NODE_SPAN = 1 - (NODES.length - 1) * NODE_STAGGER;
+
 export function WorkflowCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const pathRefs = useRef<(SVGPathElement | null)[]>([]);
+  const solidRefs = useRef<(SVGPathElement | null)[]>([]);
   const packetRefs = useRef<(SVGCircleElement | null)[]>([]);
   const [paths, setPaths] = useState<string[]>([]);
   const [active, setActive] = useState('automation');
@@ -101,15 +125,17 @@ export function WorkflowCanvas() {
       const mobile = crect.width < 640;
       const edges = mobile ? MOBILE_EDGES : DESKTOP_EDGES;
 
+      // offset* rather than getBoundingClientRect: the assembly below puts a
+      // CSS transform on every node, and rects include transforms — measuring
+      // through them would wire the connectors to the scattered positions.
       const center = (id: string) => {
         const el = nodeRefs.current[id];
         if (!el) return null;
-        const r = el.getBoundingClientRect();
         return {
-          x: r.left - crect.left + r.width / 2,
-          y: r.top - crect.top + r.height / 2,
-          w: r.width,
-          h: r.height,
+          x: el.offsetLeft + el.offsetWidth / 2,
+          y: el.offsetTop + el.offsetHeight / 2,
+          w: el.offsetWidth,
+          h: el.offsetHeight,
         };
       };
 
@@ -135,6 +161,19 @@ export function WorkflowCanvas() {
     };
 
     measure();
+
+    // Scatter before the first paint, otherwise the assembled machine flashes
+    // for a frame before the rAF loop (which runs after paint) takes over.
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      NODES.forEach((node, i) => {
+        const el = nodeRefs.current[node.id];
+        if (!el) return;
+        const s = scatterOf(i);
+        el.style.transform = `translate(${s.x}px, ${s.y}px) rotate(${s.rot}deg) scale(0.72)`;
+        el.style.opacity = '0';
+      });
+    }
+
     const ro = new ResizeObserver(measure);
     ro.observe(container);
     return () => ro.disconnect();
@@ -143,8 +182,16 @@ export function WorkflowCanvas() {
   useEffect(() => {
     const container = containerRef.current;
     if (!container || paths.length === 0) return;
+
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
+    if (reduced) {
+      // Show the finished machine; skip the assembly entirely.
+      NODES.forEach((node) => {
+        const el = nodeRefs.current[node.id];
+        if (el) el.style.opacity = '1';
+      });
+      return;
+    }
 
     let raf = 0;
     let inView = true;
@@ -155,15 +202,59 @@ export function WorkflowCanvas() {
       raf = 0;
       if (!inView) return;
       const t = (now - start) / 1000;
+
+      // Assembly progress, read live from the container's position each frame.
+      // ScrollTrigger toggles go stale here the same way they did on the
+      // WorkflowSpine nodes; a live rect never does.
+      const rect = container.getBoundingClientRect();
+      const startY = window.innerHeight * 0.92;
+      const endY = window.innerHeight * 0.42;
+      const p = clamp01((startY - rect.top) / (startY - endY));
+
+      // Nodes fly in from their scattered positions, in narrative order.
+      NODES.forEach((node, i) => {
+        const el = nodeRefs.current[node.id];
+        if (!el) return;
+        const e = easeOut(clamp01((p - i * NODE_STAGGER) / NODE_SPAN));
+        const s = scatterOf(i);
+        const inv = 1 - e;
+        // Transform-only: never touch layout, so the measured connector
+        // geometry stays valid throughout.
+        el.style.transform = `translate(${s.x * inv}px, ${s.y * inv}px) rotate(${
+          s.rot * inv
+        }deg) scale(${0.72 + 0.28 * e})`;
+        el.style.opacity = String(e);
+      });
+
+      // Connectors etch themselves in once the nodes have mostly landed, then
+      // cross-fade from a solid trace into the dotted circuit line.
+      const settle = clamp01((p - 0.92) / 0.08);
+      pathRefs.current.forEach((dotted, i) => {
+        const solid = solidRefs.current[i];
+        const len = lengths[i];
+        if (!dotted || !solid || !len) return;
+        const draw = clamp01((p - 0.5 - i * 0.04) / 0.3);
+        solid.style.strokeDasharray = `${len * draw} ${len}`;
+        solid.style.opacity = String(1 - settle);
+        dotted.style.opacity = String(settle);
+      });
+
+      // Packets only run on a finished machine.
+      const flowing = p > 0.95;
       pathRefs.current.forEach((path, i) => {
         const packet = packetRefs.current[i];
         if (!path || !packet || !lengths[i]) return;
+        if (!flowing) {
+          packet.setAttribute('opacity', '0');
+          return;
+        }
         const progress = (t * 0.22 + i * 0.31) % 1;
         const point = path.getPointAtLength(progress * lengths[i]);
         packet.setAttribute('cx', String(point.x));
         packet.setAttribute('cy', String(point.y));
         packet.setAttribute('opacity', String(Math.sin(progress * Math.PI)));
       });
+
       raf = requestAnimationFrame(frame);
     };
     const play = () => {
@@ -197,6 +288,18 @@ export function WorkflowCanvas() {
         >
           {paths.map((d, i) => (
             <g key={i}>
+              {/* Etches in as the machine assembles, then hands off to the
+                  dotted trace below. */}
+              <path
+                ref={(el) => {
+                  solidRefs.current[i] = el;
+                }}
+                d={d}
+                fill="none"
+                stroke="rgba(57,255,138,0.7)"
+                strokeWidth="1"
+                strokeDasharray="0 9999"
+              />
               <path
                 ref={(el) => {
                   pathRefs.current[i] = el;
@@ -206,6 +309,7 @@ export function WorkflowCanvas() {
                 stroke="rgba(57,255,138,0.25)"
                 strokeWidth="1"
                 strokeDasharray="4 4"
+                opacity="0"
               />
               <circle
                 ref={(el) => {
