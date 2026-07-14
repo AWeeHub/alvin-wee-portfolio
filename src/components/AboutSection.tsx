@@ -1,4 +1,4 @@
-import { companies, toolkit } from '../data/about';
+import { toolkit } from '../data/about';
 import { Marquee } from './Marquee';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
@@ -32,33 +32,6 @@ export function AboutSection() {
             from premium interfaces to the automated workflows underneath them.
           </p>
         </div>
-      </Reveal>
-
-      <Reveal className="mx-auto mt-28 max-w-5xl">
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-          Companies I've worked with
-        </p>
-        <ul className="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
-          {companies.map((company) => (
-            // Fixed row height so the differing logo heights below still sit on
-            // a common baseline grid.
-            <li key={company.name} className="group flex h-16 items-center">
-              {company.logo ? (
-                <img
-                  src={company.logo}
-                  alt={company.name}
-                  loading="lazy"
-                  style={{ height: company.height ?? 32 }}
-                  className="w-auto max-w-full opacity-55 transition-opacity duration-300 [filter:brightness(0)_invert(1)] group-hover:opacity-100"
-                />
-              ) : (
-                <span className="font-display text-lg font-bold uppercase leading-tight tracking-tight text-text/55 transition-colors duration-300 group-hover:text-accent sm:text-xl">
-                  {company.name}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
       </Reveal>
 
       <Reveal className="mx-auto mt-28 max-w-5xl">

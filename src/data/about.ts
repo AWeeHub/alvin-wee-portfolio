@@ -1,30 +1,33 @@
 export interface Company {
   name: string;
-  /** Path under /public. When absent the name renders as a wordmark instead. */
-  logo?: string;
+  /** Path under /public. */
+  logo: string;
   /**
-   * Rendered height in px. Logo strips look wrong at one uniform height: a wide
-   * wordmark and a square crest with the same height read as wildly different
-   * sizes. These values balance them optically, so they are per-logo rather than
-   * a single class on the <img>.
+   * Rendered height in px. A logo band looks wrong at one uniform height: a
+   * square crest and a wide wordmark at the same height read as wildly
+   * different sizes. These values balance them optically.
    */
-  height?: number;
+  height: number;
+  /**
+   * For marks that ship white-only. The band is cream, so a white mark is
+   * invisible on it; these are flat monochrome, so inverting them yields the
+   * black-on-light lockup the brand actually uses. Never set this on a logo
+   * that carries real colour — inverting those corrupts the brand.
+   */
+  invert?: boolean;
 }
 
-/**
- * Every logo is drawn white via a brightness(0) invert(1) filter, so the source
- * colour is irrelevant — but the background must be transparent, or the mark
- * lands on the page as a solid white slab.
- */
+/** Sourced from each company's own site. Every one is transparent-backed. */
 export const companies: Company[] = [
-  { name: 'Matisse Academy', logo: '/logos/matisse.webp', height: 44 },
-  { name: 'Fanvue', logo: '/logos/fanvue.svg', height: 26 },
-  { name: 'Katalyst CRM', logo: '/logos/katalyst.webp', height: 24 },
-  // Wordmark only. Their full lockup leads with a two-tone "M" that is one solid
-  // block of ink, and the white filter flattens it into a featureless slab.
-  { name: 'The Methodical Group', logo: '/logos/methodical.webp', height: 56 },
-  { name: 'Oracle', logo: '/logos/oracle.svg', height: 24 },
-  { name: 'Trax Technologies Asia', logo: '/logos/trax.svg', height: 30 },
+  { name: 'Matisse Academy', logo: '/logos/matisse.webp', height: 60 },
+  { name: 'Fanvue', logo: '/logos/fanvue.svg', height: 30, invert: true },
+  // Their only asset is a white-body wordmark with coloured accent glyphs, so
+  // it ships here with the neutral body repainted to ink — inverting it would
+  // have flipped the accent colours too.
+  { name: 'Katalyst CRM', logo: '/logos/katalyst-color.webp', height: 26 },
+  { name: 'The Methodical Group', logo: '/logos/methodical-color.webp', height: 48 },
+  { name: 'Oracle', logo: '/logos/oracle.svg', height: 28 },
+  { name: 'Trax Technologies Asia', logo: '/logos/trax.svg', height: 42 },
 ];
 
 export interface ToolGroup {

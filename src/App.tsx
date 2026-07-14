@@ -7,6 +7,7 @@ import { SiteHeader } from './components/SiteHeader';
 import { StatusBar } from './components/StatusBar';
 import { WorkflowSpine } from './components/WorkflowSpine';
 import { Hero } from './components/Hero';
+import { CompanyMarquee } from './components/CompanyMarquee';
 import { ProblemSection } from './components/ProblemSection';
 import { SolutionSection } from './components/SolutionSection';
 import { ServicesGrid } from './components/ServicesGrid';
@@ -29,6 +30,7 @@ export default function App() {
       <StatusBar />
       <WorkflowSpine />
       <Hero introReady={ready} />
+      <CompanyMarquee />
       <ProblemSection />
       <SolutionSection />
       <ServicesGrid />
