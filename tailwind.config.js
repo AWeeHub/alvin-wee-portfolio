@@ -3,10 +3,14 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      // One typeface across the site. The three tokens are kept so existing
+      // font-sans / font-display / font-mono classes keep working, but they all
+      // resolve to Archivo — identity comes from weight and scale, not from
+      // mixing families.
       fontFamily: {
-        sans: ['Bricolage Grotesque Variable', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Fraunces Variable', 'Georgia', 'serif'],
-        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        sans: ['Archivo Variable', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['Archivo Variable', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['Archivo Variable', 'Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
         bg: '#05070A',

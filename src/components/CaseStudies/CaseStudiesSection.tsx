@@ -3,19 +3,21 @@ import { Reveal } from '../Reveal';
 import { SectionHeading } from '../SectionHeading';
 import { MatisseFlow } from './MatisseFlow';
 import { PipelineCaseStudies } from './PipelineCaseStudies';
+import { Marquee } from '../Marquee';
 
 export function CaseStudiesSection() {
   const [matisse, ...webBuilds] = caseStudies;
 
   return (
     <section id="case-studies" className="bg-bg-elev px-6 py-32">
+      <Marquee text="Featured work" className="-mx-6 mb-20" />
       <Reveal className="mx-auto max-w-6xl">
         <SectionHeading
           index="04"
           node="Proof"
           title={
             <>
-              <span className="italic text-accent">Proof</span>, not promises.
+              <span className="font-black text-accent">Proof</span>, not promises.
             </>
           }
         />

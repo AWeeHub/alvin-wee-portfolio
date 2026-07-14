@@ -1,5 +1,6 @@
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
+import { Marquee } from './Marquee';
 
 const COSTS = [
   {
@@ -19,6 +20,7 @@ const COSTS = [
 export function ProblemSection() {
   return (
     <section id="problem" className="bg-bg px-6 py-32">
+      <Marquee text="The real cost" className="-mx-6 mb-20" />
       <Reveal className="mx-auto max-w-5xl">
         <SectionHeading
           index="01"
@@ -26,7 +28,7 @@ export function ProblemSection() {
           title={
             <>
               Every day without a system has a{' '}
-              <span className="italic text-accent">cost</span>.
+              <span className="font-black text-accent">cost</span>.
             </>
           }
         />

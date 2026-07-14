@@ -1,10 +1,12 @@
 import { services } from '../data/services';
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
+import { Marquee } from './Marquee';
 
 export function ServicesGrid() {
   return (
     <section id="services" className="bg-bg px-6 py-32">
+      <Marquee text="The stack" className="-mx-6 mb-20" />
       <Reveal className="mx-auto max-w-5xl">
         <SectionHeading
           index="03"
@@ -12,7 +14,7 @@ export function ServicesGrid() {
           title={
             <>
               Four things I build. One{' '}
-              <span className="italic text-accent">machine</span> when combined.
+              <span className="font-black text-accent">machine</span> when combined.
             </>
           }
         />

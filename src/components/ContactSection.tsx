@@ -2,10 +2,12 @@ import { whatsappUrl, mailtoUrl } from '../lib/contact';
 import { Magnetic } from './Magnetic';
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
+import { Marquee } from './Marquee';
 
 export function ContactSection() {
   return (
     <section id="contact" className="bg-bg-elev px-6 py-40 text-center">
+      <Marquee text="Get in touch" className="-mx-6 mb-20" />
       <Reveal className="mx-auto flex max-w-4xl flex-col items-center">
         <SectionHeading
           align="center"
@@ -14,7 +16,7 @@ export function ContactSection() {
           title={
             <>
               Stop chasing. Start{' '}
-              <span className="italic text-accent">booking</span>.
+              <span className="font-black text-accent">booking</span>.
             </>
           }
         />

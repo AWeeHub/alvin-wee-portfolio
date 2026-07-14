@@ -31,15 +31,16 @@ export function HeroNameBackdrop() {
     };
   }, []);
 
-  // Sizes are capped so the wordmark never overflows the hero's overflow-hidden
-  // box. Fraunces' optical sizing widens glyphs at small font sizes (~7.3x
-  // font-size wide on phones vs ~6.46x on desktop), so the safe vw ceiling is
-  // lower on narrow viewports and the steps below can't collapse into one value.
+  // Capped so the wordmark never overflows the hero's overflow-hidden box.
+  // Archivo's width/font-size ratio is constant (no optical-sizing axis, unlike
+  // Fraunces, which needed a value per breakpoint) — but it does depend on
+  // weight: this string is 7.79x its font size at 900. 12vw lands at ~94% of the
+  // viewport; past ~12.8vw the A and the L clip. Re-measure if the weight moves.
   return (
     <p
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 -translate-y-1/2 select-none whitespace-nowrap text-center font-display text-[12.5vw] leading-none text-white/5 sm:text-[14vw] md:text-[14.5vw]"
+      className="pointer-events-none absolute inset-x-0 top-1/2 -z-10 -translate-y-1/2 select-none whitespace-nowrap text-center font-display text-[12vw] font-black leading-none text-white/[0.06]"
     >
       AWEE DIGITAL
     </p>

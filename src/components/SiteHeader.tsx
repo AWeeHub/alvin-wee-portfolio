@@ -2,16 +2,19 @@ import { useEffect, useState } from 'react';
 import { AWeeLogo } from './AWeeLogo';
 
 interface NavLink {
+  index: string;
   label: string;
   href: string;
   id: string;
 }
 
+// Numbers match the WorkflowSpine node map, so the nav, the rail and the status
+// bar all name a section the same way.
 const LINKS: NavLink[] = [
-  { label: 'Services', href: '#services', id: 'services' },
-  { label: 'Case Studies', href: '#case-studies', id: 'case-studies' },
-  { label: 'Process', href: '#process', id: 'process' },
-  { label: 'Contact', href: '#contact', id: 'contact' },
+  { index: '03', label: 'Stack', href: '#services', id: 'services' },
+  { index: '04', label: 'Proof', href: '#case-studies', id: 'case-studies' },
+  { index: '05', label: 'Sequence', href: '#process', id: 'process' },
+  { index: '06', label: 'Goal', href: '#contact', id: 'contact' },
 ];
 
 export function SiteHeader() {
@@ -42,23 +45,28 @@ export function SiteHeader() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/80 backdrop-blur-sm">
-      <nav className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-6 py-4 sm:justify-between">
-        <AWeeLogo size="sm" className="hidden sm:inline-flex" />
-        <ul className="flex flex-wrap items-center justify-center gap-1 sm:gap-2">
-          {LINKS.map(({ label, href, id }) => (
-            <li key={label}>
+      <nav className="flex items-center justify-center gap-2 px-6 py-3 sm:justify-between">
+        <div className="hidden items-center gap-3 sm:flex">
+          <AWeeLogo size="sm" />
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
+            Portfolio/2026
+          </span>
+        </div>
+
+        <ul className="flex flex-wrap items-center justify-center gap-1 sm:gap-6">
+          {LINKS.map(({ index, label, href, id }) => (
+            <li key={id}>
               <a
                 href={href}
-                className={`flex items-center gap-2 rounded-full px-4 py-2 font-sans text-sm transition ${
-                  active === id ? 'text-accent' : 'text-muted hover:text-accent'
+                className={`group flex items-baseline gap-1 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors duration-300 ${
+                  active === id ? 'text-accent' : 'text-muted hover:text-text'
                 }`}
               >
-                <span
-                  aria-hidden
-                  className={`h-1 w-1 rounded-full bg-accent transition-opacity duration-300 ${
-                    active === id ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
+                {/* white/55 is the floor that still clears 4.5:1 on #05070A —
+                    anything dimmer reads nicer but fails contrast. */}
+                <span className={active === id ? 'text-accent' : 'text-white/55'}>
+                  {index}/
+                </span>
                 {label}
               </a>
             </li>

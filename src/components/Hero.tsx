@@ -66,12 +66,15 @@ export function Hero({ introReady = true }: HeroProps) {
 
       <Reveal className="flex flex-col items-center" stagger={0.14} paused={!introReady}>
         <NodeChip index="00" node="GoHighLevel Systems Builder" />
-        <h1 className="mt-10 max-w-5xl font-display text-4xl leading-[1.06] tracking-tight text-text sm:text-6xl md:text-7xl">
-          <span key={index} className="block animate-fade-up">
+        {/* Archivo sets much wider than Fraunces did, so the old 7xl overflowed
+            into three lines. The weight jump — light pain point, black promise —
+            now carries the emphasis that the serif italic used to. */}
+        <h1 className="mt-10 max-w-4xl font-display text-3xl leading-[1.02] tracking-tight text-text sm:text-5xl md:text-6xl">
+          <span key={index} className="block animate-fade-up font-light">
             {PAIN_POINTS[index]}
           </span>
           <MaskedText
-            className="mt-3 block italic text-accent"
+            className="mt-3 block font-black uppercase tracking-tight text-accent"
             paused={!introReady}
             scroll={false}
           >

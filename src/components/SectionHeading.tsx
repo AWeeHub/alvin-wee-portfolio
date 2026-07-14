@@ -33,7 +33,7 @@ export function SectionHeading({ index, node, title, align = 'left' }: SectionHe
   return (
     <div className={align === 'center' ? 'flex flex-col items-center text-center' : ''}>
       <NodeChip index={index} node={node} />
-      <h2 className="mt-8 max-w-3xl font-display text-4xl leading-[1.05] tracking-tight text-text sm:text-5xl md:text-6xl">
+      <h2 className="mt-8 max-w-4xl font-display text-4xl font-medium leading-[1.02] tracking-tight text-text sm:text-5xl md:text-6xl">
         <MaskedText>{title}</MaskedText>
       </h2>
     </div>

@@ -1,10 +1,12 @@
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
 import { WorkflowCanvas } from './WorkflowCanvas';
+import { Marquee } from './Marquee';
 
 export function SolutionSection() {
   return (
     <section id="solution" className="bg-bg-elev px-6 py-32">
+      <Marquee text="The system" className="-mx-6 mb-20" />
       <Reveal className="mx-auto flex max-w-4xl flex-col items-center text-center">
         <SectionHeading
           align="center"
@@ -13,7 +15,7 @@ export function SolutionSection() {
           title={
             <>
               I don't sell websites. I build complete{' '}
-              <span className="italic text-accent">customer-acquisition systems</span>.
+              <span className="font-black text-accent">customer-acquisition systems</span>.
             </>
           }
         />

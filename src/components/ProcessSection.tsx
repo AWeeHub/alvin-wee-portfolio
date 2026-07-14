@@ -1,5 +1,6 @@
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
+import { Marquee } from './Marquee';
 
 const STEPS = [
   { step: '01', title: 'Discovery', detail: 'Map your current funnel, CRM, and gaps.' },
@@ -11,13 +12,14 @@ const STEPS = [
 export function ProcessSection() {
   return (
     <section id="process" className="bg-bg px-6 py-32">
+      <Marquee text="How I work" className="-mx-6 mb-20" />
       <Reveal className="mx-auto max-w-5xl">
         <SectionHeading
           index="05"
           node="Sequence"
           title={
             <>
-              How I <span className="italic text-accent">work</span>.
+              How I <span className="font-black text-accent">work</span>.
             </>
           }
         />

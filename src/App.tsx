@@ -4,6 +4,7 @@ import { Preloader } from './components/Preloader';
 import { CustomCursor } from './components/CustomCursor';
 import { CinematicBackdrop } from './components/CinematicBackdrop';
 import { SiteHeader } from './components/SiteHeader';
+import { StatusBar } from './components/StatusBar';
 import { WorkflowSpine } from './components/WorkflowSpine';
 import { Hero } from './components/Hero';
 import { ProblemSection } from './components/ProblemSection';
@@ -24,6 +25,7 @@ export default function App() {
       <CustomCursor />
       <CinematicBackdrop />
       <SiteHeader />
+      <StatusBar />
       <WorkflowSpine />
       <Hero introReady={ready} />
       <ProblemSection />

@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import '@fontsource-variable/fraunces/opsz.css';
-import '@fontsource-variable/fraunces/opsz-italic.css';
-import '@fontsource-variable/bricolage-grotesque/opsz.css';
-import '@fontsource/jetbrains-mono/400.css';
-import '@fontsource/jetbrains-mono/500.css';
-import '@fontsource/jetbrains-mono/600.css';
+// One family for the whole site. The identity comes from weight and scale
+// contrast (Archivo carries wght 100–900), not from mixing typefaces — and it
+// drops the font payload from 241 KB across three families to a single file.
+import '@fontsource-variable/archivo';
 import App from './App';
 import './index.css';
 
