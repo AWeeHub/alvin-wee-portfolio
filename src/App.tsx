@@ -10,6 +10,7 @@ import { Hero } from './components/Hero';
 import { ProblemSection } from './components/ProblemSection';
 import { SolutionSection } from './components/SolutionSection';
 import { ServicesGrid } from './components/ServicesGrid';
+import { AboutSection } from './components/AboutSection';
 import { CaseStudiesSection } from './components/CaseStudies/CaseStudiesSection';
 import { ProcessSection } from './components/ProcessSection';
 import { ContactSection } from './components/ContactSection';
@@ -31,6 +32,7 @@ export default function App() {
       <ProblemSection />
       <SolutionSection />
       <ServicesGrid />
+      <AboutSection />
       <CaseStudiesSection />
       <ProcessSection />
       <ContactSection />

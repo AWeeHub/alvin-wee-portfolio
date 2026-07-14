@@ -13,7 +13,7 @@ export function CaseStudiesSection() {
       <Marquee text="Featured work" className="-mx-6 mb-20" />
       <Reveal className="mx-auto max-w-6xl">
         <SectionHeading
-          index="04"
+          index="05"
           node="Proof"
           title={
             <>

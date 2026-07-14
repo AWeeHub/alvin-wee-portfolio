@@ -15,7 +15,7 @@ export function ProcessSection() {
       <Marquee text="How I work" className="-mx-6 mb-20" />
       <Reveal className="mx-auto max-w-5xl">
         <SectionHeading
-          index="05"
+          index="06"
           node="Sequence"
           title={
             <>

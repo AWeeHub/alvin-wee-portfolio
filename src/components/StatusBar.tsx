@@ -7,9 +7,10 @@ const SECTIONS = [
   { id: 'problem', label: '01 — CONDITION' },
   { id: 'solution', label: '02 — ACTION' },
   { id: 'services', label: '03 — STACK' },
-  { id: 'case-studies', label: '04 — PROOF' },
-  { id: 'process', label: '05 — SEQUENCE' },
-  { id: 'contact', label: '06 — GOAL' },
+  { id: 'about', label: '04 — OPERATOR' },
+  { id: 'case-studies', label: '05 — PROOF' },
+  { id: 'process', label: '06 — SEQUENCE' },
+  { id: 'contact', label: '07 — GOAL' },
 ];
 
 /**
