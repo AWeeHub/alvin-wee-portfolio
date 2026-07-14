@@ -79,7 +79,8 @@ export function DitherPortrait({ className = '' }: { className?: string }) {
 
       // Scroll speed widens the lens: the portrait resolves as you move.
       const vel = Math.min(Math.abs(scrollState.velocity) / 30, 1);
-      const radius = RES * (0.22 + 0.16 * vel);
+      const inner = RES * (0.11 + 0.09 * vel); // fully clear inside this
+      const outer = RES * (0.21 + 0.13 * vel); // fully dithered outside this
       const intro = Math.min(1, t / 0.9);
 
       const data = out.data;
@@ -98,22 +99,26 @@ export function DitherPortrait({ className = '' }: { className?: string }) {
           const lum =
             (0.299 * pixels[i] + 0.587 * pixels[i + 1] + 0.114 * pixels[i + 2]) / 255;
 
-          const dx = x - lens.x;
-          const dy = y - lens.y;
-          const lensBoost = 0.28 * Math.exp(-(dx * dx + dy * dy) / (2 * radius * radius));
-
           const threshold = BAYER[(y & 7) * 8 + (x & 7)];
           // Ordered dither: nudge by the matrix, then quantise. The matrix is
           // what turns banding into texture. The gain lifts the face out of the
           // suit, which otherwise crushes to near-black at five levels.
-          const v = lum * 1.18 + lensBoost - 0.5 / LEVELS;
+          const v = lum * 1.18 - 0.5 / LEVELS;
           const q = Math.max(0, Math.min(LEVELS - 1, Math.round(v * (LEVELS - 1) + (threshold - 0.5))));
           const grey = Math.round((q / (LEVELS - 1)) * 255);
+
+          // The lens dissolves the dither instead of brightening it, so the
+          // sharp photo layered underneath shows through: he resolves where you
+          // look. Doing it here — as alpha in the buffer we already write — is
+          // free, where an animated CSS mask would repaint the element a frame.
+          const d = Math.hypot(x - lens.x, y - lens.y);
+          const e = Math.max(0, Math.min(1, (d - inner) / Math.max(outer - inner, 0.001)));
+          const reveal = e * e * (3 - 2 * e); // smoothstep
 
           data[i] = grey;
           data[i + 1] = grey;
           data[i + 2] = grey;
-          data[i + 3] = Math.round(255 * intro);
+          data[i + 3] = Math.round(255 * intro * reveal);
         }
       }
       ctx.putImageData(out, 0, 0);
@@ -179,17 +184,30 @@ export function DitherPortrait({ className = '' }: { className?: string }) {
   }, []);
 
   // The source photo is a square crop, so it ends on a hard horizontal edge.
-  // Fading the last stretch dissolves him into the page instead.
+  // Fading the last stretch dissolves him into the page instead. It sits on the
+  // wrapper so it applies to both layers at once — the canvas's own alpha is
+  // already spoken for by the lens.
   const fade =
     'linear-gradient(to bottom, black 0%, black 72%, rgba(0,0,0,0.35) 90%, transparent 100%)';
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-label="Alvin Wee"
-      role="img"
+    <div
+      className={`relative h-full w-full ${className}`}
       style={{ maskImage: fade, WebkitMaskImage: fade }}
-      className={`block h-full w-full [image-rendering:pixelated] ${className}`}
-    />
+    >
+      {/* The sharp photo, revealed wherever the dither above it dissolves. Same
+          file the canvas samples, so it costs no extra request. Greyscale keeps
+          it inside the monochrome art direction. */}
+      <img
+        src="/portrait.webp"
+        alt="Alvin Wee"
+        className="absolute inset-0 h-full w-full object-contain [filter:grayscale(1)_contrast(1.05)]"
+      />
+      <canvas
+        ref={canvasRef}
+        aria-hidden
+        className="absolute inset-0 block h-full w-full [image-rendering:pixelated]"
+      />
+    </div>
   );
 }
