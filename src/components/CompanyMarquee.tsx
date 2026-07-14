@@ -22,11 +22,11 @@ function Lane({ duplicate }: { duplicate?: boolean }) {
             loading="lazy"
             decoding="async"
             style={{ height: company.height }}
-            className={`w-auto max-w-none opacity-80 ${company.invert ? 'invert' : ''}`}
+            className="w-auto max-w-none opacity-90"
           />
           <span
             aria-hidden
-            className="mx-[clamp(1.6rem,4vw,3.25rem)] inline-block h-2 w-2 rotate-45 bg-bg/25"
+            className="mx-[clamp(1.6rem,4vw,3.25rem)] inline-block h-2 w-2 rotate-45 bg-text/25"
           />
         </span>
       ))}
@@ -37,8 +37,11 @@ function Lane({ duplicate }: { duplicate?: boolean }) {
 export function CompanyMarquee() {
   return (
     <section aria-label="Some of the companies I've worked with" className="bg-bg">
-      <div className="overflow-hidden bg-[#ECE9E4] pb-[clamp(2.5rem,6vw,5rem)] pt-[clamp(1.5rem,3.5vw,2.75rem)]">
-        <p className="px-6 text-center font-sans text-[11px] font-light uppercase italic tracking-[0.18em] text-bg/70 sm:text-xs">
+      {/* Hairlines rather than a colour change: the band still reads as its own
+          register on the page, but the ground stays black so the logos keep
+          their real colours instead of being flipped to fit a light plate. */}
+      <div className="overflow-hidden border-y border-white/10 pb-[clamp(2.5rem,6vw,5rem)] pt-[clamp(1.5rem,3.5vw,2.75rem)]">
+        <p className="px-6 text-center font-sans text-[11px] font-light uppercase italic tracking-[0.18em] text-muted sm:text-xs">
           Some of the companies I&apos;ve worked with
         </p>
 
