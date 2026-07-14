@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL, LINKEDIN_URL, mailtoUrl } from '../lib/contact';
 import { AWeeLogo } from './AWeeLogo';
 import { Reveal } from './Reveal';
 
@@ -12,7 +13,25 @@ export function Footer() {
         <p className="mt-3 font-mono text-xs text-muted">
           GoHighLevel Systems Builder — funnels, CRM, automation, and design.
         </p>
-        <p className="mt-4 font-mono text-xs text-muted">
+
+        <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:gap-8">
+          <a
+            href={mailtoUrl()}
+            className="font-mono text-xs text-muted transition-colors duration-300 hover:text-accent"
+          >
+            {CONTACT_EMAIL}
+          </a>
+          <a
+            href={LINKEDIN_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono text-xs text-muted transition-colors duration-300 hover:text-accent"
+          >
+            LinkedIn ↗
+          </a>
+        </div>
+
+        <p className="mt-6 font-mono text-xs text-muted">
           © {new Date().getFullYear()} AWee Digital. All rights reserved.
         </p>
       </Reveal>

@@ -4,8 +4,6 @@ import { scrollState } from '../../lib/scroll';
 import {
   CARD_FRAG,
   CARD_VERT,
-  TRACK_FRAG,
-  TRACK_VERT,
   compile,
   makeQuad,
   projectTrackX,
@@ -58,14 +56,12 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
     if (!gl || gl.isContextLost()) return;
 
     const cardProgram = compile(gl, CARD_VERT, CARD_FRAG);
-    const trackProgram = compile(gl, TRACK_VERT, TRACK_FRAG);
-    if (!cardProgram || !trackProgram) return;
+    if (!cardProgram) return;
 
     const n = studies.length;
 
     // --- geometry -----------------------------------------------------------
     const card = makeQuad(32, 2);
-    const track = makeQuad(96, 1);
 
     const buffer = (data: Float32Array) => {
       const b = gl.createBuffer();
@@ -89,13 +85,6 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
     gl.enableVertexAttribArray(1);
     gl.vertexAttribPointer(1, 2, gl.FLOAT, false, 0, 0);
     const cardIdx = elements(card.idx);
-
-    const trackVao = gl.createVertexArray();
-    gl.bindVertexArray(trackVao);
-    const trackPos = buffer(track.pos);
-    gl.enableVertexAttribArray(0);
-    gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-    const trackIdx = elements(track.idx);
     gl.bindVertexArray(null);
 
     const cardU = {
@@ -110,17 +99,6 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
       texAspect: gl.getUniformLocation(cardProgram, 'uTexAspect'),
       loaded: gl.getUniformLocation(cardProgram, 'uLoaded'),
       intro: gl.getUniformLocation(cardProgram, 'uIntro'),
-    };
-    const trackU = {
-      vp: gl.getUniformLocation(trackProgram, 'uVP'),
-      startAng: gl.getUniformLocation(trackProgram, 'uStartAng'),
-      endAng: gl.getUniformLocation(trackProgram, 'uEndAng'),
-      radius: gl.getUniformLocation(trackProgram, 'uRadius'),
-      bend: gl.getUniformLocation(trackProgram, 'uBend'),
-      y: gl.getUniformLocation(trackProgram, 'uY'),
-      thick: gl.getUniformLocation(trackProgram, 'uThick'),
-      time: gl.getUniformLocation(trackProgram, 'uTime'),
-      intro: gl.getUniformLocation(trackProgram, 'uIntro'),
     };
 
     // --- textures -----------------------------------------------------------
@@ -330,24 +308,6 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
 
       gl.clear(gl.COLOR_BUFFER_BIT);
 
-      // Track first: it sits below the cards and never occludes them.
-      gl.useProgram(trackProgram);
-      gl.bindVertexArray(trackVao);
-      gl.uniformMatrix4fv(trackU.vp, false, vp);
-      // A closed ring, not a segment: the cards loop, so the rail they ride has
-      // to loop too. Only the near arc faces the camera — the rest curves away,
-      // which is what makes the track read as a circle you are seeing half of.
-      gl.uniform1f(trackU.startAng, -Math.PI);
-      gl.uniform1f(trackU.endAng, Math.PI);
-      gl.uniform1f(trackU.radius, RADIUS);
-      gl.uniform1f(trackU.bend, bend);
-      // Clears the focused card, which now swells past its own box.
-      gl.uniform1f(trackU.y, -CARD_H * 0.72 - 0.1 * CARD_H);
-      gl.uniform1f(trackU.thick, 0.045 * CARD_H);
-      gl.uniform1f(trackU.time, t);
-      gl.uniform1f(trackU.intro, intro);
-      gl.drawElements(gl.TRIANGLES, track.count, gl.UNSIGNED_SHORT, 0);
-
       // Cards back-to-front (painter's order) so alpha blending is correct
       // without a depth buffer.
       gl.useProgram(cardProgram);
@@ -374,8 +334,8 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
         gl.drawElements(gl.TRIANGLES, card.count, gl.UNSIGNED_SHORT, 0);
       }
 
-      // The packets travel continuously, so the loop only ever parks when the
-      // section scrolls out of view (see the IntersectionObserver below).
+      // The bend and the intro keep animating, so the loop only ever parks when
+      // the section scrolls out of view (see the IntersectionObserver below).
       raf = requestAnimationFrame(frame);
     };
 
@@ -412,11 +372,9 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
       canvas.removeEventListener('wheel', onWheel);
       canvas.removeEventListener('webglcontextlost', onLost);
       textures.forEach((tex) => gl.deleteTexture(tex));
-      [cardPos, cardUv, cardIdx, trackPos, trackIdx].forEach((b) => gl.deleteBuffer(b));
+      [cardPos, cardUv, cardIdx].forEach((b) => gl.deleteBuffer(b));
       gl.deleteVertexArray(cardVao);
-      gl.deleteVertexArray(trackVao);
       gl.deleteProgram(cardProgram);
-      gl.deleteProgram(trackProgram);
       // Deliberately NOT calling WEBGL_lose_context.loseContext(): StrictMode
       // remounts reuse this canvas and would get the dead context back.
     };

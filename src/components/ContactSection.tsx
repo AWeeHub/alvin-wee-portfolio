@@ -1,4 +1,4 @@
-import { whatsappUrl, mailtoUrl } from '../lib/contact';
+import { whatsappUrl, mailtoUrl, CONTACT_EMAIL, LINKEDIN_URL } from '../lib/contact';
 import { Magnetic } from './Magnetic';
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
@@ -43,6 +43,25 @@ export function ContactSection() {
               Email me
             </a>
           </Magnetic>
+        </div>
+
+        {/* The address and the profile in full, for anyone who would rather copy
+            them than click a button. */}
+        <div className="mt-14 flex flex-col items-center gap-5 border-t border-white/10 pt-10 sm:flex-row sm:justify-center sm:gap-12">
+          <a
+            href={mailtoUrl()}
+            className="font-mono text-xs uppercase tracking-[0.2em] text-muted transition-colors duration-300 hover:text-accent"
+          >
+            {CONTACT_EMAIL}
+          </a>
+          <a
+            href={LINKEDIN_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="font-mono text-xs uppercase tracking-[0.2em] text-muted transition-colors duration-300 hover:text-accent"
+          >
+            LinkedIn ↗
+          </a>
         </div>
       </Reveal>
     </section>

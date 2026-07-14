@@ -101,69 +101,6 @@ void main() {
   outColor = vec4(col * alpha, alpha);
 }`;
 
-export const TRACK_VERT = `#version 300 es
-layout(location = 0) in vec2 aPos;
-
-uniform mat4 uVP;
-// Angles, not distances: the rail closes into a full ring around the cylinder,
-// and only the near arc of it faces the camera. Driving it by angle keeps the
-// ring closed even as uBend tightens the radius under speed — a rail measured
-// in world units would grow or shrink a gap at the seam.
-uniform float uStartAng;
-uniform float uEndAng;
-uniform float uRadius;
-uniform float uBend;
-uniform float uY;
-uniform float uThick;
-
-out float vS;
-out float vT;
-
-void main() {
-  float ang = mix(uStartAng, uEndAng, aPos.x);
-  float r = uRadius / (1.0 + uBend * 1.6);
-
-  vec3 p;
-  p.x = sin(ang) * r;
-  p.z = cos(ang) * r - r;
-  p.y = uY + aPos.y * uThick;
-
-  vS = aPos.x;
-  vT = aPos.y;
-  gl_Position = uVP * vec4(p, 1.0);
-}`;
-
-export const TRACK_FRAG = `#version 300 es
-precision highp float;
-
-in float vS;
-in float vT;
-
-uniform float uTime;
-uniform float uIntro;
-
-out vec4 outColor;
-
-void main() {
-  float line = 1.0 - smoothstep(0.0, 0.5, abs(vT));
-
-  // Packets: leads moving down the pipeline. Same visual language as the
-  // pulses in the hero grid and the spine packets. They ride the ring, so a
-  // packet that leaves the near arc comes back around rather than dying.
-  float glow = 0.0;
-  for (int i = 0; i < 5; i++) {
-    float pos = fract(uTime * 0.09 + float(i) / 5.0);
-    // Wrapped distance: the seam at vS = 0/1 is a join, not an end.
-    float d = abs(vS - pos);
-    d = min(d, 1.0 - d);
-    glow += exp(-d * 55.0);
-  }
-
-  vec3 accent = vec3(${ACCENT[0]}, ${ACCENT[1]}, ${ACCENT[2]});
-  float a = clamp(line * (0.26 + 0.9 * glow), 0.0, 1.0) * uIntro;
-  outColor = vec4(accent * a, a);
-}`;
-
 export function compile(
   gl: WebGL2RenderingContext,
   vertSrc: string,
