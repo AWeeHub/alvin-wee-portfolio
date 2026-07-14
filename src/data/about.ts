@@ -19,7 +19,11 @@ export interface Company {
 
 /** Sourced from each company's own site. Every one is transparent-backed. */
 export const companies: Company[] = [
-  { name: 'Matisse Academy', logo: '/logos/matisse.webp', height: 60 },
+  // Matisse ships no crest+wordmark lockup: the crest is an image and the name
+  // is set in Cormorant Garamond on their pages. This asset composes the two, so
+  // the band shows a logo rather than a bare shield and the site pays no extra
+  // font cost.
+  { name: 'Matisse Academy', logo: '/logos/matisse-lockup.webp', height: 52 },
   { name: 'Fanvue', logo: '/logos/fanvue.svg', height: 30, invert: true },
   // Their only asset is a white-body wordmark with coloured accent glyphs, so
   // it ships here with the neutral body repainted to ink — inverting it would
