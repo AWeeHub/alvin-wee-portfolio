@@ -1,4 +1,5 @@
 import { toolkit } from '../data/about';
+import { DitherPortrait } from './DitherPortrait';
 import { Marquee } from './Marquee';
 import { Reveal } from './Reveal';
 import { SectionHeading } from './SectionHeading';
@@ -25,15 +26,12 @@ export function AboutSection() {
         <div className="mt-16 grid items-start gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <figure className="relative mx-auto w-full max-w-xs lg:mx-0 lg:max-w-none">
             <div className="absolute inset-x-4 bottom-0 top-10 -z-10 rounded-t-full bg-accent/10 blur-2xl" />
-            <img
-              src="/about-portrait.webp"
-              alt="Alvin Wee"
-              loading="lazy"
-              decoding="async"
-              width={760}
-              height={804}
-              className="w-full [filter:grayscale(0.15)]"
-            />
+            {/* Aspect matches the source file, so the dither canvas — which
+                stretches to the box — lands exactly on the photo underneath it
+                instead of drifting off a letterboxed edge. */}
+            <div className="aspect-[760/804] w-full">
+              <DitherPortrait src="/about-portrait.webp" alt="Alvin Wee" flip />
+            </div>
             <figcaption className="mt-6 border-t border-white/10 pt-4 font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
               Alvin Wee — Cebu, Philippines
             </figcaption>

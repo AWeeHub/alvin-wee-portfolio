@@ -35,16 +35,18 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
   }
 
   const active = studies[index];
-  const clamp = (v: number) => Math.max(0, Math.min(studies.length - 1, v));
-  const goTo = (next: number) => setIndex(clamp(next));
+  // The track loops, so the controls loop with it: past the last card is the
+  // first one, not a dead end.
+  const wrap = (v: number) => ((v % studies.length) + studies.length) % studies.length;
+  const goTo = (next: number) => setIndex(wrap(next));
   // Functional update: two arrow clicks inside one React batch must advance
   // two cards, not read the same stale index twice.
-  const step = (delta: number) => setIndex((current) => clamp(current + delta));
+  const step = (delta: number) => setIndex((current) => wrap(current + delta));
 
   return (
     <div>
       <div
-        className="relative h-[42vw] max-h-[420px] min-h-[240px] w-full"
+        className="relative h-[54vw] max-h-[560px] min-h-[300px] w-full"
         onKeyDown={(e) => {
           if (e.key === 'ArrowLeft') step(-1);
           if (e.key === 'ArrowRight') step(1);
@@ -57,9 +59,8 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
         <button
           type="button"
           onClick={() => step(-1)}
-          disabled={index === 0}
           aria-label="Previous project"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent disabled:opacity-25 disabled:hover:border-white/10 disabled:hover:text-muted"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
         >
           ←
         </button>
@@ -82,9 +83,8 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
         <button
           type="button"
           onClick={() => step(1)}
-          disabled={index === studies.length - 1}
           aria-label="Next project"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent disabled:opacity-25 disabled:hover:border-white/10 disabled:hover:text-muted"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
         >
           →
         </button>

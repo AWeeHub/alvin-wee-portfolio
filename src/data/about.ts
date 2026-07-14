@@ -23,10 +23,10 @@ export const companies: Company[] = [
   // Icon plus wordmark, composed here — Fanvue publishes the two separately.
   { name: 'Fanvue', logo: '/logos/fanvue-lockup.webp', height: 40 },
   { name: 'Katalyst CRM', logo: '/logos/katalyst-white.webp', height: 26 },
-  // Their lockup is two blues. The navy — the mark's dark slabs and all of the
-  // type — is repainted white and the sky blue is left alone, so the "M" keeps
-  // its two-tone structure instead of flattening into one solid slab.
-  { name: 'The Methodical Group', logo: '/logos/methodical-reverse.webp', height: 52 },
+  // Their published logo, untouched. It is the one mark here whose navy sits
+  // dark against the band, but recolouring it is not on the table — this is the
+  // logo, and it is theirs.
+  { name: 'The Methodical Group', logo: '/logos/methodical.webp', height: 52 },
   { name: 'Oracle', logo: '/logos/oracle.svg', height: 28 },
   { name: 'Trax Technologies Asia', logo: '/logos/trax-white.svg', height: 42 },
 ];

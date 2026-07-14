@@ -23,9 +23,14 @@ uniform float uFocus;
 out vec2 vUv;
 
 void main() {
+  // The card you land on grows: at rest it is the subject of the section, and
+  // the ones behind it are context. Scaling the quad here (rather than the world
+  // position) keeps it centred on its own slot as it swells.
+  float s = 1.0 + uFocus * 0.34;
+
   // Cards ride a cylinder: along-track distance maps to an arc angle, so the
   // row curves away from the camera instead of running flat off-screen.
-  float x = uTrackX + aPos.x * uCard.x;
+  float x = uTrackX + aPos.x * uCard.x * s;
   // A tighter radius = a harder curl. Scroll/drag velocity shrinks it, which
   // reads as the pipeline bending under speed.
   float r = uRadius / (1.0 + uBend * 1.6);
@@ -34,7 +39,7 @@ void main() {
   vec3 p;
   p.x = sin(ang) * r;
   p.z = cos(ang) * r - r;
-  p.y = aPos.y * uCard.y;
+  p.y = aPos.y * uCard.y * s;
 
   // Focused card leans out of the arc toward the viewer.
   p.z += uFocus * uCard.y * 0.2;

@@ -30,7 +30,25 @@ const BAYER = [
  * A soft lens follows the cursor and lifts luminance locally, so more of the
  * face resolves where you're looking — the image reacts to being read.
  */
-export function DitherPortrait({ className = '' }: { className?: string }) {
+interface DitherPortraitProps {
+  className?: string;
+  src?: string;
+  alt?: string;
+  /**
+   * Mirror the subject. The flip is baked into the source buffer and applied to
+   * the photo with CSS, rather than transforming the wrapper — a transform on
+   * the wrapper would mirror the canvas too, and the cursor lens would then
+   * track the opposite side of the face from the one you're pointing at.
+   */
+  flip?: boolean;
+}
+
+export function DitherPortrait({
+  className = '',
+  src: source = '/portrait.webp',
+  alt = 'Alvin Wee',
+  flip = false,
+}: DitherPortraitProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -147,7 +165,7 @@ export function DitherPortrait({ className = '' }: { className?: string }) {
 
     const img = new Image();
     img.decoding = 'async';
-    img.src = '/portrait.webp';
+    img.src = source;
     img
       .decode()
       .then(() => {
@@ -155,7 +173,13 @@ export function DitherPortrait({ className = '' }: { className?: string }) {
         srcCtx.imageSmoothingEnabled = true;
         srcCtx.imageSmoothingQuality = 'high';
         srcCtx.clearRect(0, 0, RES, RES);
+        srcCtx.save();
+        if (flip) {
+          srcCtx.translate(RES, 0);
+          srcCtx.scale(-1, 1);
+        }
         srcCtx.drawImage(img, 0, 0, RES, RES);
+        srcCtx.restore();
         pixels = srcCtx.getImageData(0, 0, RES, RES).data;
 
         if (reduced) {
@@ -181,7 +205,7 @@ export function DitherPortrait({ className = '' }: { className?: string }) {
       io.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
     };
-  }, []);
+  }, [source, flip]);
 
   // The source photo is a square crop, so it ends on a hard horizontal edge.
   // Fading the last stretch dissolves him into the page instead. It sits on the
@@ -199,9 +223,9 @@ export function DitherPortrait({ className = '' }: { className?: string }) {
           file the canvas samples, so it costs no extra request. Full colour: the
           jump from monochrome pixels to a real person is the whole point. */}
       <img
-        src="/portrait.webp"
-        alt="Alvin Wee"
-        className="absolute inset-0 h-full w-full object-contain"
+        src={source}
+        alt={alt}
+        className={`absolute inset-0 h-full w-full object-contain ${flip ? '-scale-x-100' : ''}`}
       />
       <canvas
         ref={canvasRef}

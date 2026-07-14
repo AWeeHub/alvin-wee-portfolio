@@ -196,11 +196,24 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
     let downX = 0;
 
     const pxPerCard = () => Math.min(Math.max(width * 0.42, 220), 460);
-    const clamp = (v: number) => Math.max(0, Math.min(n - 1, v));
-    const clampIndex = (v: number) => Math.max(0, Math.min(n - 1, v));
+
+    /** Card index, wrapped into 0..n-1. The track has no ends. */
+    const wrapIndex = (v: number) => ((v % n) + n) % n;
+
+    /**
+     * Signed distance from the offset to card i, taking the short way round the
+     * loop. This is what makes the track endless: card 0 sits one step to the
+     * right of the last card, not n steps to the left.
+     */
+    const relative = (i: number) => {
+      let d = (i - offset) % n;
+      if (d > n / 2) d -= n;
+      if (d < -n / 2) d += n;
+      return d;
+    };
 
     const cardScreenX = (i: number) =>
-      projectTrackX((i - offset) * SPACING, RADIUS, bend, vp, width);
+      projectTrackX(relative(i) * SPACING, RADIUS, bend, vp, width);
 
     const onPointerDown = (e: PointerEvent) => {
       if (e.button !== 0 && e.pointerType === 'mouse') return;
@@ -221,12 +234,9 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
       lastX = e.clientX;
       travelled += Math.abs(dx);
 
+      // No rubber-band and no ends: the offset runs free and wraps.
       const delta = -dx / pxPerCard();
-      // Rubber-band past the ends instead of hard-stopping.
-      const next = offset + delta;
-      if (next < 0 || next > n - 1) offset += delta * 0.35;
-      else offset = next;
-
+      offset += delta;
       velocity = delta;
       play();
     };
@@ -255,7 +265,7 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
         // A flick lands further down the track. Expressing momentum as a
         // further target (rather than integrating velocity alongside the
         // spring) keeps the two from fighting and always settles on a card.
-        onIndexChangeRef.current(clampIndex(Math.round(offset + velocity * 6)));
+        onIndexChangeRef.current(wrapIndex(Math.round(offset + velocity * 6)));
       }
       play();
     };
@@ -269,7 +279,7 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
-      offset = clamp(offset + e.deltaX / pxPerCard());
+      offset += e.deltaX / pxPerCard();
       play();
     };
     canvas.addEventListener('wheel', onWheel, { passive: false });
@@ -295,16 +305,18 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
       const intro = Math.min(1, t / 0.9);
 
       if (!isDown) {
-        // Spring to the requested card. Momentum was already folded into the
-        // target on release, so there is nothing to integrate here.
-        const target = targetRef.current;
-        offset += (target - offset) * 0.12;
-        if (Math.abs(offset - target) < 0.001) offset = target;
-        offset = clamp(offset);
+        // Spring to the requested card by the short way round: card 0 is one
+        // step past the last card, so going from the end to the start must not
+        // rewind the whole track.
+        let delta = (targetRef.current - offset) % n;
+        if (delta > n / 2) delta -= n;
+        if (delta < -n / 2) delta += n;
+        offset += delta * 0.12;
+        if (Math.abs(delta) < 0.001) offset = Math.round(offset);
         velocity *= 0.9; // Decays the bend, not the position.
       } else {
         // Dragging past a card boundary updates the DOM copy live.
-        const near = Math.round(clamp(offset));
+        const near = wrapIndex(Math.round(offset));
         if (near !== reported) {
           reported = near;
           onIndexChangeRef.current(near);
@@ -322,8 +334,11 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
       gl.useProgram(trackProgram);
       gl.bindVertexArray(trackVao);
       gl.uniformMatrix4fv(trackU.vp, false, vp);
-      gl.uniform1f(trackU.startX, (0 - offset) * SPACING - CARD_W * 0.6);
-      gl.uniform1f(trackU.endX, (n - 1 - offset) * SPACING + CARD_W * 0.6);
+      // The rail spans the visible arc rather than the first and last card:
+      // on a loop there is no first or last, and a rail with ends would show
+      // the seam the cards no longer have.
+      gl.uniform1f(trackU.startX, -(n / 2) * SPACING - CARD_W);
+      gl.uniform1f(trackU.endX, (n / 2) * SPACING + CARD_W);
       gl.uniform1f(trackU.radius, RADIUS);
       gl.uniform1f(trackU.bend, bend);
       gl.uniform1f(trackU.y, -CARD_H * 0.5 - 0.13 * CARD_H);
@@ -345,11 +360,12 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
       gl.uniform1i(cardU.tex, 0);
       gl.activeTexture(gl.TEXTURE0);
 
-      order.sort((a, b) => Math.abs(b - offset) - Math.abs(a - offset));
+      order.sort((a, b) => Math.abs(relative(b)) - Math.abs(relative(a)));
       for (const i of order) {
-        const d = Math.abs(i - offset);
+        const rel = relative(i);
+        const d = Math.abs(rel);
         if (d > 3.2) continue; // Off-screen on the arc.
-        gl.uniform1f(cardU.trackX, (i - offset) * SPACING);
+        gl.uniform1f(cardU.trackX, rel * SPACING);
         gl.uniform1f(cardU.focus, Math.max(0, 1 - d));
         gl.uniform1f(cardU.texAspect, aspects[i]);
         gl.uniform1f(cardU.loaded, loaded[i]);
