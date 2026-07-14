@@ -75,9 +75,9 @@ export function Preloader({ onComplete }: PreloaderProps) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-8 bg-bg"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-md bg-bg"
     >
-      <AWeeLogo size="lg" />
+      <AWeeLogo variant="lockup" size="lg" />
       <div className="relative h-px w-56 overflow-hidden bg-white/10">
         <div
           ref={barRef}
@@ -85,7 +85,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
           style={{ transform: 'scaleX(0)' }}
         />
       </div>
-      <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-muted">
+      <p className="font-mono text-label uppercase tracking-[0.3em] text-muted">
         <span ref={countRef} className="text-accent">
           000
         </span>{' '}

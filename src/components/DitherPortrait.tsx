@@ -8,6 +8,14 @@ const RES = 150;
 /** Grey levels the image is quantised to after dithering. */
 const LEVELS = 5;
 
+/** The accent, as the channels the buffer is written in. */
+const ACCENT = [57, 255, 138] as const;
+/** Share of the lit pixels that can ever catch the light. Deliberately small —
+ *  every pixel glinting would just be a green portrait. */
+const GLINT_SHARE = 0.07;
+/** How fast a glint cycles, in radians per second. */
+const GLINT_RATE = 2.4;
+
 /** Bayer 8x8 ordered-dither matrix, normalised to 0..1. */
 const BAYER = [
   0, 32, 8, 40, 2, 34, 10, 42,
@@ -41,6 +49,11 @@ interface DitherPortraitProps {
    * track the opposite side of the face from the one you're pointing at.
    */
   flip?: boolean;
+  /**
+   * Dissolve the bottom of the crop. Off where the portrait stands ON a rule —
+   * there the edge is the point, and fading it just floats him above the line.
+   */
+  fadeBottom?: boolean;
 }
 
 export function DitherPortrait({
@@ -48,6 +61,7 @@ export function DitherPortrait({
   src: source = '/portrait.webp',
   alt = 'Alvin Wee',
   flip = false,
+  fadeBottom = true,
 }: DitherPortraitProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -92,6 +106,16 @@ export function DitherPortrait({
     const out = ctx.createImageData(RES, RES);
     const start = performance.now();
 
+    // Which pixels can glint, and each one's own phase — fixed per pixel, so a
+    // glint belongs to a place on him and twinkles there rather than crawling
+    // across the image. Computed once: this is a hash, not a per-frame decision.
+    const glintPhase = new Float32Array(RES * RES);
+    for (let i = 0; i < glintPhase.length; i++) {
+      const h = Math.abs(Math.sin(i * 12.9898) * 43758.5453) % 1;
+      // 0 marks a pixel that never glints; anything else is its phase offset.
+      glintPhase[i] = h < GLINT_SHARE ? (h / GLINT_SHARE) * Math.PI * 2 || 0.001 : 0;
+    }
+
     const render = (t: number) => {
       if (!pixels) return;
 
@@ -133,9 +157,27 @@ export function DitherPortrait({
           const e = Math.max(0, Math.min(1, (d - inner) / Math.max(outer - inner, 0.001)));
           const reveal = e * e * (3 - 2 * e); // smoothstep
 
-          data[i] = grey;
-          data[i + 1] = grey;
-          data[i + 2] = grey;
+          // Glints: a sparse handful of the brighter pixels catch the accent and
+          // let it go again, so the grid reads as lit rather than tinted. Only
+          // the top levels are eligible — a glint in the shadows is just noise.
+          const phase = glintPhase[y * RES + x];
+          let r = grey;
+          let g = grey;
+          let b = grey;
+          if (phase !== 0 && q >= LEVELS - 2) {
+            const pulse = Math.sin(t * GLINT_RATE + phase);
+            if (pulse > 0.55) {
+              // Ramps in over the top of the sine rather than snapping on.
+              const k = (pulse - 0.55) / 0.45;
+              r = grey + (ACCENT[0] - grey) * k;
+              g = grey + (ACCENT[1] - grey) * k;
+              b = grey + (ACCENT[2] - grey) * k;
+            }
+          }
+
+          data[i] = r;
+          data[i + 1] = g;
+          data[i + 2] = b;
           data[i + 3] = Math.round(255 * intro * reveal);
         }
       }
@@ -211,8 +253,9 @@ export function DitherPortrait({
   // Fading the last stretch dissolves him into the page instead. It sits on the
   // wrapper so it applies to both layers at once — the canvas's own alpha is
   // already spoken for by the lens.
-  const fade =
-    'linear-gradient(to bottom, black 0%, black 72%, rgba(0,0,0,0.35) 90%, transparent 100%)';
+  const fade = fadeBottom
+    ? 'linear-gradient(to bottom, black 0%, black 72%, rgba(0,0,0,0.35) 90%, transparent 100%)'
+    : undefined;
 
   return (
     <div

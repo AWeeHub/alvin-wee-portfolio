@@ -1,12 +1,25 @@
 import { useEffect, useRef } from 'react';
-import { scrollState } from '../lib/scroll';
 
 /**
- * Full-bleed section header: one word at display scale, running off both edges,
- * alternating solid and outlined. It runs continuously, and the scroll drives
- * it: speed adds to it, and direction turns it around, so scrolling back up
- * sends the words back the way they came.
+ * Full-bleed section header: the section's name at display scale, repeating off
+ * both edges, with a single filled word per repeat and the rest outlined.
+ *
+ * The scroll is the only thing that moves it: no drift while the page is still,
+ * and scrolling back up runs the words back the way they came.
+ *
+ * The rate is measured off the ABOUT ME band on mauriciojuba.com — the section
+ * the reference was actually about. Note his bands are not all the same: the
+ * FEATURED WORK one auto-drifts at ~196 px/s and ignores the scroll entirely,
+ * which is a different effect. Don't take a reading off that one.
  */
+const TRAVEL_PER_PX = 1.34;
+/**
+ * Where on screen the band starts moving, as a share of viewport height. Below
+ * this line it is held at zero offset, so the phrase reads whole — ABOUT ME, not
+ * OUT ME ABOU — before it starts to slide.
+ */
+const ANCHOR_VH = 0.85;
+
 export function Marquee({ text, className = '' }: { text: string; className?: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const groupRef = useRef<HTMLDivElement>(null);
@@ -25,31 +38,19 @@ export function Marquee({ text, className = '' }: { text: string; className?: st
 
     let raf = 0;
     let inView = true;
-    let last = performance.now();
-    // Integrated, like the spine packets: changing speed changes the rate
-    // without teleporting the track.
-    let offset = 0;
-    // Which way the band travels. It follows the scroll: scroll back up and the
-    // words run back the way they came. It persists through the still moments,
-    // so the band keeps drifting the last way you were reading.
-    let direction = 1;
 
-    const frame = (now: number) => {
+    const frame = () => {
       raf = 0;
       if (!inView) return;
-      const dt = Math.min((now - last) / 1000, 0.05);
-      last = now;
 
-      const velocity = scrollState.velocity;
-      // Deadzone: Lenis dithers around zero as it settles, and without this the
-      // band would flicker direction while the page is effectively still.
-      if (Math.abs(velocity) > 0.5) direction = velocity > 0 ? 1 : -1;
+      // Travel is a function of where the band sits on screen, so scrolling back
+      // up returns it exactly to where it started rather than drifting away.
+      const risen = window.innerHeight * ANCHOR_VH - track.getBoundingClientRect().top;
+      let offset = Math.max(0, risen) * TRAVEL_PER_PX;
 
-      const boost = Math.min(Math.abs(velocity) / 30, 1);
-      offset += dt * direction * (160 + 220 * boost);
-      // Wrap into [0, groupWidth) — a plain % keeps the sign, and a negative
-      // offset would push the track right and open a gap at the left edge.
-      if (groupWidth > 0) offset = ((offset % groupWidth) + groupWidth) % groupWidth;
+      // Wrap into [0, groupWidth): the track carries two identical groups, so a
+      // shift of one group's width is indistinguishable from no shift at all.
+      if (groupWidth > 0) offset %= groupWidth;
 
       track.style.transform = `translate3d(${-offset}px, 0, 0)`;
       raf = requestAnimationFrame(frame);
@@ -60,7 +61,6 @@ export function Marquee({ text, className = '' }: { text: string; className?: st
 
     const io = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
-      last = performance.now();
       if (inView) play();
     });
     io.observe(track);
@@ -73,26 +73,40 @@ export function Marquee({ text, className = '' }: { text: string; className?: st
     };
   }, []);
 
+  // The reference fills exactly one word per repeat and outlines the rest —
+  // ABOUT hollow, ME solid — so the band reads as one phrase with an accent
+  // rather than a wall of colour. Filling whole repeats, as this used to, made
+  // every second phrase shout.
+  const words = text.split(' ');
+
+  const phrase = (i: number) => (
+    // font-display, explicitly: with no family of its own the band inherits the
+    // body face, which is Poppins now — and Poppins is not what these bands are.
+    <span
+      key={i}
+      className="flex shrink-0 items-center whitespace-nowrap font-display font-black uppercase leading-none tracking-tight"
+    >
+      {words.map((word, w) => (
+        <span
+          key={w}
+          className="mr-[0.18em]"
+          style={
+            w === words.length - 1
+              ? { color: '#39FF8A' }
+              : { color: 'transparent', WebkitTextStroke: '2px rgba(57,255,138,0.45)' }
+          }
+        >
+          {word}
+        </span>
+      ))}
+    </span>
+  );
+
   // Two identical groups: the track scrolls one group's width, then wraps, so
   // the seam is never visible.
   const group = (key: string) => (
     <div ref={key === 'a' ? groupRef : undefined} className="flex shrink-0 items-center">
-      {[0, 1, 2, 3].map((i) => (
-        <span
-          key={i}
-          className="whitespace-nowrap px-[0.12em] font-black uppercase leading-none tracking-tight"
-          style={
-            i % 2 === 0
-              ? { color: '#39FF8A' }
-              : {
-                  color: 'transparent',
-                  WebkitTextStroke: '1px rgba(57,255,138,0.45)',
-                }
-          }
-        >
-          {text}
-        </span>
-      ))}
+      {[0, 1, 2, 3].map(phrase)}
     </div>
   );
 

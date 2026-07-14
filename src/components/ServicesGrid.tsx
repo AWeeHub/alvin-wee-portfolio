@@ -9,6 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 /** Scroll distance the pinned panel holds for, per service. */
 const HOLD_VH = 55;
+/** Per-word delay of the hover sweep, in ms — same cadence as the Condition rows. */
+const WORD_STEP = 22;
 
 export function ServicesGrid() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -55,17 +57,17 @@ export function ServicesGrid() {
 
   return (
     <section id="services" className="bg-bg">
-      <Marquee text="The stack" className="mb-20" />
+      <Marquee text="The stack" className="mb-xl" />
 
       <div
         ref={trackRef}
-        className="relative px-6"
+        className="relative px-gutter"
         style={{ height: `calc(100vh + ${services.length * HOLD_VH}vh)` }}
       >
         {/* The panel has to fit inside the viewport, heading and all five rows:
             a sticky box taller than the screen slides its own top out of view,
             which would push the heading off exactly when the last row lands. */}
-        <div className="sticky top-16 mx-auto max-w-5xl pb-6">
+        <div className="sticky top-[clamp(3.5rem,7vh,6rem)] mx-auto max-w-shell-text pb-sm">
           {/* Deliberately not wrapped in <Reveal>: it hides its children again
               once their natural position leaves the viewport, and a pinned panel
               is still on screen long after that. SectionHeading carries its own
@@ -79,36 +81,53 @@ export function ServicesGrid() {
             }
           />
 
-          <div className="mt-8 border-t border-white/10">
-            {services.map(({ label, desc, icon: Icon }, i) => (
-              <div
-                key={label}
-                ref={(el) => {
-                  rowRefs.current[i] = el;
-                }}
-                className="group flex items-center gap-5 border-b border-white/10 py-3.5 sm:gap-8 sm:py-4"
-                style={{ opacity: 0, transform: 'translate3d(0, 28px, 0)' }}
-              >
-                <Icon
-                  className="h-5 w-5 shrink-0 text-muted transition-colors duration-300 group-hover:text-accent"
-                  aria-hidden="true"
-                />
-                <div className="flex-1">
-                  <h3 className="font-display text-xl text-text transition-transform duration-300 group-hover:translate-x-2 sm:text-3xl">
-                    {label}
-                  </h3>
-                  <p className="mt-1.5 font-sans text-sm text-muted transition-transform duration-300 group-hover:translate-x-2">
-                    {desc}
-                  </p>
-                </div>
-                <span
-                  aria-hidden
-                  className="-translate-x-2 font-mono text-lg text-accent opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+          <div className="mt-md border-t border-white/10">
+            {services.map(({ label, desc, icon: Icon }, i) => {
+              const words = desc.split(' ');
+              return (
+                // Same hover gesture as the Condition rows: accent title, rule
+                // sweeping in under it, sentence lighting word by word.
+                <div
+                  key={label}
+                  ref={(el) => {
+                    rowRefs.current[i] = el;
+                  }}
+                  className="cost-row group flex items-center gap-sm border-b border-white/10 py-xs"
+                  style={{ opacity: 0, transform: 'translate3d(0, 28px, 0)' }}
                 >
-                  →
-                </span>
-              </div>
-            ))}
+                  <Icon
+                    className="h-[1.4em] w-[1.4em] shrink-0 text-muted transition-colors duration-300 group-hover:text-accent"
+                    aria-hidden="true"
+                  />
+                  <div className="flex-1">
+                    {/* Same brand face as the Condition rows — the two lists are
+                        the same gesture and should read as a pair. */}
+                    <h3 className="cost-title font-logo text-row text-text transition-[color,transform] duration-300 group-hover:translate-x-2">
+                      {label}
+                    </h3>
+                    <p className="mt-2xs font-sans text-micro text-text transition-transform duration-300 group-hover:translate-x-2">
+                      {words.map((word, w) => (
+                        <span
+                          // eslint-disable-next-line react/no-array-index-key -- words repeat; position is the identity
+                          key={w}
+                          className="cost-word"
+                          style={{ transitionDelay: `${w * WORD_STEP}ms` }}
+                        >
+                          {word}
+                          {w < words.length - 1 ? ' ' : ''}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                  <span
+                    aria-hidden
+                    className="-translate-x-2 font-mono text-lead text-accent opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                  >
+                    →
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

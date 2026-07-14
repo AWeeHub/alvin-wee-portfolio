@@ -24,7 +24,7 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
 
   if (!enabled) {
     return (
-      <div className="grid gap-8 sm:grid-cols-2">
+      <div className="grid gap-md [grid-template-columns:repeat(auto-fit,minmax(min(22rem,100%),1fr))]">
         {studies.map((study) => (
           <Tilt key={study.id}>
             <CaseStudyCard study={study} />
@@ -46,7 +46,7 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
   return (
     <div>
       <div
-        className="relative h-[54vw] max-h-[560px] min-h-[300px] w-full"
+        className="relative h-[54vw] max-h-[clamp(22rem,50vh,38rem)] min-h-[18rem] w-full"
         onKeyDown={(e) => {
           if (e.key === 'ArrowLeft') step(-1);
           if (e.key === 'ArrowRight') step(1);
@@ -55,12 +55,12 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
         <PipelineSlider studies={studies} index={index} onIndexChange={setIndex} />
       </div>
 
-      <div className="mt-8 flex items-center justify-center gap-4">
+      <div className="mt-md flex items-center justify-center gap-xs">
         <button
           type="button"
           onClick={() => step(-1)}
           aria-label="Previous project"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+          className="flex h-[2.75rem] w-[2.75rem] items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
         >
           ←
         </button>
@@ -84,31 +84,31 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
           type="button"
           onClick={() => step(1)}
           aria-label="Next project"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+          className="flex h-[2.75rem] w-[2.75rem] items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
         >
           →
         </button>
       </div>
 
-      <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+      <p className="mt-xs text-center font-mono text-label uppercase tracking-[0.3em] text-muted">
         Drag the track
       </p>
 
       {/* The canvas is decorative; this is the real, readable case study. */}
-      <div aria-live="polite" className="mx-auto mt-10 max-w-2xl text-center">
-        <p className="font-mono text-xs uppercase tracking-widest text-accent">
+      <div aria-live="polite" className="mx-auto mt-md max-w-[62ch] text-center">
+        <p className="font-mono text-label uppercase tracking-widest text-accent">
           {active.category}
         </p>
-        <h3 className="mt-2 font-display text-2xl text-text sm:text-3xl">{active.title}</h3>
-        <p className="mt-4 font-sans text-sm text-muted sm:text-base">{active.solution}</p>
-        <p className="mt-4 font-mono text-xs text-muted">{active.techStack.join(' · ')}</p>
+        <h3 className="mt-2xs font-display text-card text-text">{active.title}</h3>
+        <p className="mt-xs font-sans text-body text-muted">{active.solution}</p>
+        <p className="mt-xs font-mono text-label text-muted">{active.techStack.join(' · ')}</p>
         {active.liveUrl && (
           <a
             href={active.liveUrl}
             target="_blank"
             rel="noreferrer"
             data-cursor="view"
-            className="mt-6 inline-block font-sans text-sm text-accent underline underline-offset-4"
+            className="mt-sm inline-block font-sans text-micro text-accent underline underline-offset-4"
           >
             View live site →
           </a>

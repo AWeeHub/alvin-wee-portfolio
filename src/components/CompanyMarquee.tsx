@@ -11,6 +11,19 @@ import { companies } from '../data/about';
  * width of both copies, which would leave the band visibly cut with empty space
  * running through it. So the copy count is measured, not assumed.
  */
+/**
+ * Every mark gets the same box and is fitted inside it, by request.
+ *
+ * Same *height* for all of them is not the same thing: a bare wordmark like
+ * ORACLE is ~8x as wide as it is tall, so at a crest's height it runs several
+ * hundred px wide and swamps the band. A shared box normalises the footprint —
+ * wide marks land width-first, tall ones height-first, and none dominates.
+ */
+const LOGO_BOX = {
+  height: 'clamp(2rem, 2.8vw, 3.5rem)',
+  width: 'clamp(6.5rem, 9.5vw, 12rem)',
+} as const;
+
 function Lane({
   duplicate,
   innerRef,
@@ -38,12 +51,12 @@ function Lane({
             // lane, so this costs nothing beyond a cache hit.
             decoding="async"
             fetchPriority="low"
-            style={{ height: company.height }}
-            className="w-auto max-w-none opacity-90"
+            style={LOGO_BOX}
+            className="max-w-none object-contain opacity-90"
           />
           <span
             aria-hidden
-            className="mx-[clamp(1.6rem,4vw,3.25rem)] inline-block h-2 w-2 rotate-45 bg-text/25"
+            className="mx-[clamp(1.6rem,4vw,3.25rem)] inline-block h-2 w-2 rotate-45 bg-accent"
           />
         </span>
       ))}
@@ -85,14 +98,15 @@ export function CompanyMarquee() {
       {/* Hairlines rather than a colour change: the band still reads as its own
           register on the page, but the ground stays black so the logos keep
           their real colours instead of being flipped to fit a light plate. */}
-      <div className="overflow-hidden border-y border-white/10 pb-[clamp(2.5rem,6vw,5rem)] pt-[clamp(1.5rem,3.5vw,2.75rem)]">
-        <p className="px-6 text-center font-sans text-[11px] font-light uppercase italic tracking-[0.18em] text-muted sm:text-xs">
+      <div className="overflow-hidden border-y border-white/10 pb-xl pt-md">
+        {/* Brand face, like the rest of the chrome labels. */}
+        <p className="px-gutter text-center font-mono text-label font-light uppercase tracking-[0.22em] text-muted">
           Some of the companies I&apos;ve worked with
         </p>
 
         <div
           ref={viewportRef}
-          className="logo-marquee mt-[clamp(1.5rem,3.5vw,3rem)] overflow-hidden"
+          className="logo-marquee mt-md overflow-hidden"
         >
           {/* One copy's width as a share of the whole track — the exact distance
               that makes the loop seamless, whatever the copy count is. */}

@@ -4,15 +4,16 @@ import { DitherPortrait } from './DitherPortrait';
 import { HeroNameBackdrop } from './HeroNameBackdrop';
 import { HeroShader } from './HeroShader';
 import { MaskedText } from './MaskedText';
-import { NodeChip } from './SectionHeading';
 import { Reveal } from './Reveal';
 
 // Standing facts under the headline — the reference's equivalent strip is what
 // makes it read as a person with a track record rather than a brand statement.
 const FACTS = [
   'GoHighLevel specialist',
-  'Based in the Philippines',
   'Open to new projects',
+  // Last, so it takes the second row on its own rather than splitting the pair
+  // above it. No home city: hiring him is not a geography question.
+  'Remote — open to relocation',
 ];
 
 const PAIN_POINTS = [
@@ -41,9 +42,15 @@ export function Hero({ introReady = true }: HeroProps) {
   }, []);
 
   return (
+    // No bottom padding: the portrait is meant to stand ON the rule that closes
+    // the hero, the way the reference does it, rather than float above a band of
+    // empty black. The floor is set just under what the portrait plus header
+    // clearance need, so the section is as tall as its content and no taller —
+    // at 86vh it carried ~220px of empty sky above the type, which is what made
+    // it read heavy.
     <section
       id="hero"
-      className="relative isolate flex min-h-screen flex-col justify-center overflow-hidden bg-bg px-6 pb-24 pt-28"
+      className="relative isolate flex min-h-[68vh] flex-col justify-end overflow-hidden bg-bg px-gutter pb-0 pt-[clamp(5rem,9vh+3rem,9rem)]"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         {shaderOk ? (
@@ -75,31 +82,58 @@ export function Hero({ introReady = true }: HeroProps) {
 
       {/* Asymmetric split: type left, portrait right. The centred stack this
           replaced is what made the hero read as a template. */}
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-8">
-        <Reveal className="flex flex-col items-start" stagger={0.14} paused={!introReady}>
-          <NodeChip label="GoHighLevel Systems Builder" />
+      {/* grow, so the row is as tall as the hero: only then does self-end put the
+          portrait ON the closing rule instead of at the bottom of a centred block
+          floating above it. The type stays optically centred. */}
+      {/* The split is a ratio, not a breakpoint stack: below 60rem there isn't
+          room for two columns of this weight, so the grid collapses to one — the
+          only structural switch in the hero.
+
+          items-center, and no grow: the row is exactly as tall as the portrait
+          (its tallest item), so centring the type in the row centres it ON the
+          portrait — no pad to keep in step with it. The pad this replaced was a
+          fixed share of the portrait, and it broke the moment the type column
+          grew: the section anchors to the bottom (justify-end), which is what
+          keeps the portrait standing on the closing rule. */}
+      <div className="mx-auto grid w-full max-w-shell grid-cols-1 items-center gap-lg lg:grid-cols-[1.15fr_1fr] lg:gap-md">
+        <Reveal
+          className="flex flex-col items-start pb-xl lg:pb-0"
+          stagger={0.14}
+          paused={!introReady}
+        >
+          {/* Was a pill with a pulsing dot — the badge every generated landing
+              page wears. A rule running into the role reads like a masthead
+              instead, and says the same thing. */}
+          <p className="flex items-center gap-sm font-mono text-label uppercase tracking-[0.3em] text-muted">
+            <span aria-hidden className="h-px w-[clamp(2.5rem,4vw,5rem)] bg-accent" />
+            GoHighLevel Systems Builder
+          </p>
           {/* The weight jump — light pain point, black promise — carries the
               emphasis the serif italic used to. */}
-          <h1 className="mt-8 font-display text-3xl leading-[1.02] tracking-tight text-text sm:text-5xl lg:text-6xl">
-            <span key={index} className="block animate-fade-up font-light">
+          <h1 className="mt-md font-logo text-hero tracking-tight text-text">
+            {/* The pain point sits a step below the promise now: it is the setup,
+                not the line you are meant to leave with. */}
+            <span key={index} className="block animate-fade-up text-pain font-light">
               {PAIN_POINTS[index]}
             </span>
+            {/* The one line that stays in the display face: Archivo at 900. The
+                brand face cannot land this — it is the weight that does it. */}
             <MaskedText
-              className="mt-3 block font-black uppercase tracking-tight text-accent"
+              className="mt-2xs block font-display font-black uppercase tracking-tight text-accent"
               paused={!introReady}
               scroll={false}
             >
               I build the system that fixes it.
             </MaskedText>
           </h1>
-          <p className="mt-8 max-w-xl font-sans text-base text-muted sm:text-lg">
+          <p className="mt-sm max-w-[38ch] font-sans text-lead text-muted">
             Funnels, CRM, and automation working as one machine — every lead
             captured, followed up, and booked without manual chasing.
           </p>
 
-          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+          <ul className="mt-md flex flex-wrap gap-x-lg gap-y-xs font-mono text-label uppercase tracking-[0.2em] text-muted">
             {FACTS.map((fact) => (
-              <li key={fact} className="flex items-center gap-2">
+              <li key={fact} className="flex items-center gap-2xs">
                 <span aria-hidden className="h-1.5 w-1.5 shrink-0 bg-accent" />
                 {fact}
               </li>
@@ -107,8 +141,11 @@ export function Hero({ introReady = true }: HeroProps) {
           </ul>
         </Reveal>
 
-        <div className="relative mx-auto aspect-square w-full max-w-md lg:max-w-none">
-          <DitherPortrait />
+        {/* Bleeds a little off the right edge (the section clips it) so he isn't
+            sitting politely inside the grid — but only a little: at 112% he made
+            the whole hero read as one heavy block. */}
+        <div className="relative mx-auto aspect-square w-full max-w-[min(28rem,80vw)] lg:-mr-[6%] lg:w-[112%] lg:max-w-none">
+          <DitherPortrait fadeBottom={false} />
         </div>
       </div>
     </section>

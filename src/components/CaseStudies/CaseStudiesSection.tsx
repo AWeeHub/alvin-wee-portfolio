@@ -9,9 +9,10 @@ export function CaseStudiesSection() {
   const [matisse, ...webBuilds] = caseStudies;
 
   return (
-    <section id="case-studies" className="bg-bg-elev px-6 py-32">
-      <Marquee text="Featured work" className="-mx-6 mb-20" />
-      <Reveal className="mx-auto max-w-6xl">
+    // Band opens the section, like About — see ProblemSection.
+    <section id="case-studies" className="bg-bg-elev px-gutter pb-2xl">
+      <Marquee text="Featured work" className="-mx-gutter mb-xl" />
+      <Reveal className="mx-auto max-w-shell">
         <SectionHeading
           title={
             <>
@@ -20,11 +21,11 @@ export function CaseStudiesSection() {
           }
         />
 
-        <div className="mt-16">
+        <div className="mt-lg">
           <MatisseFlow study={matisse} />
         </div>
 
-        <div className="mt-24">
+        <div className="mt-xl">
           <PipelineCaseStudies studies={webBuilds} />
         </div>
       </Reveal>

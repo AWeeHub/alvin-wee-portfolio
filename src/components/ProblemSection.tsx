@@ -22,9 +22,12 @@ const WORD_STEP = 22;
 
 export function ProblemSection() {
   return (
-    <section id="problem" className="bg-bg px-6 py-32">
-      <Marquee text="The real cost" className="-mx-6 mb-20" />
-      <Reveal className="mx-auto max-w-5xl">
+    // No top pad: the band opens the section, and the previous one already ends
+    // on its own bottom pad — the same way About sits. pt-32 here stacked a
+    // second screenful of air above the large text.
+    <section id="problem" className="bg-bg px-gutter pb-2xl">
+      <Marquee text="The real cost" className="-mx-gutter mb-xl" />
+      <Reveal className="mx-auto max-w-shell-text">
         <SectionHeading
           title={
             <>
@@ -35,7 +38,7 @@ export function ProblemSection() {
         />
       </Reveal>
 
-      <div className="mx-auto mt-16 max-w-5xl border-t border-white/10">
+      <div className="mx-auto mt-lg max-w-shell-text border-t border-white/10">
         {COSTS.map((cost) => {
           const words = cost.detail.split(' ');
           return (
@@ -43,12 +46,12 @@ export function ProblemSection() {
             // which one you're reading.
             <div
               key={cost.title}
-              className="cost-row group grid gap-2 border-b border-white/10 py-8 sm:grid-cols-[1fr_1.2fr] sm:items-baseline sm:gap-8 sm:py-10"
+              className="cost-row group grid gap-xs border-b border-white/10 py-md sm:grid-cols-[1fr_1.2fr] sm:items-baseline sm:gap-md"
             >
-              <h3 className="cost-title font-display text-2xl text-muted transition-[color,transform] duration-500 group-hover:translate-x-2 sm:text-3xl">
+              <h3 className="cost-title font-logo text-row text-muted transition-[color,transform] duration-500 group-hover:translate-x-2">
                 {cost.title}
               </h3>
-              <p className="font-sans text-sm leading-relaxed text-text sm:text-base">
+              <p className="font-sans text-body text-text">
                 {words.map((word, i) => (
                   <span
                     // eslint-disable-next-line react/no-array-index-key -- words repeat; position is the identity

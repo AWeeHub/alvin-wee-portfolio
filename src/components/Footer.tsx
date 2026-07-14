@@ -14,20 +14,20 @@ export function Footer() {
   return (
     // Extra bottom padding on md+: that is where the fixed section bar sits, and
     // without the clearance it lies across the copyright line.
-    <footer className="border-t border-white/10 bg-bg px-6 pb-10 pt-10 md:pb-16">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-end md:justify-between">
+    <footer className="border-t border-white/10 bg-bg px-gutter pb-md pt-md md:pb-lg">
+      <div className="mx-auto flex max-w-shell flex-col gap-md md:flex-row md:items-end md:justify-between">
         <div>
-          <AWeeLogo size="sm" />
-          <p className="mt-3 max-w-sm font-mono text-xs leading-relaxed text-muted">
+          <AWeeLogo size="md" />
+          <p className="mt-xs max-w-[38ch] font-mono text-label leading-relaxed text-muted">
             GoHighLevel Systems Builder — funnels, CRM, automation, and design.
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 md:items-end">
-          <div className="flex flex-wrap items-center gap-x-8 gap-y-2">
+        <div className="flex flex-col gap-xs md:items-end">
+          <div className="flex flex-wrap items-center gap-x-md gap-y-2xs">
             <a
               href={mailtoUrl()}
-              className="font-mono text-xs text-muted transition-colors duration-300 hover:text-accent"
+              className="font-mono text-label text-muted transition-colors duration-300 hover:text-accent"
             >
               {CONTACT_EMAIL}
             </a>
@@ -35,13 +35,13 @@ export function Footer() {
               href={LINKEDIN_URL}
               target="_blank"
               rel="noreferrer"
-              className="font-mono text-xs text-muted transition-colors duration-300 hover:text-accent"
+              className="font-mono text-label text-muted transition-colors duration-300 hover:text-accent"
             >
               LinkedIn ↗
             </a>
           </div>
-          {/* Full muted, not muted/70: at 12px the faded version lands at 3.6:1. */}
-          <p className="font-mono text-xs text-muted">
+          {/* Full muted, not muted/70: at this size the faded version lands at 3.6:1. */}
+          <p className="font-mono text-label text-muted">
             © {new Date().getFullYear()} AWee Digital. All rights reserved.
           </p>
         </div>

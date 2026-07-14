@@ -30,38 +30,38 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
             className="pointer-events-none absolute inset-0 bg-accent/0 transition duration-500 group-hover:bg-accent/10"
           />
         </div>
-        <div className="mt-5 flex items-baseline justify-between gap-4">
-          <h3 className="font-display text-xl text-text sm:text-2xl">{study.title}</h3>
+        <div className="mt-sm flex items-baseline justify-between gap-xs">
+          <h3 className="font-display text-card text-text">{study.title}</h3>
           <span
             aria-hidden
-            className="font-mono text-xs text-muted transition-colors duration-300 group-hover:text-accent"
+            className="font-mono text-label text-muted transition-colors duration-300 group-hover:text-accent"
           >
             {expanded ? '−' : '+'}
           </span>
         </div>
-        <p className="mt-1 font-mono text-xs uppercase tracking-widest text-accent">
+        <p className="mt-2xs font-mono text-label uppercase tracking-widest text-accent">
           {study.category}
         </p>
       </button>
 
       {expanded && (
-        <div className="mt-6 space-y-4 border-t border-white/10 pt-6">
+        <div className="mt-sm space-y-xs border-t border-white/10 pt-sm">
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-muted">Problem</p>
-            <p className="mt-1 font-sans text-sm text-text">{study.problem}</p>
+            <p className="font-mono text-label uppercase tracking-widest text-muted">Problem</p>
+            <p className="mt-2xs font-sans text-micro text-text">{study.problem}</p>
           </div>
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-muted">Solution</p>
-            <p className="mt-1 font-sans text-sm text-text">{study.solution}</p>
+            <p className="font-mono text-label uppercase tracking-widest text-muted">Solution</p>
+            <p className="mt-2xs font-sans text-micro text-text">{study.solution}</p>
           </div>
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-muted">Stack</p>
-            <p className="mt-1 font-sans text-sm text-text">{study.techStack.join(' · ')}</p>
+            <p className="font-mono text-label uppercase tracking-widest text-muted">Stack</p>
+            <p className="mt-2xs font-sans text-micro text-text">{study.techStack.join(' · ')}</p>
           </div>
           {study.results && (
             <div>
-              <p className="font-mono text-xs uppercase tracking-widest text-muted">Results</p>
-              <p className="mt-1 font-sans text-sm text-text">{study.results}</p>
+              <p className="font-mono text-label uppercase tracking-widest text-muted">Results</p>
+              <p className="mt-2xs font-sans text-micro text-text">{study.results}</p>
             </div>
           )}
           {study.liveUrl && (
@@ -69,7 +69,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
               href={study.liveUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-block font-sans text-sm text-accent underline"
+              className="inline-block font-sans text-micro text-accent underline"
             >
               View live site →
             </a>

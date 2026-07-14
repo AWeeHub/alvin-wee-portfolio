@@ -1,10 +1,10 @@
-import { useRef } from 'react';
-import { toolkit } from '../data/about';
+import { useEffect, useRef } from 'react';
 import { DitherPortrait } from './DitherPortrait';
 import { Marquee } from './Marquee';
 import { Reveal } from './Reveal';
 import { ScrollHighlightText } from './ScrollHighlightText';
 import { SectionHeading } from './SectionHeading';
+import { ToolStack } from './ToolStack';
 
 const COPY = [
   "I'm Alvin Wee, a Digital Experience Designer specializing in high-converting websites, landing pages, funnels, and CRM automation.",
@@ -16,15 +16,72 @@ const COPY = [
 /** Scroll distance the pinned panel holds for, per paragraph. */
 const HOLD_VH = 45;
 
+/** What the heading and the toolkit keep clear of the pinned panel, in px.
+ *  HEAD_GAP is measured against the track, which carries the sticky box's own
+ *  padding — the gap you actually see above the portrait comes out ~24px under
+ *  it. */
+const HEAD_GAP = 84;
+const TOOL_GAP = 70;
+
 export function AboutSection() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const captionRef = useRef<HTMLElement>(null);
+  const toolkitRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * The centred pin leaves (viewport - panel) / 2 of air above and below the
+   * panel, so the heading and the toolkit would otherwise sit a screen away from
+   * it. Spending that air back is what closes the gaps — but the air is not a
+   * constant: it shrinks with the window AND with the panel, which itself grows
+   * taller as the column narrows and the copy wraps. Every fixed value tried
+   * here (px, then vh) held on one viewport and collided on another.
+   *
+   * So the offsets are measured, not guessed: read the panel, spend the air it
+   * actually leaves, and keep the two gaps above fixed on any screen.
+   */
+  useEffect(() => {
+    const track = trackRef.current;
+    const panel = panelRef.current;
+    const caption = captionRef.current;
+    const toolkit = toolkitRef.current;
+    if (!track || !panel || !caption || !toolkit) return;
+
+    const apply = () => {
+      // Below lg the panel is top-pinned, not centred: there is no air to spend.
+      if (!window.matchMedia('(min-width: 1024px)').matches) {
+        track.style.marginTop = '';
+        toolkit.style.marginTop = '';
+        return;
+      }
+      const air = (window.innerHeight - panel.offsetHeight) / 2;
+      track.style.marginTop = `${-Math.max(0, air - HEAD_GAP)}px`;
+
+      // The caption is not always the panel's lowest edge — when the copy column
+      // is the taller of the two, the panel bottom sits below it.
+      const below = panel.getBoundingClientRect().bottom - caption.getBoundingClientRect().bottom;
+      toolkit.style.marginTop = `${TOOL_GAP - Math.max(0, air) - below}px`;
+    };
+
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(panel);
+    window.addEventListener('resize', apply);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener('resize', apply);
+    };
+  }, []);
 
   return (
     <section id="about" className="bg-bg">
-      <Marquee text="About me" className="mb-20" />
+      <Marquee text="About me" className="mb-xl" />
 
-      <div className="px-6">
-        <Reveal className="mx-auto max-w-5xl">
+      {/* Desktop needs no gap of its own: the panel below centres itself in the
+          viewport, and the effect above spends that air down to HEAD_GAP. Below
+          lg there is no pin and no air, so the gap has to be real padding. */}
+      <div className="px-gutter pb-2xl lg:pb-0">
+        <Reveal className="mx-auto max-w-shell-text">
           <SectionHeading
             title={
               <>
@@ -38,68 +95,71 @@ export function AboutSection() {
 
       {/* The panel holds still while this track scrolls past it, and the track's
           progress is what lights the copy — so the words come up in reading order
-          under a portrait that never moves. */}
+          under a portrait that never moves. The sticky box is a full-viewport
+          flex row so the panel sits centred while it's held, rather than clinging
+          to the top of the screen. */}
+      {/* The pull-up that closes the gap to the heading is set in the effect
+          above — it depends on the panel, which only the layout knows. */}
       <div
         ref={trackRef}
-        className="relative px-6"
+        className="relative px-gutter"
         style={{ height: `calc(100vh + ${COPY.length * HOLD_VH}vh)` }}
       >
-        <div className="sticky top-24 mx-auto grid max-w-5xl items-start gap-12 pb-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <figure className="relative mx-auto w-full max-w-[15rem] lg:mx-0 lg:max-w-none">
-            <div className="absolute inset-x-4 bottom-0 top-10 -z-10 rounded-t-full bg-accent/10 blur-2xl" />
-            {/* Aspect matches the source file, so the dither canvas — which
-                stretches to the box — lands exactly on the photo underneath it
-                instead of drifting off a letterboxed edge. */}
-            <div className="aspect-[760/804] w-full">
-              <DitherPortrait src="/about-portrait.webp" alt="Alvin Wee" flip />
-            </div>
-            <figcaption className="mt-5 border-t border-white/10 pt-4 font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
-              Alvin Wee — Cebu, Philippines
-            </figcaption>
-          </figure>
-
-          <div className="flex flex-col gap-6">
-            {COPY.map((paragraph, i) => (
-              <ScrollHighlightText
-                key={paragraph}
-                driver={trackRef}
-                // Each paragraph owns a slice of the track, so they light one
-                // after another instead of all at once.
-                range={[i / COPY.length, (i + 1) / COPY.length]}
-                className={
-                  i === COPY.length - 1
-                    ? 'border-l-2 border-accent pl-5 font-sans text-base leading-relaxed text-text sm:text-lg'
-                    : 'font-sans text-base leading-relaxed text-text sm:text-lg'
-                }
+        {/* Below lg the stacked panel is taller than the viewport, so centring it
+            would push its top under the header with no way to scroll back to it —
+            there it keeps the old top pin. */}
+        <div className="sticky top-[clamp(4.5rem,9vh,7rem)] pb-md lg:top-0 lg:flex lg:min-h-screen lg:items-center lg:py-lg">
+          <div
+            ref={panelRef}
+            className="mx-auto grid w-full max-w-shell-text items-start gap-lg lg:grid-cols-[0.8fr_1.2fr]"
+          >
+            <figure className="relative mx-auto w-full max-w-[min(15rem,60vw)] lg:mx-0 lg:max-w-none">
+              <div className="absolute inset-x-4 bottom-0 top-10 -z-10 rounded-t-full bg-accent/10 blur-2xl" />
+              {/* Aspect matches the source file, so the dither canvas — which
+                  stretches to the box — lands exactly on the photo underneath it
+                  instead of drifting off a letterboxed edge. */}
+              <div className="aspect-[760/804] w-full">
+                <DitherPortrait src="/about-portrait.webp" alt="Alvin Wee" flip />
+              </div>
+              <figcaption
+                ref={captionRef}
+                className="mt-sm border-t border-white/10 pt-xs font-mono text-label uppercase tracking-[0.25em] text-muted"
               >
-                {paragraph}
-              </ScrollHighlightText>
-            ))}
+                Remote, worldwide
+              </figcaption>
+            </figure>
+
+            {/* Small top offset only: the copy is meant to start near the top of
+                the portrait, not halfway down it. */}
+            <div className="flex flex-col gap-sm lg:pt-2">
+              {COPY.map((paragraph, i) => (
+                <ScrollHighlightText
+                  key={paragraph}
+                  driver={trackRef}
+                  // Each paragraph owns a slice of the track, so they light one
+                  // after another instead of all at once.
+                  range={[i / COPY.length, (i + 1) / COPY.length]}
+                  className={
+                    i === COPY.length - 1
+                      ? 'border-l-2 border-accent pl-sm font-sans text-body text-text'
+                      : 'font-sans text-body text-text'
+                  }
+                >
+                  {paragraph}
+                </ScrollHighlightText>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="px-6 pb-32">
-        <Reveal className="mx-auto max-w-5xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
+      {/* Trailing side of the same pin — offset set in the effect above. */}
+      <div ref={toolkitRef} className="overflow-hidden px-gutter pb-2xl">
+        <Reveal className="mx-auto max-w-shell-text">
+          <p className="font-mono text-label uppercase tracking-[0.3em] text-muted">
             My toolkit
           </p>
-          <dl className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-            {toolkit.map((group) => (
-              <div key={group.label} className="border-t border-white/10 pt-5">
-                <dt className="font-mono text-[10px] uppercase tracking-[0.25em] text-accent">
-                  {group.label}
-                </dt>
-                <dd className="mt-4 flex flex-col gap-2">
-                  {group.tools.map((tool) => (
-                    <span key={tool} className="font-sans text-base text-text">
-                      {tool}
-                    </span>
-                  ))}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <ToolStack />
         </Reveal>
       </div>
     </section>

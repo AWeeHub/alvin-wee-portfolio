@@ -57,7 +57,7 @@ export function StatusBar() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 hidden items-center justify-center border-t border-white/10 bg-bg/80 px-6 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-muted backdrop-blur-sm tabular-nums md:flex"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 hidden items-center justify-center border-t border-white/10 bg-bg/80 px-gutter py-2xs font-mono text-label uppercase tracking-[0.18em] text-muted backdrop-blur-sm tabular-nums md:flex"
     >
       <span ref={sectionRef} className="font-bold text-text">
         00 — TRIGGER

@@ -43,7 +43,7 @@ export function SiteHeader() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/80 backdrop-blur-sm">
-      <nav className="flex items-center justify-center gap-2 px-6 py-3 sm:justify-between">
+      <nav className="flex items-center justify-center gap-xs px-gutter py-xs sm:justify-between">
         <div className="hidden items-center sm:flex">
           <AWeeLogo size="sm" />
         </div>
@@ -51,12 +51,12 @@ export function SiteHeader() {
         {/* One row, always. Wrapped to two, the header grows past the sticky
             offset the pinned panels are anchored to and starts clipping their
             headings. */}
-        <ul className="flex items-center justify-center gap-0.5 sm:gap-6">
+        <ul className="flex items-center justify-center gap-0.5 sm:gap-[clamp(1rem,2vw,2.5rem)]">
           {LINKS.map(({ label, href, id }) => (
             <li key={id}>
               <a
                 href={href}
-                className={`block whitespace-nowrap px-1.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em] transition-colors duration-300 sm:px-2 sm:text-[10px] sm:tracking-[0.22em] ${
+                className={`block whitespace-nowrap px-1.5 py-1 font-mono text-[clamp(0.5625rem,0.5rem+0.15vw,0.8125rem)] uppercase tracking-[0.1em] transition-colors duration-300 sm:px-2 sm:tracking-[0.22em] ${
                   active === id ? 'text-accent' : 'text-muted hover:text-text'
                 }`}
               >
