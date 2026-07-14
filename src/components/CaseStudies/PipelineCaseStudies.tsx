@@ -77,14 +77,16 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
               aria-current={i === index}
               className="group flex h-[2.75rem] w-[1.75rem] items-center justify-center"
             >
-              {/* The active dot stretches by scaleX, not by width: this is the
-                  same pill either way, and only its transform changes. */}
+              {/* The active dot stretches by scaleX, not by width. It starts as a
+                  circle and is stretched, rather than starting as a pill and
+                  being squashed: scaleX squeezes the corner radius along with
+                  everything else, so a squashed pill renders as a little square. */}
               <span
                 aria-hidden
-                className={`h-2 w-8 origin-center rounded-full transition-[transform,background-color] duration-300 ${
+                className={`h-2 w-2 origin-center rounded-full transition-[transform,background-color] duration-300 ${
                   i === index
-                    ? 'scale-x-100 bg-accent'
-                    : 'scale-x-[0.25] bg-white/20 group-hover:bg-white/40'
+                    ? 'scale-x-[4] bg-accent'
+                    : 'scale-x-100 bg-white/20 group-hover:bg-white/40'
                 }`}
               />
             </button>
