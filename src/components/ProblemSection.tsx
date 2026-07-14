@@ -26,7 +26,7 @@ export function ProblemSection() {
     // on its own bottom pad — the same way About sits. pt-32 here stacked a
     // second screenful of air above the large text.
     <section id="problem" className="bg-bg px-gutter pb-2xl">
-      <Marquee text="The real cost" className="-mx-gutter mb-xl" />
+      <Marquee text="The symptoms" className="-mx-gutter mb-xl" />
       <Reveal className="mx-auto max-w-shell-text">
         <SectionHeading
           title={

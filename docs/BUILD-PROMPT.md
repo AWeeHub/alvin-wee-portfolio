@@ -20,8 +20,8 @@ Live site: https://alvinwee-portfolio.vercel.app
 > No UI kit, no component library, no CSS-in-JS — the styling is Tailwind utilities and a small
 > layer of hand-written CSS for the things Tailwind cannot express.
 >
-> **Voice.** The site argues, in order: here is what a broken system costs you (Condition) → here
-> is what I build (Stack) → here is who I am (About) → here is proof it works (Featured work) →
+> **Voice.** The site argues, in order: here is what a broken system costs you (Symptoms) → here
+> is what I build (Build) → here is who I am (About) → here is proof it works (Featured work) →
 > here is how to reach me (Contact). Copy is direct and unhedged. No "passionate about", no
 > "innovative solutions", no badge that says AI-POWERED.
 >
@@ -34,8 +34,8 @@ Live site: https://alvinwee-portfolio.vercel.app
 >    standing facts.
 > 3. **Company marquee** — client logos on an endless loop, all in one shared box so no wordmark
 >    swamps the band.
-> 4. **Condition** — four costs of having no system, as a list of rows that light under the cursor.
-> 5. **Stack** — five services, dealt out one at a time as a pinned panel is scrolled past.
+> 4. **Symptoms** — four costs of having no system, as a list of rows that light under the cursor.
+> 5. **Build** — five services, dealt out one at a time as a pinned panel is scrolled past.
 > 6. **About** — a pinned portrait with the copy lighting paragraph by paragraph beside it, and a
 >    toolkit below it as a deck of cards that fans on hover.
 > 7. **Featured work** — the GHL build as a twelve-stage workflow you can step through, and the web
@@ -44,7 +44,7 @@ Live site: https://alvinwee-portfolio.vercel.app
 > 9. **Footer** — mark, contact, copyright.
 >
 > **Every section opens with a full-bleed band** of its own name at display scale, running off both
-> edges, with exactly one word filled and the rest hollow (`THE REAL ▢ COST`). The band moves only
+> edges, with exactly one word filled and the rest hollow (`THE ▢ SYMPTOMS`). The band moves only
 > when the page moves — it is scroll-driven, not auto-playing — and scrolling back up runs it back
 > the way it came.
 >

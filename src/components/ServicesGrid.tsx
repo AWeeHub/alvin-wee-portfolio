@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /** Scroll distance the pinned panel holds for, per service. */
 const HOLD_VH = 55;
-/** Per-word delay of the hover sweep, in ms — same cadence as the Condition rows. */
+/** Per-word delay of the hover sweep, in ms — same cadence as the Symptoms rows. */
 const WORD_STEP = 22;
 
 export function ServicesGrid() {
@@ -57,7 +57,7 @@ export function ServicesGrid() {
 
   return (
     <section id="services" className="bg-bg">
-      <Marquee text="The stack" className="mb-xl" />
+      <Marquee text="The build" className="mb-xl" />
 
       <div
         ref={trackRef}
@@ -85,7 +85,7 @@ export function ServicesGrid() {
             {services.map(({ label, desc, icon: Icon }, i) => {
               const words = desc.split(' ');
               return (
-                // Same hover gesture as the Condition rows: accent title, rule
+                // Same hover gesture as the Symptoms rows: accent title, rule
                 // sweeping in under it, sentence lighting word by word.
                 <div
                   key={label}
@@ -100,7 +100,7 @@ export function ServicesGrid() {
                     aria-hidden="true"
                   />
                   <div className="flex-1">
-                    {/* Same brand face as the Condition rows — the two lists are
+                    {/* Same brand face as the Symptoms rows — the two lists are
                         the same gesture and should read as a pair. */}
                     <h3 className="cost-title font-logo text-row text-text transition-[color,transform] duration-300 group-hover:translate-x-2">
                       {label}

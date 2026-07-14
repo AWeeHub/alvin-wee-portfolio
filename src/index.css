@@ -110,7 +110,7 @@ button:focus-visible {
 
 /* The row under the cursor lights up: the title takes the accent, a rule sweeps
    in under it, and the sentence brightens word by word from the left. Shared by
-   the Condition rows and the Stack rows — they are the same gesture. */
+   the Symptoms rows and the Build rows — they are the same gesture. */
 .cost-row {
   position: relative;
 }

@@ -12,7 +12,7 @@ weight, not from decoration.
 
 | Role | Family | Weights used | Where it appears |
 |---|---|---|---|
-| **Brand / display face** | **Saira Variable** | 300–700 (variable) | Logo wordmark, hero `h1`, every section `h2`, Condition + Stack row titles, and all chrome labels (nav, eyebrows, captions, counters, the status bar) |
+| **Brand / display face** | **Saira Variable** | 300–700 (variable) | Logo wordmark, hero `h1`, every section `h2`, Symptoms + Build row titles, and all chrome labels (nav, eyebrows, captions, counters, the status bar) |
 | **Display / impact** | **Archivo Variable** | up to **900** | The hero promise line (*I build the system that fixes it.*), the big full-bleed section bands, case-study titles |
 | **Body** | **Poppins** | 300, 400, 500 | Hero subline, section sublines, row descriptions, the About paragraphs, button labels |
 
@@ -161,7 +161,7 @@ hover. Under reduced motion the animation stops and the strip becomes hand-scrol
 
 ## Hover gestures
 
-**Condition + Stack rows** (`.cost-row`, shared — the two lists are deliberately the same gesture):
+**Symptoms + Build rows** (`.cost-row`, shared — the two lists are deliberately the same gesture):
 
 - the title takes the accent colour and slides `translate-x-2`,
 - a rule sweeps in beneath it — `transform: scaleX(0 → 1)`, origin left, `0.6s cubic-bezier(0.19, 1, 0.22, 1)`,
@@ -186,7 +186,7 @@ in the left third of a 2560px screen.
 
 ## Scroll-driven storytelling
 
-**Stack (ServicesGrid)** — a sticky panel is held while a tall track scrolls past it; the track's
+**Build (ServicesGrid)** — a sticky panel is held while a tall track scrolls past it; the track's
 progress deals the five rows out one at a time (each row owns an overlapping slice, eased with
 `t*t*(3-2t)` smoothstep, `opacity` + `translateY(28px)`). Driving from progress rather than one-shot
 triggers is what lets the list rewind cleanly on the way back up.

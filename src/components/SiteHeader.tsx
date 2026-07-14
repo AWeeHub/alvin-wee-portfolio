@@ -8,8 +8,11 @@ interface NavLink {
 }
 
 const LINKS: NavLink[] = [
-  { label: 'Condition', href: '#problem', id: 'problem' },
-  { label: 'Stack', href: '#services', id: 'services' },
+  // "Symptoms" over "Condition", and "Build" over "Stack": the page reads as one
+  // argument — symptoms, then the build, then proof. "Stack" also collided with
+  // the toolkit in About, which is what a stack normally means.
+  { label: 'Symptoms', href: '#problem', id: 'problem' },
+  { label: 'Build', href: '#services', id: 'services' },
   { label: 'About', href: '#about', id: 'about' },
   { label: 'Proof', href: '#case-studies', id: 'case-studies' },
   { label: 'Contact', href: '#contact', id: 'contact' },
