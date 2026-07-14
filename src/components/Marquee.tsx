@@ -3,8 +3,9 @@ import { scrollState } from '../lib/scroll';
 
 /**
  * Full-bleed section header: one word at display scale, running off both edges,
- * alternating solid and outlined. Scroll speed drives it, same as the spine
- * packets — the page reacts to how fast you move through it.
+ * alternating solid and outlined. It runs continuously, and scroll speed adds
+ * to it — the page reacts to how fast you move through it without ever going
+ * still.
  */
 export function Marquee({ text, className = '' }: { text: string; className?: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -35,8 +36,10 @@ export function Marquee({ text, className = '' }: { text: string; className?: st
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
+      // The band has to read as moving on its own, not only when the page does:
+      // at rest it drifts at a steady clip, and scrolling only adds to that.
       const boost = Math.min(Math.abs(scrollState.velocity) / 30, 1);
-      offset += dt * (30 + 260 * boost);
+      offset += dt * (160 + 220 * boost);
       if (groupWidth > 0) offset %= groupWidth;
 
       track.style.transform = `translate3d(${-offset}px, 0, 0)`;

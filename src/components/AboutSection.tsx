@@ -6,7 +6,7 @@ import { SectionHeading } from './SectionHeading';
 export function AboutSection() {
   return (
     <section id="about" className="bg-bg px-6 py-32">
-      <Marquee text="About" className="-mx-6 mb-20" />
+      <Marquee text="About me" className="-mx-6 mb-20" />
 
       <Reveal className="mx-auto max-w-5xl">
         <SectionHeading
@@ -21,16 +21,31 @@ export function AboutSection() {
         />
 
         <div className="mt-14 grid gap-10 md:grid-cols-2">
-          <p className="font-sans text-base leading-relaxed text-muted sm:text-lg">
-            I'm Alvin Wee, a Digital Experience Designer specializing in
-            high-converting websites, landing pages, funnels, and CRM automation.
-          </p>
-          <p className="font-sans text-base leading-relaxed text-muted sm:text-lg">
-            With a background in IT implementation, operations, and marketing
-            systems, I combine strategy, design, and technology to build digital
-            experiences that are both visually engaging and results-driven —
-            from premium interfaces to the automated workflows underneath them.
-          </p>
+          <div className="flex flex-col gap-6">
+            <p className="font-sans text-base leading-relaxed text-muted sm:text-lg">
+              I'm Alvin Wee, a Digital Experience Designer specializing in
+              high-converting websites, landing pages, funnels, and CRM
+              automation.
+            </p>
+            <p className="font-sans text-base leading-relaxed text-muted sm:text-lg">
+              With a background in IT implementation, operations, and marketing
+              systems, I combine strategy, design, and technology to create
+              digital experiences that are both visually engaging and
+              results-driven.
+            </p>
+          </div>
+          <div className="flex flex-col gap-6">
+            <p className="font-sans text-base leading-relaxed text-muted sm:text-lg">
+              From crafting premium user interfaces to building automated
+              workflows, my focus is always the same: helping businesses
+              attract, convert, and grow.
+            </p>
+            <p className="font-sans text-base leading-relaxed text-text sm:text-lg">
+              I believe great design isn't just about how it looks — it's about
+              creating experiences that solve real problems and deliver
+              measurable results.
+            </p>
+          </div>
         </div>
       </Reveal>
 

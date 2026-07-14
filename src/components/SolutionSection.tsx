@@ -1,6 +1,5 @@
 import { SectionHeading } from './SectionHeading';
 import { Reveal } from './Reveal';
-import { WorkflowCanvas } from './WorkflowCanvas';
 import { Marquee } from './Marquee';
 
 export function SolutionSection() {
@@ -21,15 +20,9 @@ export function SolutionSection() {
         />
         <p className="mt-8 max-w-2xl font-sans text-lg text-muted">
           A website alone doesn't follow up at 2am. The system underneath it
-          does — and this is what it looks like.
+          does — the pages, the pipeline and the automations, built as one
+          piece.
         </p>
-      </Reveal>
-
-      <Reveal className="mx-auto mt-20 max-w-5xl">
-        <p className="mb-10 text-center font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-          Scroll to assemble the system — tap any node
-        </p>
-        <WorkflowCanvas />
       </Reveal>
     </section>
   );

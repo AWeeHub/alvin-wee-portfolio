@@ -140,7 +140,7 @@ void main() {
   float line = 1.0 - smoothstep(0.0, 0.5, abs(vT));
 
   // Packets: leads moving down the pipeline. Same visual language as the
-  // pulses in the hero grid and the WorkflowCanvas connectors.
+  // pulses in the hero grid and the spine packets.
   float glow = 0.0;
   for (int i = 0; i < 5; i++) {
     float pos = fract(uTime * 0.12 + float(i) / 5.0);
