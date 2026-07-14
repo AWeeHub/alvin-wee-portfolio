@@ -20,9 +20,27 @@ export function AboutSection() {
           }
         />
 
-        <div className="mt-14 grid gap-10 md:grid-cols-2">
-          <div className="flex flex-col gap-6">
-            <p className="font-sans text-base leading-relaxed text-muted sm:text-lg">
+        {/* Portrait left, one column of copy right. The previous two-column
+            split forced the reader to jump back up the page mid-thought. */}
+        <div className="mt-16 grid items-start gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <figure className="relative mx-auto w-full max-w-xs lg:mx-0 lg:max-w-none">
+            <div className="absolute inset-x-4 bottom-0 top-10 -z-10 rounded-t-full bg-accent/10 blur-2xl" />
+            <img
+              src="/about-portrait.webp"
+              alt="Alvin Wee"
+              loading="lazy"
+              decoding="async"
+              width={760}
+              height={804}
+              className="w-full [filter:grayscale(0.15)]"
+            />
+            <figcaption className="mt-6 border-t border-white/10 pt-4 font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
+              Alvin Wee — Cebu, Philippines
+            </figcaption>
+          </figure>
+
+          <div className="flex flex-col gap-7">
+            <p className="font-sans text-lg leading-relaxed text-text sm:text-xl">
               I'm Alvin Wee, a Digital Experience Designer specializing in
               high-converting websites, landing pages, funnels, and CRM
               automation.
@@ -33,14 +51,12 @@ export function AboutSection() {
               digital experiences that are both visually engaging and
               results-driven.
             </p>
-          </div>
-          <div className="flex flex-col gap-6">
             <p className="font-sans text-base leading-relaxed text-muted sm:text-lg">
               From crafting premium user interfaces to building automated
               workflows, my focus is always the same: helping businesses
               attract, convert, and grow.
             </p>
-            <p className="font-sans text-base leading-relaxed text-text sm:text-lg">
+            <p className="border-l-2 border-accent pl-5 font-sans text-base leading-relaxed text-text sm:text-lg">
               I believe great design isn't just about how it looks — it's about
               creating experiences that solve real problems and deliver
               measurable results.

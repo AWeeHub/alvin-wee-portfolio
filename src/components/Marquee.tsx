@@ -3,9 +3,9 @@ import { scrollState } from '../lib/scroll';
 
 /**
  * Full-bleed section header: one word at display scale, running off both edges,
- * alternating solid and outlined. It runs continuously, and scroll speed adds
- * to it — the page reacts to how fast you move through it without ever going
- * still.
+ * alternating solid and outlined. It runs continuously, and the scroll drives
+ * it: speed adds to it, and direction turns it around, so scrolling back up
+ * sends the words back the way they came.
  */
 export function Marquee({ text, className = '' }: { text: string; className?: string }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -29,6 +29,10 @@ export function Marquee({ text, className = '' }: { text: string; className?: st
     // Integrated, like the spine packets: changing speed changes the rate
     // without teleporting the track.
     let offset = 0;
+    // Which way the band travels. It follows the scroll: scroll back up and the
+    // words run back the way they came. It persists through the still moments,
+    // so the band keeps drifting the last way you were reading.
+    let direction = 1;
 
     const frame = (now: number) => {
       raf = 0;
@@ -36,11 +40,16 @@ export function Marquee({ text, className = '' }: { text: string; className?: st
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
 
-      // The band has to read as moving on its own, not only when the page does:
-      // at rest it drifts at a steady clip, and scrolling only adds to that.
-      const boost = Math.min(Math.abs(scrollState.velocity) / 30, 1);
-      offset += dt * (160 + 220 * boost);
-      if (groupWidth > 0) offset %= groupWidth;
+      const velocity = scrollState.velocity;
+      // Deadzone: Lenis dithers around zero as it settles, and without this the
+      // band would flicker direction while the page is effectively still.
+      if (Math.abs(velocity) > 0.5) direction = velocity > 0 ? 1 : -1;
+
+      const boost = Math.min(Math.abs(velocity) / 30, 1);
+      offset += dt * direction * (160 + 220 * boost);
+      // Wrap into [0, groupWidth) — a plain % keeps the sign, and a negative
+      // offset would push the track right and open a gap at the left edge.
+      if (groupWidth > 0) offset = ((offset % groupWidth) + groupWidth) % groupWidth;
 
       track.style.transform = `translate3d(${-offset}px, 0, 0)`;
       raf = requestAnimationFrame(frame);
