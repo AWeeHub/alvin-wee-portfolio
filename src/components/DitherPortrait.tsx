@@ -196,12 +196,12 @@ export function DitherPortrait({ className = '' }: { className?: string }) {
       style={{ maskImage: fade, WebkitMaskImage: fade }}
     >
       {/* The sharp photo, revealed wherever the dither above it dissolves. Same
-          file the canvas samples, so it costs no extra request. Greyscale keeps
-          it inside the monochrome art direction. */}
+          file the canvas samples, so it costs no extra request. Full colour: the
+          jump from monochrome pixels to a real person is the whole point. */}
       <img
         src="/portrait.webp"
         alt="Alvin Wee"
-        className="absolute inset-0 h-full w-full object-contain [filter:grayscale(1)_contrast(1.05)]"
+        className="absolute inset-0 h-full w-full object-contain"
       />
       <canvas
         ref={canvasRef}
