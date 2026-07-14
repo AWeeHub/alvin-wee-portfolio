@@ -9,6 +9,10 @@
       content="I build complete customer-acquisition systems — funnels, CRM, automation, and design — for businesses that need more leads, more booked calls, and less manual work."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- The hero portrait is the largest thing painted, but React only asks for
+         it once the bundle has parsed and rendered. Naming it here lets the
+         browser start the fetch from the HTML instead. -->
+    <link rel="preload" as="image" href="/portrait.webp" fetchpriority="high" />
     <meta name="theme-color" content="#05070A" />
     <link rel="canonical" href="https://alvinwee-portfolio.vercel.app/" />
     <meta property="og:type" content="website" />
