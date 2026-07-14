@@ -8,8 +8,8 @@ interface NavLink {
   id: string;
 }
 
-// Numbers match the WorkflowSpine node map, so the nav, the rail and the status
-// bar all name a section the same way.
+// Numbers match the status bar's node map, so the nav and the bar name a
+// section the same way.
 const LINKS: NavLink[] = [
   { index: '01', label: 'Condition', href: '#problem', id: 'problem' },
   { index: '02', label: 'Stack', href: '#services', id: 'services' },
@@ -47,11 +47,8 @@ export function SiteHeader() {
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/80 backdrop-blur-sm">
       <nav className="flex items-center justify-center gap-2 px-6 py-3 sm:justify-between">
-        <div className="hidden items-center gap-3 sm:flex">
+        <div className="hidden items-center sm:flex">
           <AWeeLogo size="sm" />
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
-            Portfolio/2026
-          </span>
         </div>
 
         <ul className="flex flex-wrap items-center justify-center gap-1 sm:gap-6">

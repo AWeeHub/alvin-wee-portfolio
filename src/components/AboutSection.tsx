@@ -26,8 +26,6 @@ export function AboutSection() {
       <div className="px-6">
         <Reveal className="mx-auto max-w-5xl">
           <SectionHeading
-            index="03"
-            node="Operator"
             title={
               <>
                 Great design isn't how it looks. It's what it{' '}

@@ -77,7 +77,7 @@ export function Hero({ introReady = true }: HeroProps) {
           replaced is what made the hero read as a template. */}
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-8">
         <Reveal className="flex flex-col items-start" stagger={0.14} paused={!introReady}>
-          <NodeChip index="00" node="GoHighLevel Systems Builder" />
+          <NodeChip label="GoHighLevel Systems Builder" />
           {/* The weight jump — light pain point, black promise — carries the
               emphasis the serif italic used to. */}
           <h1 className="mt-8 font-display text-3xl leading-[1.02] tracking-tight text-text sm:text-5xl lg:text-6xl">
@@ -116,9 +116,6 @@ export function Hero({ introReady = true }: HeroProps) {
         aria-hidden
         className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3"
       >
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-muted">
-          The system starts here
-        </span>
         <span className="relative block h-10 w-px overflow-hidden bg-white/10">
           <span className="absolute inset-0 bg-accent motion-safe:animate-scroll-cue" />
         </span>

@@ -26,7 +26,25 @@ export function useSmoothScroll(): void {
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 
+    // ScrollTrigger caches each trigger's start/end as absolute scroll offsets.
+    // The page keeps growing after those are measured — screenshots and logos
+    // load in, fonts swap — so every offset below the growth ends up short, and
+    // near the bottom of the page a reveal can decide it has been scrolled past
+    // and hide itself again. Re-measure whenever the document changes height.
+    let lastHeight = document.documentElement.scrollHeight;
+    const ro =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(() => {
+            const height = document.documentElement.scrollHeight;
+            if (height === lastHeight) return;
+            lastHeight = height;
+            ScrollTrigger.refresh();
+          });
+    ro?.observe(document.body);
+
     return () => {
+      ro?.disconnect();
       gsap.ticker.remove(update);
       lenis.destroy();
     };

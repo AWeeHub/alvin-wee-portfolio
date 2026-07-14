@@ -6,13 +6,14 @@ import { Marquee } from './Marquee';
 
 export function ContactSection() {
   return (
-    <section id="contact" className="bg-bg-elev px-6 py-40 text-center">
+    // The bottom padding is deliberately short: the footer is the last thing on
+    // the page, and with a taller gap the "Stop chasing" heading has already
+    // scrolled off by the time you reach it.
+    <section id="contact" className="bg-bg-elev px-6 pb-24 pt-32 text-center">
       <Marquee text="Get in touch" className="-mx-6 mb-20" />
       <Reveal className="mx-auto flex max-w-4xl flex-col items-center">
         <SectionHeading
           align="center"
-          index="05"
-          node="Goal"
           title={
             <>
               Stop chasing. Start{' '}
@@ -47,7 +48,7 @@ export function ContactSection() {
 
         {/* The address and the profile in full, for anyone who would rather copy
             them than click a button. */}
-        <div className="mt-14 flex flex-col items-center gap-5 border-t border-white/10 pt-10 sm:flex-row sm:justify-center sm:gap-12">
+        <div className="mt-12 flex flex-col items-center gap-5 border-t border-white/10 pt-8 sm:flex-row sm:justify-center sm:gap-12">
           <a
             href={mailtoUrl()}
             className="font-mono text-xs uppercase tracking-[0.2em] text-muted transition-colors duration-300 hover:text-accent"

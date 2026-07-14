@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { scrollState } from '../lib/scroll';
@@ -8,20 +8,15 @@ gsap.registerPlugin(ScrollTrigger);
 /** Packets riding the rail: leads moving through the system, section to section. */
 const PACKETS = [0, 1, 2, 3];
 
-const NODES = [
-  { id: 'hero', label: '00 / TRIGGER' },
-  { id: 'problem', label: '01 / CONDITION' },
-  { id: 'services', label: '02 / STACK' },
-  { id: 'about', label: '03 / OPERATOR' },
-  { id: 'case-studies', label: '04 / PROOF' },
-  { id: 'contact', label: '05 / GOAL' },
-];
-
+/**
+ * The rail down the left edge: how far through the page you are, with packets
+ * riding it. It used to name the current section too, but the bar along the
+ * bottom already does that — one indicator, not two.
+ */
 export function WorkflowSpine() {
   const fillRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const packetRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [active, setActive] = useState(0);
 
   useEffect(() => {
     const rail = railRef.current;
@@ -81,28 +76,7 @@ export function WorkflowSpine() {
       );
     });
 
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const mid = window.innerHeight / 2;
-      let index = 0;
-      NODES.forEach(({ id }, i) => {
-        const section = document.getElementById(id);
-        if (section && section.getBoundingClientRect().top <= mid) index = i;
-      });
-      setActive(index);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    update();
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      cancelAnimationFrame(raf);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -127,9 +101,6 @@ export function WorkflowSpine() {
           />
         ))}
       </div>
-      <p className="mb-10 font-mono text-[10px] uppercase tracking-[0.3em] text-muted [writing-mode:vertical-rl]">
-        {NODES[active].label}
-      </p>
     </aside>
   );
 }

@@ -26,8 +26,6 @@ export function ProblemSection() {
       <Marquee text="The real cost" className="-mx-6 mb-20" />
       <Reveal className="mx-auto max-w-5xl">
         <SectionHeading
-          index="01"
-          node="Condition"
           title={
             <>
               Every day without a system has a{' '}
