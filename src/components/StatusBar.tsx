@@ -3,7 +3,8 @@ import { useEffect, useRef } from 'react';
 const SECTIONS = [
   { id: 'hero', label: '00 — TRIGGER' },
   { id: 'problem', label: '01 — SYMPTOMS' },
-  { id: 'services', label: '02 — BUILD' },
+  // Tracks the nav, not the band: both are telling you where you are.
+  { id: 'services', label: '02 — SERVICES' },
   { id: 'about', label: '03 — ABOUT' },
   { id: 'case-studies', label: '04 — PROOF' },
   { id: 'contact', label: '05 — CONTACT' },

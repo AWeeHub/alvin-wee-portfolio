@@ -8,11 +8,12 @@ interface NavLink {
 }
 
 const LINKS: NavLink[] = [
-  // "Symptoms" over "Condition", and "Build" over "Stack": the page reads as one
-  // argument — symptoms, then the build, then proof. "Stack" also collided with
-  // the toolkit in About, which is what a stack normally means.
+  // The nav is wayfinding, not voice: it says the literal word a visitor scans
+  // for. The band over the same section says THE BUILD — that one is the
+  // editorial statement, and it can afford the flourish. ("Stack", which this
+  // replaced, also collided with the toolkit in About.)
   { label: 'Symptoms', href: '#problem', id: 'problem' },
-  { label: 'Build', href: '#services', id: 'services' },
+  { label: 'Services', href: '#services', id: 'services' },
   { label: 'About', href: '#about', id: 'about' },
   { label: 'Proof', href: '#case-studies', id: 'case-studies' },
   { label: 'Contact', href: '#contact', id: 'contact' },
