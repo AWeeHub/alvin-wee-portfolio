@@ -89,9 +89,6 @@ export function ServicesGrid() {
                 className="group flex items-center gap-5 border-b border-white/10 py-3.5 sm:gap-8 sm:py-4"
                 style={{ opacity: 0, transform: 'translate3d(0, 28px, 0)' }}
               >
-                <span className="font-mono text-[10px] tabular-nums text-accent">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
                 <Icon
                   className="h-5 w-5 shrink-0 text-muted transition-colors duration-300 group-hover:text-accent"
                   aria-hidden="true"

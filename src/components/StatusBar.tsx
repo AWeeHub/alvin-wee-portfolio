@@ -4,9 +4,9 @@ const SECTIONS = [
   { id: 'hero', label: '00 — TRIGGER' },
   { id: 'problem', label: '01 — CONDITION' },
   { id: 'services', label: '02 — STACK' },
-  { id: 'about', label: '03 — OPERATOR' },
+  { id: 'about', label: '03 — ABOUT' },
   { id: 'case-studies', label: '04 — PROOF' },
-  { id: 'contact', label: '05 — GOAL' },
+  { id: 'contact', label: '05 — CONTACT' },
 ];
 
 /**

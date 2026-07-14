@@ -105,16 +105,17 @@ button:focus-visible {
   }
 }
 
-/* Logo marquee. The track holds two identical copies of the list, so shifting
-   it by exactly half its own width swaps copy two into copy one's place and
-   the loop is seamless. Percentage translate (not px) is what keeps that true
-   at any viewport width. */
+/* Logo marquee. The track holds N identical copies of the list, so shifting it
+   by exactly one copy's share of its own width (--marquee-shift, set from the
+   component) swaps the next copy into the last one's place and the loop is
+   seamless. Percentage translate (not px) is what keeps that true at any
+   viewport width or zoom level. */
 @keyframes logoMarquee {
   from {
     transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(var(--marquee-shift, -50%), 0, 0);
   }
 }
 

@@ -111,15 +111,6 @@ export function Hero({ introReady = true }: HeroProps) {
           <DitherPortrait />
         </div>
       </div>
-
-      <div
-        aria-hidden
-        className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3"
-      >
-        <span className="relative block h-10 w-px overflow-hidden bg-white/10">
-          <span className="absolute inset-0 bg-accent motion-safe:animate-scroll-cue" />
-        </span>
-      </div>
     </section>
   );
 }

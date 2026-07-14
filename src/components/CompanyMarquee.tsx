@@ -1,26 +1,43 @@
+import { useEffect, useRef, useState } from 'react';
 import { companies } from '../data/about';
 
 /**
- * Client logos directly under the hero: a cream band cutting into the dark
- * page, with the marks riding an endless marquee.
+ * Client logos directly under the hero, riding an endless marquee.
  *
- * The track carries the list twice. It animates 0 → -50%, so at the end of a
- * cycle the second copy sits exactly where the first one started and the loop
- * restarts with no visible seam — which only holds while the two copies stay
- * identical, so both are rendered from the same data.
+ * The track carries the list several times over and slides by exactly one copy
+ * per cycle, so the next copy lands where the last one started and the loop has
+ * no seam. Two copies is the minimum, but two is not always enough: zoom out far
+ * enough (or open this on a very wide screen) and the viewport grows past the
+ * width of both copies, which would leave the band visibly cut with empty space
+ * running through it. So the copy count is measured, not assumed.
  */
-function Lane({ duplicate }: { duplicate?: boolean }) {
+function Lane({
+  duplicate,
+  innerRef,
+}: {
+  duplicate?: boolean;
+  innerRef?: React.Ref<HTMLDivElement>;
+}) {
   return (
-    <div className="flex shrink-0 items-center" aria-hidden={duplicate || undefined}>
+    <div
+      ref={innerRef}
+      className="flex shrink-0 items-center"
+      aria-hidden={duplicate || undefined}
+    >
       {companies.map((company) => (
         <span key={company.name} className="flex items-center">
           <img
             src={company.logo}
-            // The duplicate is decorative — announcing every company twice is
-            // what the aria-hidden lane is there to prevent.
+            // The duplicates are decorative — announcing every company several
+            // times over is what the aria-hidden lanes are there to prevent.
             alt={duplicate ? '' : company.name}
-            loading="lazy"
+            // Not lazy: the copies sit off the right edge of the track, so a
+            // lazy loader never fetches them, and a lane whose images never load
+            // collapses to a fraction of its width — which is the gap the copy
+            // count exists to prevent. They are the same six files as the first
+            // lane, so this costs nothing beyond a cache hit.
             decoding="async"
+            fetchPriority="low"
             style={{ height: company.height }}
             className="w-auto max-w-none opacity-90"
           />
@@ -35,6 +52,34 @@ function Lane({ duplicate }: { duplicate?: boolean }) {
 }
 
 export function CompanyMarquee() {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const laneRef = useRef<HTMLDivElement>(null);
+  const [copies, setCopies] = useState(2);
+
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    const lane = laneRef.current;
+    if (!viewport || !lane) return;
+
+    const measure = () => {
+      const laneWidth = lane.getBoundingClientRect().width;
+      // The logos are lazy-loaded, so the lane is briefly narrower than it will
+      // end up. Re-measuring on its resize is what catches the final width.
+      if (laneWidth <= 0) return;
+      const viewportWidth = viewport.getBoundingClientRect().width;
+      // One spare copy beyond what the viewport can show: the track is mid-slide
+      // for most of the cycle, so the trailing edge needs somewhere to go.
+      setCopies(Math.max(2, Math.ceil(viewportWidth / laneWidth) + 1));
+    };
+
+    measure();
+    if (typeof ResizeObserver === 'undefined') return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(viewport);
+    ro.observe(lane);
+    return () => ro.disconnect();
+  }, []);
+
   return (
     <section aria-label="Some of the companies I've worked with" className="bg-bg">
       {/* Hairlines rather than a colour change: the band still reads as its own
@@ -45,10 +90,23 @@ export function CompanyMarquee() {
           Some of the companies I&apos;ve worked with
         </p>
 
-        <div className="logo-marquee mt-[clamp(1.5rem,3.5vw,3rem)] overflow-hidden">
-          <div className="logo-marquee-track flex w-max items-center">
-            <Lane />
-            <Lane duplicate />
+        <div
+          ref={viewportRef}
+          className="logo-marquee mt-[clamp(1.5rem,3.5vw,3rem)] overflow-hidden"
+        >
+          {/* One copy's width as a share of the whole track — the exact distance
+              that makes the loop seamless, whatever the copy count is. */}
+          <div
+            className="logo-marquee-track flex w-max items-center"
+            style={{ '--marquee-shift': `${-100 / copies}%` } as React.CSSProperties}
+          >
+            {Array.from({ length: copies }, (_, i) => (
+              <Lane
+                key={i}
+                duplicate={i > 0}
+                innerRef={i === 0 ? laneRef : undefined}
+              />
+            ))}
           </div>
         </div>
       </div>
