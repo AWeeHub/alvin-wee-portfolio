@@ -13,6 +13,33 @@
          it once the bundle has parsed and rendered. Naming it here lets the
          browser start the fetch from the HTML instead. -->
     <link rel="preload" as="image" href="/portrait.webp" fetchpriority="high" />
+    <!-- The three faces the hero is painted with. Imported from CSS, the browser
+         only discovers them after the stylesheet has downloaded and parsed, so on
+         a throttled phone they landed at 3.4s — after the headline had already
+         been laid out in the fallback, which then re-wrapped when they arrived
+         (CLS 0.22). Named here, they are fetched alongside the CSS instead.
+         The filenames are stable by build config; see vite.config.ts. -->
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/saira-latin-wght-normal.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/archivo-latin-wght-normal.woff2"
+    />
+    <link
+      rel="preload"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      href="/assets/fonts/poppins-latin-400-normal.woff2"
+    />
     <meta name="theme-color" content="#05070A" />
     <link rel="canonical" href="https://alvinwee-portfolio.vercel.app/" />
     <meta property="og:type" content="website" />
