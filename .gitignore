@@ -3,4 +3,5 @@ dist
 .vercel
 *.local
 
-.vercel
+# Agent tool scratch (working plans, review diffs) — not part of the build.
+.superpowers
