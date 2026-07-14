@@ -27,7 +27,7 @@ export function Footer() {
           <div className="flex flex-wrap items-center gap-x-md gap-y-2xs">
             <a
               href={mailtoUrl()}
-              className="font-mono text-label text-muted transition-colors duration-300 hover:text-accent"
+              className="inline-block py-2xs font-mono text-label text-muted transition-colors duration-300 hover:text-accent"
             >
               {CONTACT_EMAIL}
             </a>
@@ -35,7 +35,7 @@ export function Footer() {
               href={LINKEDIN_URL}
               target="_blank"
               rel="noreferrer"
-              className="font-mono text-label text-muted transition-colors duration-300 hover:text-accent"
+              className="inline-block py-2xs font-mono text-label text-muted transition-colors duration-300 hover:text-accent"
             >
               LinkedIn ↗
             </a>

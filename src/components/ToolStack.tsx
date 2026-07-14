@@ -10,6 +10,14 @@ const SPREAD = 32;
 const CARD_MIN = 190;
 const CARD_MAX = 280;
 const CARD_SHARE = 0.24;
+/**
+ * The strip each stacked card leaves showing has to hold the logo, the kind, and
+ * the name. Measured, not guessed: the widest name ("GoHighLevel") sets 84px and
+ * the card's own padding another 21px, so ~105px is the point where a stacked
+ * card still reads. A tablet leaves 63px, which is why its deck was eight cards
+ * clipping each other's labels.
+ */
+const STRIP_MIN = 100;
 
 /**
  * The toolkit as a squared-up deck: cards overlap in one direction, the card
@@ -24,14 +32,16 @@ const CARD_SHARE = 0.24;
  */
 export function ToolStack() {
   const [active, setActive] = useState<number | null>(null);
-  const deckRef = useRef<HTMLUListElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
 
+  // Measured on a plain wrapper, not on the deck itself: the deck only exists
+  // when there is room for it, and something has to be there to ask.
   useEffect(() => {
-    const deck = deckRef.current;
-    if (!deck || typeof ResizeObserver === 'undefined') return;
+    const frame = frameRef.current;
+    if (!frame || typeof ResizeObserver === 'undefined') return;
     const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
-    ro.observe(deck);
+    ro.observe(frame);
     return () => ro.disconnect();
   }, []);
 
@@ -40,12 +50,30 @@ export function ToolStack() {
   // back, so a hover near the end still has somewhere to push into.
   const reveal =
     toolkit.length > 1 ? Math.max(0, (width - card - SPREAD) / (toolkit.length - 1)) : 0;
+  // A deck needs width to fan, and how much width is a question about this many
+  // cards at this size — not about a breakpoint. Under the floor, the cards go
+  // out as a plain grid, where every name is legible and hovering is not the
+  // only way to read one.
+  const fans = width > 0 && reveal >= STRIP_MIN;
+
+  if (!fans) {
+    return (
+      <div ref={frameRef}>
+        <ul className="mt-md grid gap-xs [grid-template-columns:repeat(auto-fill,minmax(11rem,1fr))]">
+          {toolkit.map((tool) => (
+            <li key={tool.name}>
+              <Card tool={tool} lifted={false} showUse />
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
 
   return (
-    <>
+    <div ref={frameRef}>
       <ul
-        ref={deckRef}
-        className="relative mt-lg hidden h-[clamp(10.5rem,15vw,14rem)] sm:block"
+        className="relative mt-lg h-[clamp(10.5rem,15vw,14rem)]"
         onMouseLeave={() => setActive(null)}
       >
         {toolkit.map((tool, i) => {
@@ -59,9 +87,6 @@ export function ToolStack() {
                 width: card,
                 transform: `translate3d(${i * reveal + push}px, ${lifted ? -14 : 0}px, 0)`,
                 zIndex: lifted ? toolkit.length : i,
-                // Until the observer has measured, the cards would all sit on
-                // top of each other at x=0.
-                visibility: width > 0 ? undefined : 'hidden',
               }}
               onMouseEnter={() => setActive(i)}
               onFocus={() => setActive(i)}
@@ -71,16 +96,7 @@ export function ToolStack() {
           );
         })}
       </ul>
-
-      {/* Phones get the same cards as a plain list — a deck needs width to fan. */}
-      <ul className="mt-md grid gap-xs sm:hidden">
-        {toolkit.map((tool) => (
-          <li key={tool.name}>
-            <Card tool={tool} lifted={false} showUse />
-          </li>
-        ))}
-      </ul>
-    </>
+    </div>
   );
 }
 

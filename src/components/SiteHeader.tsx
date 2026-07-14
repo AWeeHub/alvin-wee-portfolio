@@ -47,7 +47,11 @@ export function SiteHeader() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-bg/80 backdrop-blur-sm">
-      <nav className="flex items-center justify-center gap-xs px-gutter py-xs sm:justify-between">
+      {/* The nav's own padding is spent on the links instead: the header has to
+          stay under the sticky offset the pinned panels anchor to (56px at its
+          floor), or it clips their headings — but a 24px-tall link is a miss on
+          a phone. Same header height, a bigger thing to hit. */}
+      <nav className="flex items-center justify-center gap-xs px-gutter py-2xs sm:justify-between">
         <div className="hidden items-center sm:flex">
           <AWeeLogo size="sm" />
         </div>
@@ -60,7 +64,7 @@ export function SiteHeader() {
             <li key={id}>
               <a
                 href={href}
-                className={`block whitespace-nowrap px-1.5 py-1 font-mono text-[clamp(0.5625rem,0.5rem+0.15vw,0.8125rem)] uppercase tracking-[0.1em] transition-colors duration-300 sm:px-2 sm:tracking-[0.22em] ${
+                className={`block whitespace-nowrap px-1.5 py-[0.55rem] font-mono text-[clamp(0.5625rem,0.5rem+0.15vw,0.8125rem)] uppercase tracking-[0.1em] transition-colors duration-300 sm:px-2 sm:tracking-[0.22em] ${
                   active === id ? 'text-accent' : 'text-muted hover:text-text'
                 }`}
               >

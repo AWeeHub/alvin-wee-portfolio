@@ -65,18 +65,29 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
           ←
         </button>
 
-        <div className="flex gap-2">
+        <div className="flex">
           {studies.map((study, i) => (
+            // The dot is 8px; the button around it is a thumb. The hit area used
+            // to BE the dot, which is untappable on a phone.
             <button
               key={study.id}
               type="button"
               onClick={() => goTo(i)}
               aria-label={study.title}
               aria-current={i === index}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === index ? 'w-8 bg-accent' : 'w-2 bg-white/20 hover:bg-white/40'
-              }`}
-            />
+              className="group flex h-[2.75rem] w-[1.75rem] items-center justify-center"
+            >
+              {/* The active dot stretches by scaleX, not by width: this is the
+                  same pill either way, and only its transform changes. */}
+              <span
+                aria-hidden
+                className={`h-2 w-8 origin-center rounded-full transition-[transform,background-color] duration-300 ${
+                  i === index
+                    ? 'scale-x-100 bg-accent'
+                    : 'scale-x-[0.25] bg-white/20 group-hover:bg-white/40'
+                }`}
+              />
+            </button>
           ))}
         </div>
 
@@ -108,7 +119,7 @@ export function PipelineCaseStudies({ studies }: { studies: CaseStudy[] }) {
             target="_blank"
             rel="noreferrer"
             data-cursor="view"
-            className="mt-sm inline-block font-sans text-micro text-accent underline underline-offset-4"
+            className="mt-sm inline-block py-2xs font-sans text-micro text-accent underline underline-offset-4"
           >
             View live site →
           </a>

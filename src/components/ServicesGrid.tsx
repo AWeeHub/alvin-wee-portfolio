@@ -21,6 +21,16 @@ export function ServicesGrid() {
   // still reserved, so it appears in place instead of shoving the list sideways.
   const [open, setOpen] = useState<number | null>(null);
 
+  // Escape is the other way out, for anyone who opened a service with the
+  // keyboard and does not want to tab back to the row to close it.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(null);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -130,7 +140,10 @@ export function ServicesGrid() {
                         click target that did not exist. */}
                     <button
                       type="button"
-                      onClick={() => setOpen(i)}
+                      // Clicking the open row again closes it: the way out has
+                      // to be the same gesture as the way in, or the section
+                      // can never get back to the clean list it started as.
+                      onClick={() => setOpen((prev) => (prev === i ? null : i))}
                       aria-expanded={isOpen}
                       aria-controls={`service-detail-${i}`}
                       className="flex w-full items-center gap-sm py-xs text-left"
@@ -180,8 +193,14 @@ export function ServicesGrid() {
                     </button>
 
                     {/* Below xl the detail lives under the row it belongs to.
-                        Nothing is pinned here, so it is free to take the height. */}
-                    <div id={`service-detail-${i}`} className="xl:hidden">
+                        Nothing is pinned here, so it is free to take the height.
+                        The indent is the row's icon plus its gap, so the detail
+                        starts on the same left edge as the service name rather
+                        than under the icon. */}
+                    <div
+                      id={`service-detail-${i}`}
+                      className="pl-[calc(1.4em+var(--space-sm))] xl:hidden xl:pl-0"
+                    >
                       {isOpen && (
                         <ServiceDetail
                           summary={summary}

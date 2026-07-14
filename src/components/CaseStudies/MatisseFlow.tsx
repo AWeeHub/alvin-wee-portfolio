@@ -127,7 +127,11 @@ export function MatisseFlow({ study }: { study: CaseStudy }) {
                     type="button"
                     onClick={() => setIndex(i)}
                     aria-current={on}
-                    className={`group relative flex w-full items-center gap-xs rounded-full border px-xs py-[0.4em] text-left font-mono text-label uppercase tracking-[0.12em] transition-colors duration-300 lg:rounded-none lg:border-0 lg:bg-transparent lg:py-[0.45em] lg:pl-md ${
+                    // The floor is a thumb, not the type — the label alone left a
+                    // 26px target. It is released at lg, where the rail becomes a
+                    // pointer list, and taken back on any device without hover:
+                    // an iPad in landscape is 1024px wide and still a thumb.
+                    className={`group relative flex min-h-[2.75rem] w-full items-center gap-xs rounded-full border px-xs py-[0.4em] text-left font-mono text-label uppercase tracking-[0.12em] transition-colors duration-300 lg:min-h-0 lg:rounded-none lg:border-0 lg:bg-transparent lg:py-[0.45em] lg:pl-md [@media(hover:none)]:min-h-[2.75rem] ${
                       on
                         ? 'border-accent bg-accent/10 text-accent'
                         : 'border-white/10 text-muted hover:border-white/30 hover:text-text lg:hover:text-text'
@@ -206,7 +210,7 @@ export function MatisseFlow({ study }: { study: CaseStudy }) {
               type="button"
               onClick={() => step(-1)}
               aria-label="Previous stage"
-              className="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+              className="flex h-[2.75rem] w-[2.75rem] items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
             >
               ←
             </button>
@@ -221,7 +225,7 @@ export function MatisseFlow({ study }: { study: CaseStudy }) {
               type="button"
               onClick={() => step(1)}
               aria-label="Next stage"
-              className="flex h-[2.4rem] w-[2.4rem] items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
+              className="flex h-[2.75rem] w-[2.75rem] items-center justify-center rounded-full border border-white/10 font-mono text-muted transition-colors duration-300 hover:border-accent/40 hover:text-accent"
             >
               →
             </button>
