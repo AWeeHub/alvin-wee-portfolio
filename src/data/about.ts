@@ -2,20 +2,29 @@ export interface Company {
   name: string;
   /** Path under /public. When absent the name renders as a wordmark instead. */
   logo?: string;
+  /**
+   * Rendered height in px. Logo strips look wrong at one uniform height: a wide
+   * wordmark and a square crest with the same height read as wildly different
+   * sizes. These values balance them optically, so they are per-logo rather than
+   * a single class on the <img>.
+   */
+  height?: number;
 }
 
 /**
- * Drop a file at the matching path and it replaces the wordmark automatically —
- * no code change. SVG preferred; transparent PNG is fine. They render white and
- * dim, so a light or single-colour mark reads best on the dark ground.
+ * Every logo is drawn white via a brightness(0) invert(1) filter, so the source
+ * colour is irrelevant — but the background must be transparent, or the mark
+ * lands on the page as a solid white slab.
  */
 export const companies: Company[] = [
-  { name: 'Matisse Academy' },
-  { name: 'Fanvue' },
-  { name: 'Katalyst CRM' },
-  { name: 'The Methodical Group' },
-  { name: 'Oracle' },
-  { name: 'Trax Technologies Asia' },
+  { name: 'Matisse Academy', logo: '/logos/matisse.webp', height: 44 },
+  { name: 'Fanvue', logo: '/logos/fanvue.svg', height: 26 },
+  { name: 'Katalyst CRM', logo: '/logos/katalyst.webp', height: 24 },
+  // Wordmark only. Their full lockup leads with a two-tone "M" that is one solid
+  // block of ink, and the white filter flattens it into a featureless slab.
+  { name: 'The Methodical Group', logo: '/logos/methodical.webp', height: 56 },
+  { name: 'Oracle', logo: '/logos/oracle.svg', height: 24 },
+  { name: 'Trax Technologies Asia', logo: '/logos/trax.svg', height: 30 },
 ];
 
 export interface ToolGroup {

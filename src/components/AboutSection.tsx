@@ -40,13 +40,16 @@ export function AboutSection() {
         </p>
         <ul className="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
           {companies.map((company) => (
-            <li key={company.name} className="group flex items-center">
+            // Fixed row height so the differing logo heights below still sit on
+            // a common baseline grid.
+            <li key={company.name} className="group flex h-16 items-center">
               {company.logo ? (
                 <img
                   src={company.logo}
                   alt={company.name}
                   loading="lazy"
-                  className="h-9 w-auto max-w-full opacity-55 transition-opacity duration-300 [filter:brightness(0)_invert(1)] group-hover:opacity-100"
+                  style={{ height: company.height ?? 32 }}
+                  className="w-auto max-w-full opacity-55 transition-opacity duration-300 [filter:brightness(0)_invert(1)] group-hover:opacity-100"
                 />
               ) : (
                 <span className="font-display text-lg font-bold uppercase leading-tight tracking-tight text-text/55 transition-colors duration-300 group-hover:text-accent sm:text-xl">
