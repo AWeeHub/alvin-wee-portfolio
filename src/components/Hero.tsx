@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
 import { usePainPointRotator } from '../lib/usePainPointRotator';
+import { DitherPortrait } from './DitherPortrait';
 import { HeroNameBackdrop } from './HeroNameBackdrop';
 import { HeroShader } from './HeroShader';
 import { MaskedText } from './MaskedText';
 import { NodeChip } from './SectionHeading';
 import { Reveal } from './Reveal';
+
+// Standing facts under the headline — the reference's equivalent strip is what
+// makes it read as a person with a track record rather than a brand statement.
+const FACTS = [
+  'GoHighLevel specialist',
+  'Based in the Philippines',
+  'Open to new projects',
+];
 
 const PAIN_POINTS = [
   "Your funnel isn't converting.",
@@ -34,7 +43,7 @@ export function Hero({ introReady = true }: HeroProps) {
   return (
     <section
       id="hero"
-      className="relative isolate flex min-h-screen flex-col items-center justify-center overflow-hidden bg-bg px-6 pt-20 text-center"
+      className="relative isolate flex min-h-screen flex-col justify-center overflow-hidden bg-bg px-6 pb-24 pt-28"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         {shaderOk ? (
@@ -64,28 +73,44 @@ export function Hero({ introReady = true }: HeroProps) {
 
       <HeroNameBackdrop />
 
-      <Reveal className="flex flex-col items-center" stagger={0.14} paused={!introReady}>
-        <NodeChip index="00" node="GoHighLevel Systems Builder" />
-        {/* Archivo sets much wider than Fraunces did, so the old 7xl overflowed
-            into three lines. The weight jump — light pain point, black promise —
-            now carries the emphasis that the serif italic used to. */}
-        <h1 className="mt-10 max-w-4xl font-display text-3xl leading-[1.02] tracking-tight text-text sm:text-5xl md:text-6xl">
-          <span key={index} className="block animate-fade-up font-light">
-            {PAIN_POINTS[index]}
-          </span>
-          <MaskedText
-            className="mt-3 block font-black uppercase tracking-tight text-accent"
-            paused={!introReady}
-            scroll={false}
-          >
-            I build the system that fixes it.
-          </MaskedText>
-        </h1>
-        <p className="mt-8 max-w-xl font-sans text-base text-muted sm:text-lg">
-          Funnels, CRM, and automation working as one machine — every lead
-          captured, followed up, and booked without manual chasing.
-        </p>
-      </Reveal>
+      {/* Asymmetric split: type left, portrait right. The centred stack this
+          replaced is what made the hero read as a template. */}
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-8">
+        <Reveal className="flex flex-col items-start" stagger={0.14} paused={!introReady}>
+          <NodeChip index="00" node="GoHighLevel Systems Builder" />
+          {/* The weight jump — light pain point, black promise — carries the
+              emphasis the serif italic used to. */}
+          <h1 className="mt-8 font-display text-3xl leading-[1.02] tracking-tight text-text sm:text-5xl lg:text-6xl">
+            <span key={index} className="block animate-fade-up font-light">
+              {PAIN_POINTS[index]}
+            </span>
+            <MaskedText
+              className="mt-3 block font-black uppercase tracking-tight text-accent"
+              paused={!introReady}
+              scroll={false}
+            >
+              I build the system that fixes it.
+            </MaskedText>
+          </h1>
+          <p className="mt-8 max-w-xl font-sans text-base text-muted sm:text-lg">
+            Funnels, CRM, and automation working as one machine — every lead
+            captured, followed up, and booked without manual chasing.
+          </p>
+
+          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
+            {FACTS.map((fact) => (
+              <li key={fact} className="flex items-center gap-2">
+                <span aria-hidden className="h-1.5 w-1.5 shrink-0 bg-accent" />
+                {fact}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <div className="relative mx-auto aspect-square w-full max-w-md lg:max-w-none">
+          <DitherPortrait />
+        </div>
+      </div>
 
       <div
         aria-hidden
