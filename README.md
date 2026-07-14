@@ -3,7 +3,7 @@
 Personal portfolio for **Alvin Wee**, GoHighLevel systems builder — funnels, CRM, automation and
 web design.
 
-**Live:** https://alvinwee-portfolio.vercel.app
+**Live:** https://awee.digital
 
 A single dark scrolling page that makes one argument: what a broken system costs you → what I build
 → who I am → proof it works → how to reach me. Scroll-driven throughout; the type and spacing scale

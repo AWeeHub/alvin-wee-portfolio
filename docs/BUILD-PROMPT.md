@@ -4,7 +4,7 @@ The prompt below is what you would hand to an AI coding agent (Claude Code, Curs
 build this site from an empty folder. It is written as a brief, not a checklist: it states the
 intent, the constraints, and the decisions that are not negotiable, and leaves the rest open.
 
-Live site: https://alvinwee-portfolio.vercel.app
+Live site: https://awee.digital
 
 ---
 
