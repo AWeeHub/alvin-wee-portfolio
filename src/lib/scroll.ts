@@ -32,6 +32,7 @@ export function useSmoothScroll(): void {
     // near the bottom of the page a reveal can decide it has been scrolled past
     // and hide itself again. Re-measure whenever the document changes height.
     let lastHeight = document.documentElement.scrollHeight;
+    let refreshFrame = 0;
     const ro =
       typeof ResizeObserver === 'undefined'
         ? null
@@ -39,11 +40,19 @@ export function useSmoothScroll(): void {
             const height = document.documentElement.scrollHeight;
             if (height === lastHeight) return;
             lastHeight = height;
-            ScrollTrigger.refresh();
+            // A refresh re-measures every trigger on the page, so it is not
+            // something to run once per image that lands. Images arrive in
+            // bursts; collapse a burst into one refresh on the next frame.
+            if (refreshFrame) return;
+            refreshFrame = requestAnimationFrame(() => {
+              refreshFrame = 0;
+              ScrollTrigger.refresh();
+            });
           });
     ro?.observe(document.body);
 
     return () => {
+      cancelAnimationFrame(refreshFrame);
       ro?.disconnect();
       gsap.ticker.remove(update);
       lenis.destroy();

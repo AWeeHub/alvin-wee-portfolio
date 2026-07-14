@@ -20,6 +20,22 @@ const CARD_W = 1.6 * SCALE;
 const CARD_H = 0.9 * SCALE;
 const CAM_Z = 4.2;
 const FOV = (46 * Math.PI) / 180;
+/** The focused card is scaled up by the vertex shader; it has to fit too. */
+const FOCUS_SCALE = 1.34;
+/** A little air between the card's edge and the edge of the canvas. */
+const FIT_MARGIN = 1.06;
+
+/**
+ * How far back the camera has to sit for the focused card to fit across the
+ * canvas. The card is a fixed size in world units, but the width the camera can
+ * see is proportional to the canvas aspect — so on a narrow canvas (a phone) a
+ * fixed camera crops the card's left and right edges off. Pull back instead.
+ */
+function cameraDistance(aspect: number): number {
+  const halfCardWidth = (CARD_W * FOCUS_SCALE) / 2;
+  const needed = (halfCardWidth * FIT_MARGIN) / (Math.tan(FOV / 2) * aspect);
+  return Math.max(CAM_Z, needed);
+}
 
 type Props = {
   studies: CaseStudy[];
@@ -148,7 +164,7 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
     let dpr = Math.min(window.devicePixelRatio || 1, 2);
     let width = 0;
     let height = 0;
-    let vp = viewProjection(FOV, 1, 0.1, 100, CAM_Z);
+    let vp = viewProjection(FOV, 1, 0.1, 100, cameraDistance(1));
 
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -157,7 +173,8 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
       canvas.width = Math.max(1, Math.round(width * dpr));
       canvas.height = Math.max(1, Math.round(height * dpr));
       gl.viewport(0, 0, canvas.width, canvas.height);
-      vp = viewProjection(FOV, Math.max(width / Math.max(height, 1), 0.1), 0.1, 100, CAM_Z);
+      const aspect = Math.max(width / Math.max(height, 1), 0.1);
+      vp = viewProjection(FOV, aspect, 0.1, 100, cameraDistance(aspect));
     };
     resize();
     const ro = new ResizeObserver(resize);

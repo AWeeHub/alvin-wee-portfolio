@@ -48,12 +48,15 @@ export function SiteHeader() {
           <AWeeLogo size="sm" />
         </div>
 
-        <ul className="flex flex-wrap items-center justify-center gap-1 sm:gap-6">
+        {/* One row, always. Wrapped to two, the header grows past the sticky
+            offset the pinned panels are anchored to and starts clipping their
+            headings. */}
+        <ul className="flex items-center justify-center gap-0.5 sm:gap-6">
           {LINKS.map(({ label, href, id }) => (
             <li key={id}>
               <a
                 href={href}
-                className={`px-2 py-1 font-mono text-[10px] uppercase tracking-[0.22em] transition-colors duration-300 ${
+                className={`block whitespace-nowrap px-1.5 py-1 font-mono text-[9px] uppercase tracking-[0.1em] transition-colors duration-300 sm:px-2 sm:text-[10px] sm:tracking-[0.22em] ${
                   active === id ? 'text-accent' : 'text-muted hover:text-text'
                 }`}
               >

@@ -40,7 +40,8 @@ export function Footer() {
               LinkedIn ↗
             </a>
           </div>
-          <p className="font-mono text-xs text-muted/70">
+          {/* Full muted, not muted/70: at 12px the faded version lands at 3.6:1. */}
+          <p className="font-mono text-xs text-muted">
             © {new Date().getFullYear()} AWee Digital. All rights reserved.
           </p>
         </div>

@@ -4,7 +4,13 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DIM = 0.26;
+/**
+ * Resting opacity of a word that hasn't been lit yet. 0.5 is the floor: below it
+ * the text drops under 4.5:1 against the page and stops being readable at all
+ * for anyone who needs the contrast — an unlit word is still a word someone may
+ * be trying to read.
+ */
+const DIM = 0.5;
 
 interface ScrollHighlightTextProps {
   children: string;

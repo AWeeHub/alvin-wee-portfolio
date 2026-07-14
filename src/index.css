@@ -78,8 +78,10 @@ button:focus-visible {
   color: theme('colors.accent');
 }
 
+/* 0.5 is the floor that still clears 4.5:1 against the page — an unlit row is
+   still a row someone may be reading. */
 .cost-word {
-  opacity: 0.3;
+  opacity: 0.5;
   transition: opacity 0.35s ease-out;
 }
 

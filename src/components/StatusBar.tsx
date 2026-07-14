@@ -14,17 +14,21 @@ const SECTIONS = [
  * you're in. The readouts that used to sit beside it — scroll position, cursor
  * odometer, theme swatch, clock — were instrumentation for its own sake.
  *
- * The label is written straight to a ref inside one rAF loop. Holding it in
- * React state would re-render the tree on every frame of a scroll.
+ * The label is written straight to a ref rather than held in React state, which
+ * would re-render the tree on every scroll, and it is only recomputed while the
+ * page is actually moving: measuring six sections every frame forever means
+ * forcing a layout every frame forever, even on a page sitting still.
  */
 export function StatusBar() {
   const sectionRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     let raf = 0;
-    const frame = () => {
+
+    const update = () => {
+      raf = 0;
       // The last section whose top has passed the middle of the screen — which
-      // keeps the final label ("05 — GOAL") in place all the way through the
+      // keeps the final label ("05 — CONTACT") in place all the way through the
       // footer, rather than blanking once you scroll past the section itself.
       const mid = window.innerHeight / 2;
       let active = SECTIONS[0];
@@ -33,12 +37,21 @@ export function StatusBar() {
         if (el && el.getBoundingClientRect().top <= mid) active = s;
       }
       if (sectionRef.current) sectionRef.current.textContent = active.label;
-
-      raf = requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(frame);
 
-    return () => cancelAnimationFrame(raf);
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    update();
+
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
