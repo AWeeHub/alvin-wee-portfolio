@@ -62,7 +62,7 @@ export function ToolStack() {
         <ul className="mt-md grid gap-xs [grid-template-columns:repeat(auto-fill,minmax(11rem,1fr))]">
           {toolkit.map((tool) => (
             <li key={tool.name}>
-              <Card tool={tool} lifted={false} showUse />
+              <Card tool={tool} lifted={false} showUse hug />
             </li>
           ))}
         </ul>
@@ -104,17 +104,25 @@ function Card({
   tool,
   lifted,
   showUse,
+  hug = false,
 }: {
   tool: (typeof toolkit)[number];
   lifted: boolean;
   showUse: boolean;
+  /**
+   * In the grid the card is on its own, so it should be as tall as its content.
+   * The deck's fixed height and bottom-anchored line exist to keep the fanned
+   * cards square with each other; stacked down a phone they just open a hole
+   * between the name and the reason.
+   */
+  hug?: boolean;
 }) {
   return (
     <div
       tabIndex={0}
-      className={`flex h-full min-h-[10.5rem] flex-col rounded-lg border p-sm outline-none transition-colors duration-500 ${
-        lifted ? 'border-accent/70 bg-bg-elev' : 'border-white/10 bg-bg-elev'
-      }`}
+      className={`flex flex-col rounded-lg border p-sm outline-none transition-colors duration-500 ${
+        hug ? '' : 'h-full min-h-[10.5rem]'
+      } ${lifted ? 'border-accent/70 bg-bg-elev' : 'border-white/10 bg-bg-elev'}`}
     >
       {/* Logo, kind, name — all inside the strip the next card leaves showing, so
           the deck reads at rest. The mark keeps its own width at a shared height:
@@ -143,9 +151,9 @@ function Card({
           card cuts the sentence in half, and half-sentences down the row are what
           made the deck read as clutter. */}
       <p
-        className={`mt-auto font-sans text-micro leading-relaxed text-muted transition-opacity duration-300 ${
-          showUse ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`font-sans text-micro leading-relaxed text-muted transition-opacity duration-300 ${
+          hug ? 'mt-xs' : 'mt-auto'
+        } ${showUse ? 'opacity-100' : 'opacity-0'}`}
       >
         {tool.use}
       </p>
