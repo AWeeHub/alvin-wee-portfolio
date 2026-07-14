@@ -1,4 +1,11 @@
-import { Filter, LayoutTemplate, Workflow, Settings, type LucideIcon } from 'lucide-react';
+import {
+  Filter,
+  LayoutTemplate,
+  Workflow,
+  Settings,
+  PenTool,
+  type LucideIcon,
+} from 'lucide-react';
 
 export interface Service {
   label: string;
@@ -26,5 +33,10 @@ export const services: Service[] = [
     label: 'CRM Setup',
     desc: 'Every lead visible: stage, source, next action.',
     icon: Settings,
+  },
+  {
+    label: 'Web Design',
+    desc: 'The interface your brand is judged by, built to hold up.',
+    icon: PenTool,
   },
 ];
