@@ -13,6 +13,6 @@ describe('contact links', () => {
   });
 
   it('builds the mailto link for the public contact email', () => {
-    expect(mailtoUrl()).toBe('mailto:weealvin124@gmail.com');
+    expect(mailtoUrl()).toBe('mailto:alvin@awee.digital');
   });
 });
