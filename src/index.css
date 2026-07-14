@@ -52,6 +52,38 @@ button:focus-visible {
   }
 }
 
+/* The cost you are level with lights up, and a rule sweeps in under it — the
+   section reads as one problem at a time rather than a list you skim. */
+.cost-row {
+  position: relative;
+}
+
+.cost-row::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 1px;
+  background: theme('colors.accent');
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.cost-row.is-lit::after {
+  transform: scaleX(1);
+}
+
+.cost-row.is-lit .cost-title {
+  color: theme('colors.accent');
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cost-row::after {
+    transition: none;
+  }
+}
+
 /* Logo marquee. The track holds two identical copies of the list, so shifting
    it by exactly half its own width swaps copy two into copy one's place and
    the loop is seamless. Percentage translate (not px) is what keeps that true

@@ -9,11 +9,9 @@ import { WorkflowSpine } from './components/WorkflowSpine';
 import { Hero } from './components/Hero';
 import { CompanyMarquee } from './components/CompanyMarquee';
 import { ProblemSection } from './components/ProblemSection';
-import { SolutionSection } from './components/SolutionSection';
 import { ServicesGrid } from './components/ServicesGrid';
 import { AboutSection } from './components/AboutSection';
 import { CaseStudiesSection } from './components/CaseStudies/CaseStudiesSection';
-import { ProcessSection } from './components/ProcessSection';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
 
@@ -32,11 +30,9 @@ export default function App() {
       <Hero introReady={ready} />
       <CompanyMarquee />
       <ProblemSection />
-      <SolutionSection />
       <ServicesGrid />
       <AboutSection />
       <CaseStudiesSection />
-      <ProcessSection />
       <ContactSection />
       <Footer />
     </main>

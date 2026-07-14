@@ -11,7 +11,7 @@ export function ContactSection() {
       <Reveal className="mx-auto flex max-w-4xl flex-col items-center">
         <SectionHeading
           align="center"
-          index="07"
+          index="05"
           node="Goal"
           title={
             <>

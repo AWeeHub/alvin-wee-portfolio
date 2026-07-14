@@ -113,8 +113,8 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
     };
     const trackU = {
       vp: gl.getUniformLocation(trackProgram, 'uVP'),
-      startX: gl.getUniformLocation(trackProgram, 'uStartX'),
-      endX: gl.getUniformLocation(trackProgram, 'uEndX'),
+      startAng: gl.getUniformLocation(trackProgram, 'uStartAng'),
+      endAng: gl.getUniformLocation(trackProgram, 'uEndAng'),
       radius: gl.getUniformLocation(trackProgram, 'uRadius'),
       bend: gl.getUniformLocation(trackProgram, 'uBend'),
       y: gl.getUniformLocation(trackProgram, 'uY'),
@@ -334,15 +334,16 @@ export function PipelineSlider({ studies, index, onIndexChange }: Props) {
       gl.useProgram(trackProgram);
       gl.bindVertexArray(trackVao);
       gl.uniformMatrix4fv(trackU.vp, false, vp);
-      // The rail spans the visible arc rather than the first and last card:
-      // on a loop there is no first or last, and a rail with ends would show
-      // the seam the cards no longer have.
-      gl.uniform1f(trackU.startX, -(n / 2) * SPACING - CARD_W);
-      gl.uniform1f(trackU.endX, (n / 2) * SPACING + CARD_W);
+      // A closed ring, not a segment: the cards loop, so the rail they ride has
+      // to loop too. Only the near arc faces the camera — the rest curves away,
+      // which is what makes the track read as a circle you are seeing half of.
+      gl.uniform1f(trackU.startAng, -Math.PI);
+      gl.uniform1f(trackU.endAng, Math.PI);
       gl.uniform1f(trackU.radius, RADIUS);
       gl.uniform1f(trackU.bend, bend);
-      gl.uniform1f(trackU.y, -CARD_H * 0.5 - 0.13 * CARD_H);
-      gl.uniform1f(trackU.thick, 0.03 * CARD_H);
+      // Clears the focused card, which now swells past its own box.
+      gl.uniform1f(trackU.y, -CARD_H * 0.72 - 0.1 * CARD_H);
+      gl.uniform1f(trackU.thick, 0.045 * CARD_H);
       gl.uniform1f(trackU.time, t);
       gl.uniform1f(trackU.intro, intro);
       gl.drawElements(gl.TRIANGLES, track.count, gl.UNSIGNED_SHORT, 0);

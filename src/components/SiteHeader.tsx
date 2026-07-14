@@ -11,11 +11,11 @@ interface NavLink {
 // Numbers match the WorkflowSpine node map, so the nav, the rail and the status
 // bar all name a section the same way.
 const LINKS: NavLink[] = [
-  { index: '03', label: 'Stack', href: '#services', id: 'services' },
-  { index: '04', label: 'Operator', href: '#about', id: 'about' },
-  { index: '05', label: 'Proof', href: '#case-studies', id: 'case-studies' },
-  { index: '06', label: 'Sequence', href: '#process', id: 'process' },
-  { index: '07', label: 'Goal', href: '#contact', id: 'contact' },
+  { index: '01', label: 'Condition', href: '#problem', id: 'problem' },
+  { index: '02', label: 'Stack', href: '#services', id: 'services' },
+  { index: '03', label: 'Operator', href: '#about', id: 'about' },
+  { index: '04', label: 'Proof', href: '#case-studies', id: 'case-studies' },
+  { index: '05', label: 'Goal', href: '#contact', id: 'contact' },
 ];
 
 export function SiteHeader() {

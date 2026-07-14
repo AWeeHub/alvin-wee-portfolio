@@ -105,8 +105,12 @@ export const TRACK_VERT = `#version 300 es
 layout(location = 0) in vec2 aPos;
 
 uniform mat4 uVP;
-uniform float uStartX;
-uniform float uEndX;
+// Angles, not distances: the rail closes into a full ring around the cylinder,
+// and only the near arc of it faces the camera. Driving it by angle keeps the
+// ring closed even as uBend tightens the radius under speed — a rail measured
+// in world units would grow or shrink a gap at the seam.
+uniform float uStartAng;
+uniform float uEndAng;
 uniform float uRadius;
 uniform float uBend;
 uniform float uY;
@@ -116,9 +120,8 @@ out float vS;
 out float vT;
 
 void main() {
-  float x = mix(uStartX, uEndX, aPos.x);
+  float ang = mix(uStartAng, uEndAng, aPos.x);
   float r = uRadius / (1.0 + uBend * 1.6);
-  float ang = x / r;
 
   vec3 p;
   p.x = sin(ang) * r;
@@ -145,15 +148,19 @@ void main() {
   float line = 1.0 - smoothstep(0.0, 0.5, abs(vT));
 
   // Packets: leads moving down the pipeline. Same visual language as the
-  // pulses in the hero grid and the spine packets.
+  // pulses in the hero grid and the spine packets. They ride the ring, so a
+  // packet that leaves the near arc comes back around rather than dying.
   float glow = 0.0;
   for (int i = 0; i < 5; i++) {
-    float pos = fract(uTime * 0.12 + float(i) / 5.0);
-    glow += exp(-abs(vS - pos) * 90.0);
+    float pos = fract(uTime * 0.09 + float(i) / 5.0);
+    // Wrapped distance: the seam at vS = 0/1 is a join, not an end.
+    float d = abs(vS - pos);
+    d = min(d, 1.0 - d);
+    glow += exp(-d * 55.0);
   }
 
   vec3 accent = vec3(${ACCENT[0]}, ${ACCENT[1]}, ${ACCENT[2]});
-  float a = clamp(line * (0.10 + 0.9 * glow), 0.0, 1.0) * uIntro;
+  float a = clamp(line * (0.26 + 0.9 * glow), 0.0, 1.0) * uIntro;
   outColor = vec4(accent * a, a);
 }`;
 

@@ -11,12 +11,10 @@ const PACKETS = [0, 1, 2, 3];
 const NODES = [
   { id: 'hero', label: '00 / TRIGGER' },
   { id: 'problem', label: '01 / CONDITION' },
-  { id: 'solution', label: '02 / ACTION' },
-  { id: 'services', label: '03 / STACK' },
-  { id: 'about', label: '04 / OPERATOR' },
-  { id: 'case-studies', label: '05 / PROOF' },
-  { id: 'process', label: '06 / SEQUENCE' },
-  { id: 'contact', label: '07 / GOAL' },
+  { id: 'services', label: '02 / STACK' },
+  { id: 'about', label: '03 / OPERATOR' },
+  { id: 'case-studies', label: '04 / PROOF' },
+  { id: 'contact', label: '05 / GOAL' },
 ];
 
 export function WorkflowSpine() {

@@ -71,7 +71,7 @@ export function ServicesGrid() {
               is still on screen long after that. SectionHeading carries its own
               entrance. */}
           <SectionHeading
-            index="03"
+            index="02"
             node="Stack"
             title={
               <>
