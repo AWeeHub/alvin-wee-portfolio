@@ -60,6 +60,63 @@
       content="Funnels, CRM, and automation working as one system — more leads, more booked calls, less manual work."
     />
     <meta name="twitter:image" content="https://awee.digital/og.png" />
+    <!-- Structured data: who this is and what is on offer. The page copy is
+         painted by JS, so this is the one place a crawler reliably reads the
+         person, the business, and the services as data rather than as pixels.
+         Kept in sync with src/data/services.ts. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://awee.digital/#alvin",
+            "name": "Alvin Wee",
+            "jobTitle": "GoHighLevel Systems Builder",
+            "description": "Builds complete customer-acquisition systems — funnels, CRM, automation, and web design.",
+            "url": "https://awee.digital/",
+            "email": "alvin@awee.digital",
+            "image": "https://awee.digital/portrait.webp",
+            "sameAs": ["https://www.linkedin.com/in/alvinwee"],
+            "knowsAbout": [
+              "GoHighLevel",
+              "Sales funnels",
+              "CRM setup",
+              "Marketing automation",
+              "Landing page design",
+              "Web design"
+            ],
+            "worksFor": { "@id": "https://awee.digital/#awee" }
+          },
+          {
+            "@type": "ProfessionalService",
+            "@id": "https://awee.digital/#awee",
+            "name": "AWee Digital",
+            "description": "Funnels, CRM, and automation working as one system — more leads, more booked calls, less manual work.",
+            "url": "https://awee.digital/",
+            "image": "https://awee.digital/og.png",
+            "email": "alvin@awee.digital",
+            "founder": { "@id": "https://awee.digital/#alvin" },
+            "areaServed": "Worldwide",
+            "availableChannel": {
+              "@type": "ServiceChannel",
+              "serviceUrl": "https://awee.digital/"
+            },
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "Services",
+              "itemListElement": [
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Sales Funnel Development" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Landing Page Design" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Workflow Automation" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "CRM Setup" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Web Design" } }
+              ]
+            }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
